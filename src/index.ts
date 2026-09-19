@@ -1,5 +1,5 @@
 // Configs
-export type { LoomoraConfig, LoomoraConfigInput } from "./config";
+export type { LoomoraConfig } from "./config";
 export { LoomoraProvider, useLoomoraConfig, defaultConfig } from "./config";
 
 // Databases
