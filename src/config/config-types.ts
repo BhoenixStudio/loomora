@@ -1,4 +1,11 @@
-import { CountryProps, CountryType, SocialPlatform, SocialType } from "../database";
+import type {
+  CountryProps,
+  CountryType,
+  SocialPlatform,
+  SocialType,
+  TimezoneProps,
+  TimezoneType,
+} from "../database";
 
 /** Recursively optional configuration values accepted by a provider. */
 export type DeepPartial<T> = {
@@ -13,6 +20,7 @@ export type DeepPartial<T> = {
 export type LoomoraConfig = {
   socials?: Partial<Record<SocialType, Pick<SocialPlatform, "name" | "placeholder">>>;
   countries?: Partial<Record<CountryType, Pick<CountryProps, "name">>>;
+  timezones?: Record<Exclude<TimezoneType, "none">, Pick<TimezoneProps, "name" | "region">>;
 };
 
 /** Partial configuration accepted by `LoomoraProvider`. */
