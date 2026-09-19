@@ -142,9 +142,8 @@ export type GetSocials<T extends object = object> = {
  * performs the same shallow merge for one typed platform key.
  */
 export function useSocials() {
-  const { socials: socialConfig } = useLoomoraConfig();
-
   const socials = Socials();
+  const { socials: socialConfig } = useLoomoraConfig();
 
   const getSocials = <T extends object = object>(props?: GetSocials<T>): (SocialPlatform & T)[] => {
     const { extra = {}, only = [], except = [] } = props ?? {};

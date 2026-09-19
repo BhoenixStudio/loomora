@@ -24,7 +24,10 @@ function mergeValues(base: unknown, override: unknown): unknown {
 }
 
 /** Recursively merges provider values without mutating either input object. */
-export function mergeConfig(base: LoomoraConfig, override?: LoomoraConfigInput): LoomoraConfig {
+export function mergeConfig(
+  base: Required<LoomoraConfig>,
+  override?: LoomoraConfigInput,
+): Required<LoomoraConfig> {
   if (!override) return base;
-  return mergeValues(base, override) as LoomoraConfig;
+  return mergeValues(base, override) as Required<LoomoraConfig>;
 }
