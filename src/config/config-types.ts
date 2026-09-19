@@ -1,4 +1,4 @@
-import { SocialPlatform, SocialType } from "../database/useSocialMedia";
+import { CountryProps, CountryType, SocialPlatform, SocialType } from "../database";
 
 /** Recursively optional configuration values accepted by a provider. */
 export type DeepPartial<T> = {
@@ -11,7 +11,8 @@ export type DeepPartial<T> = {
 
 /** Fully resolved Loomora configuration. */
 export type LoomoraConfig = {
-  socials: Record<SocialType, Pick<SocialPlatform, "name" | "placeholder">>;
+  socials?: Partial<Record<SocialType, Pick<SocialPlatform, "name" | "placeholder">>>;
+  countries?: Partial<Record<CountryType, Pick<CountryProps, "name">>>;
 };
 
 /** Partial configuration accepted by `LoomoraProvider`. */
