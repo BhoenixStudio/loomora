@@ -1,15 +1,29 @@
 import { renderHook } from "@testing-library/react";
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 import { LoomoraProvider, useLoomoraConfig } from "../src/config/config-context";
 import { defaultConfig } from "../src/config/default-config";
 import { mergeConfig } from "../src/config/merge-config";
 import { useSocials } from "../src/database/useSocialMedia";
+
+function TestLink({ href, children }: { href: string; children?: ReactNode }) {
+  return <a href={href}>{children}</a>;
+}
 
 describe("Loomora configuration", () => {
   it("returns built-in defaults without a provider", () => {
     const { result } = renderHook(() => useLoomoraConfig());
 
     expect(result.current.socials.github).toEqual({ name: "GitHub", placeholder: "ex: username" });
+    expect(result.current.linkType).toBe("a");
+  });
+
+  it("accepts a consumer-provided link component", () => {
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <LoomoraProvider config={{ linkType: TestLink }}>{children}</LoomoraProvider>
+    );
+    const { result } = renderHook(() => useLoomoraConfig(), { wrapper });
+
+    expect(result.current.linkType).toBe(TestLink);
   });
 
   it("applies partial overrides without resetting sibling values", () => {

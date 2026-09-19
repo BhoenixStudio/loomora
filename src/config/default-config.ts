@@ -376,6 +376,24 @@ const defaultConfig: Required<LoomoraConfig> = {
     "indian/cocos": { name: "Cocos", region: "Indian" },
     "indian/christmas": { name: "Christmas", region: "Indian" },
   },
+  useDates: {
+    locales: {},
+    months: {
+      JAN: { name: "January", shortName: "Jan" },
+      FEB: { name: "February", shortName: "Feb" },
+      MAR: { name: "March", shortName: "Mar" },
+      APR: { name: "April", shortName: "Apr" },
+      MAY: { name: "May", shortName: "May" },
+      JUN: { name: "June", shortName: "Jun" },
+      JUL: { name: "July", shortName: "Jul" },
+      AUG: { name: "August", shortName: "Aug" },
+      SEP: { name: "September", shortName: "Sep" },
+      OCT: { name: "October", shortName: "Oct" },
+      NOV: { name: "November", shortName: "Nov" },
+      DEC: { name: "December", shortName: "Dec" },
+    },
+  },
+  LinkType: "a",
 };
 
 export { defaultConfig };

@@ -14,8 +14,9 @@ export function LoomoraProvider({
 }: Readonly<{ children: ReactNode; config?: LoomoraConfigInput }>) {
   const parentConfig = useContext(ConfigContext);
 
-  const resolvedConfig = useMemo(() => mergeConfig(parentConfig, config), [parentConfig, config]);
-  return <ConfigContext.Provider value={resolvedConfig}>{children}</ConfigContext.Provider>;
+  const resolved = useMemo(() => mergeConfig(parentConfig, config), [parentConfig, config]);
+
+  return <ConfigContext.Provider value={resolved}>{children}</ConfigContext.Provider>;
 }
 
 /** Reads the fully resolved Loomora configuration, including built-in defaults. */
