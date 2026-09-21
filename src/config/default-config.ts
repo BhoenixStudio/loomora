@@ -394,6 +394,181 @@ const defaultConfig: Required<LoomoraConfig> = {
     },
   },
   LinkType: "a",
+  button: {
+    defaultType: "button",
+    defaultColor: "info",
+    defaultLoadingTitle: 'Loading',
+    colors: {
+      fill: {
+        success: { background: "bg-success", border: "border-success", text: "text-white" },
+        error: { background: "bg-error", border: "border-error", text: "text-white" },
+        warning: { background: "bg-warning", border: "border-warning", text: "text-white" },
+        info: { background: "bg-info", border: "border-info", text: "text-white" },
+      },
+      outline: {
+        success: { border: "border-success", text: "text-success" },
+        error: { border: "border-error", text: "text-error" },
+        warning: { border: "border-warning", text: "text-warning" },
+        info: { border: "border-info", text: "text-info" },
+      },
+      text: {
+        success: { text: "text-success" },
+        error: { text: "text-error" },
+        warning: { text: "text-warning" },
+        info: { text: "text-info" },
+      },
+    },
+    corners: {
+      small: ["rounded"],
+      default: ["rounded-md"],
+      large: ["rounded-xl"],
+      circle: ["rounded-full"],
+      sharp: ["rounded-none"],
+      full: ["rounded-full"],
+    },
+    sizes: {
+      tiny: {
+        fill: {
+          textSize: ["text-sm"],
+          textWeight: ["font-medium"],
+          gap: ["gap-1"],
+          padding: ["px-2", "py-1"],
+        },
+        text: {
+          textSize: ["text-base"],
+          textWeight: ["font-medium"],
+          gap: ["gap-1"],
+          padding: ["px-2", "py-1"],
+        },
+        outline: {
+          textSize: ["text-sm"],
+          textWeight: ["font-medium"],
+          gap: ["gap-1"],
+          padding: ["px-2", "py-1"],
+        },
+      },
+      small: {
+        fill: {
+          textSize: ["text-sm"],
+          textWeight: ["font-medium"],
+          gap: ["gap-1"],
+          padding: ["px-3", "py-2"],
+        },
+        text: {
+          textSize: ["text-base"],
+          textWeight: ["font-medium"],
+          gap: ["gap-1"],
+          padding: ["px-3", "py-2"],
+        },
+        outline: {
+          textSize: ["text-sm"],
+          textWeight: ["font-medium"],
+          gap: ["gap-1"],
+          padding: ["px-3", "py-2"],
+        },
+      },
+      default: {
+        fill: {
+          textSize: ["text-lg"],
+          textWeight: ["font-medium"],
+          gap: ["gap-2"],
+          padding: ["px-3", "py-2"],
+        },
+        text: {
+          textSize: ["text-lg"],
+          textWeight: ["font-medium"],
+          gap: ["gap-2"],
+          padding: ["px-3", "py-2"],
+        },
+        outline: {
+          textSize: ["text-lg"],
+          textWeight: ["font-medium"],
+          gap: ["gap-2"],
+          padding: ["px-3", "py-2"],
+        },
+      },
+      large: {
+        fill: {
+          textSize: ["text-xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-3"],
+          padding: ["p-3"],
+        },
+        text: {
+          textSize: ["text-xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-3"],
+          padding: ["p-3"],
+        },
+        outline: {
+          textSize: ["text-xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-3"],
+          padding: ["p-3"],
+        },
+      },
+      larger: {
+        fill: {
+          textSize: ["text-xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-4"],
+          padding: ["p-4"],
+        },
+        text: {
+          textSize: ["text-xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-4"],
+          padding: ["p-4"],
+        },
+        outline: {
+          textSize: ["text-xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-4"],
+          padding: ["p-4"],
+        },
+      },
+      huge: {
+        fill: {
+          textSize: ["text-2xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-4"],
+          padding: ["p-4"],
+        },
+        text: {
+          textSize: ["text-2xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-4"],
+          padding: ["p-4"],
+        },
+        outline: {
+          textSize: ["text-2xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-4"],
+          padding: ["p-4"],
+        },
+      },
+      extreme: {
+        fill: {
+          textSize: ["text-2xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-5"],
+          padding: ["p-5"],
+        },
+        text: {
+          textSize: ["text-2xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-5"],
+          padding: ["p-5"],
+        },
+        outline: {
+          textSize: ["text-2xl"],
+          textWeight: ["font-medium"],
+          gap: ["gap-5"],
+          padding: ["p-5"],
+        },
+      },
+    },
+  },
 };
 
 export { defaultConfig };

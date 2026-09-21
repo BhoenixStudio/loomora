@@ -1,11 +1,12 @@
 "use client";
 
 import { createContext, type ReactNode, useContext, useMemo } from "react";
+import { ResponsiveProvider, ThemeProvider } from "../utils";
+import type { LoomoraConfig, LoomoraConfigInput } from "./config-types";
 import { defaultConfig } from "./default-config";
 import { mergeConfig } from "./merge-config";
-import type { LoomoraConfig, LoomoraConfigInput } from "./config-types";
 
-import '../styles/index.css'
+import "../styles/index.css";
 
 const ConfigContext = createContext<Required<LoomoraConfig>>(defaultConfig);
 
@@ -18,7 +19,13 @@ export function LoomoraProvider({
 
   const resolved = useMemo(() => mergeConfig(parentConfig, config), [parentConfig, config]);
 
-  return <ConfigContext.Provider value={resolved}>{children}</ConfigContext.Provider>;
+  return (
+    <ResponsiveProvider>
+      <ThemeProvider>
+        <ConfigContext.Provider value={resolved}>{children}</ConfigContext.Provider>
+      </ThemeProvider>
+    </ResponsiveProvider>
+  );
 }
 
 /** Reads the fully resolved Loomora configuration, including built-in defaults. */

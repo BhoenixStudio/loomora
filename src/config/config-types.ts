@@ -1,5 +1,7 @@
 import { Locale } from "date-fns";
-import type {
+import { ButtonHTMLAttributes, ElementType, ReactNode } from "react";
+import { ButtonCorner, ButtonSize, ButtonVariant } from "../components";
+import {
   CountryProps,
   CountryType,
   SocialPlatform,
@@ -7,7 +9,7 @@ import type {
   TimezoneProps,
   TimezoneType,
 } from "../database";
-import type { ElementType } from "react";
+import { MQ, TWColorName, TWGap, TWPadding, TWTextSize } from "../types";
 
 /** Recursively optional configuration values accepted by a provider. */
 export type DeepPartial<T> = {
@@ -34,6 +36,34 @@ export type LoomoraConfig = {
   };
   // Components
   LinkType?: ElementType;
+  button?: {
+    defaultType?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+    defaultColor?: string;
+    defaultLoadingTitle?: ReactNode;
+    colors?: Partial<
+      Record<
+        Exclude<ButtonVariant, "none">,
+        Record<string, Partial<Record<"text" | "border" | "background", TWColorName<string>>>>
+      >
+    >;
+    corners?: Partial<Record<ButtonCorner, MQ<"rounded" | `rounded-${string}`>[]>>;
+    sizes?: Partial<
+      Record<
+        ButtonSize,
+        Partial<
+          Record<
+            Exclude<ButtonVariant, "none">,
+            {
+              textSize?: TWTextSize[] | "";
+              textWeight?: MQ<"font-normal" | "font-medium" | "font-bold">[] | "";
+              gap?: TWGap[] | "";
+              padding?: TWPadding[] | "";
+            }
+          >
+        >
+      >
+    >;
+  };
 };
 
 /** Partial configuration accepted by `LoomoraProvider`. */
