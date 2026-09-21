@@ -1,0 +1,80 @@
+.loomora-accordion {
+  --loomora-accordion-entrance-delay: 0.1s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.loomora-accordion--entered {
+  animation: loomora-accordion-enter 0.5s ease-out both;
+  animation-delay: var(--loomora-accordion-entrance-delay);
+}
+
+@keyframes loomora-accordion-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loomora-accordion__trigger {
+  transform: rotate(180deg);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.loomora-accordion__trigger--collapsed {
+  transform: rotate(0deg);
+}
+
+.loomora-accordion__title--effects {
+  transition: transform 0.2s ease-in-out;
+}
+
+.loomora-accordion__title--effects:hover {
+  transform: translateX(4px);
+}
+
+.loomora-accordion__title--effects:active {
+  transform: translateX(4px) scale(0.995);
+}
+
+.loomora-accordion__content {
+  display: grid;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+  opacity: 1;
+  transition:
+    grid-template-rows 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.loomora-accordion__content--collapsed {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.loomora-accordion__content-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loomora-accordion,
+  .loomora-accordion--entered,
+  .loomora-accordion__trigger,
+  .loomora-accordion__title--effects,
+  .loomora-accordion__content {
+    animation: none;
+    transition: none;
+  }
+
+  .loomora-accordion {
+    opacity: 1;
+    transform: none;
+  }
+}

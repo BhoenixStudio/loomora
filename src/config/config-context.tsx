@@ -5,6 +5,8 @@ import { defaultConfig } from "./default-config";
 import { mergeConfig } from "./merge-config";
 import type { LoomoraConfig, LoomoraConfigInput } from "./config-types";
 
+import '../styles/index.css'
+
 const ConfigContext = createContext<Required<LoomoraConfig>>(defaultConfig);
 
 /** Provides optional project or section-level Loomora configuration overrides. */
