@@ -5,6 +5,7 @@ export * from "./Consoles";
 export * from "./DocumentAtts";
 export * from "./ElementFns";
 export * from "./ELValidate";
+export * from "./helpers";
 export * from "./LocalStorage";
 export * from "./useDates";
 export * from "./Validate";
