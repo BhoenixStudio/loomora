@@ -64,6 +64,9 @@ export type LoomoraConfig = {
       >
     >;
   };
+  breadcrumbs?: {
+    defaultSeparator?: '|'
+  }
 };
 
 /** Partial configuration accepted by `LoomoraProvider`. */
