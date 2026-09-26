@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, isValidElement, ReactNode, SetStateAction } from "react";
 
 /**
  * Applies an open/show or close/hide transition through React state setters.
@@ -57,6 +57,18 @@ export function UseTruncate(text: string, maxLength: number = 50): string {
  */
 export function onlyNumberAllowed(value: string, allowTel?: boolean): string {
   return value.replace(allowTel ? /[^0-9+#]/g : /[^0-9,]/g, "");
+}
+
+export function isThisProps<T extends object>(
+  element: ReactNode | T,
+  keyToSearch: keyof T,
+): element is T {
+  return (
+    typeof element === "object" &&
+    element !== null &&
+    !isValidElement(element) &&
+    keyToSearch in element
+  );
 }
 
 /**
