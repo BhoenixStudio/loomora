@@ -1,24 +1,21 @@
-"use client";
+'use client'
 
-import { ReactNode } from "react";
-import { GlobalElementEssentials } from "../../../types";
-import { InputBase } from "../helper";
-import { useLoomoraConfig } from "../../../config";
-import { cn } from "../../../hooks";
-import { Loader } from "../../Partials";
+import { ReactNode } from 'react'
+import { GlobalElementEssentials } from '../../../types'
+import { InputBase } from '../helper'
+import { useLoomoraConfig } from '../../../config'
+import { cn } from '../../../hooks'
+import { Loader } from '../../Partials'
 
-export type LabelProps = Omit<
-  GlobalElementEssentials<"label">,
-  "assignDefaultClass" | "clearDefaultClassName"
-> & {
-  children: ReactNode;
-  required?: boolean;
-  showRequiredIndicator?: boolean;
-  suffix?: ReactNode;
-};
+export type LabelProps = Omit<GlobalElementEssentials<'label'>, 'assignDefaultClass' | 'clearDefaultClassName'> & {
+  children: ReactNode
+  required?: boolean
+  showRequiredIndicator?: boolean
+  suffix?: ReactNode
+}
 
 export function Label(props: Readonly<InputBase & LabelProps>) {
-  const { form } = useLoomoraConfig();
+  const { form } = useLoomoraConfig()
 
   const {
     size = [],
@@ -30,14 +27,14 @@ export function Label(props: Readonly<InputBase & LabelProps>) {
     condition,
     attributes,
     ...attrs
-  } = props;
+  } = props
 
-  if (condition === false) return;
-  if (loading) return <Loader height={20} className={cn([...size])} />;
+  if (condition === false) return
+  if (loading) return <Loader height={20} className={cn([...size])} />
   return (
-    <label className={cn(["flex", ...size, className])} {...attributes} {...attrs}>
+    <label className={cn(['flex', ...size, className])} {...attributes} {...attrs}>
       {children}
       {required && showRequiredIndicator && <span className="text-[1.2em]">*</span>}
     </label>
-  );
+  )
 }

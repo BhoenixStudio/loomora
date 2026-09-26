@@ -5,7 +5,7 @@ Composable React inputs, UI components, hooks, and shared defaults for product t
 The public API is exported from the package root:
 
 ```tsx
-import { Button, TextInput } from "loomora";
+import { Button, TextInput } from 'loomora'
 ```
 
 ## Development
@@ -29,27 +29,27 @@ built-in defaults. Projects can override social names and placeholders once,
 which is useful when those values come from an application's translation layer:
 
 ```tsx
-import type { ReactNode } from "react";
-import { useTranslations } from "next-intl";
-import { LoomoraProvider } from "loomora";
+import type { ReactNode } from 'react'
+import { useTranslations } from 'next-intl'
+import { LoomoraProvider } from 'loomora'
 
 function AppProviders({ children }: { children: ReactNode }) {
-  const t = useTranslations("common.data.socials");
+  const t = useTranslations('common.data.socials')
 
   return (
     <LoomoraProvider
       config={{
         socials: {
           github: {
-            name: t("github.name"),
-            placeholder: t("github.placeholder"),
+            name: t('github.name'),
+            placeholder: t('github.placeholder'),
           },
         },
       }}
     >
       {children}
     </LoomoraProvider>
-  );
+  )
 }
 ```
 

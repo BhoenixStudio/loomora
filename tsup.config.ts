@@ -1,13 +1,13 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ["src/index.ts"],
-  format: ["esm", "cjs"],
-  outDir: "dist",
+  entry: ['src/index.ts'],
+  format: ['esm', 'cjs'],
+  outDir: 'dist',
   dts: true,
   sourcemap: true,
   clean: true,
   treeshake: true,
-  external: ["react", "react-dom"],
-  target: "es2020",
-});
+  external: ['react', 'react-dom'],
+  target: 'es2020',
+})

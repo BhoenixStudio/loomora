@@ -1,9 +1,9 @@
-export * from "./helper";
-export * from "./Input";
+export * from './helper'
+export * from './Input'
 
 // Modules
-export * from "./Modules/Label";
-export * from "./Modules/Helper";
+export * from './Modules/Label'
+export * from './Modules/Helper'
 
 // Inputs
-export * from "./Inputs/TextField";
+export * from './Inputs/TextField'

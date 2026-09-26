@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 /**
  * `useDates.ts` provides the client-side date and month utilities used by the
@@ -184,14 +184,14 @@ import {
   isSameWeek,
   isSameYear,
   subDays as sub,
-} from "date-fns";
-import { useLoomoraConfig } from "../config";
+} from 'date-fns'
+import { useLoomoraConfig } from '../config'
 
 /** The twelve translated month keys currently produced by `Months`. */
-export type MonthKey = keyof ReturnType<typeof Months>;
+export type MonthKey = keyof ReturnType<typeof Months>
 
 /** The translated name, short name, and sort order returned for one month. */
-export type MonthItem = ReturnType<typeof Months>[MonthKey];
+export type MonthItem = ReturnType<typeof Months>[MonthKey]
 
 /**
  * Options for retrieving translated months.
@@ -199,54 +199,53 @@ export type MonthItem = ReturnType<typeof Months>[MonthKey];
  * @typeParam T Additional fields merged into each returned month item.
  */
 export type GetMonths<T extends object = object> = {
-  extra?: Partial<Record<MonthKey, T>>;
-  only?: MonthKey[];
-  except?: MonthKey[];
-};
+  extra?: Partial<Record<MonthKey, T>>
+  only?: MonthKey[]
+  except?: MonthKey[]
+}
 
 /** Values accepted by the date helpers in this file. */
-export type DateType = string | Date | undefined | null;
+export type DateType = string | Date | undefined | null
 
 /** Named output formats supported by `format`. */
 export type FormatDateType =
-  | "number"
-  | "fullYear"
-  | "smallYear"
-  | "month"
-  | "day"
-  | "dayName"
-  | "shortDayName"
-  | "fullTime12"
-  | "fullTime24"
-  | "time12"
-  | "time24"
-  | "hour"
-  | "minutes"
-  | "seconds"
-  | "niceDate"
-  | "custom";
+  | 'number'
+  | 'fullYear'
+  | 'smallYear'
+  | 'month'
+  | 'day'
+  | 'dayName'
+  | 'shortDayName'
+  | 'fullTime12'
+  | 'fullTime24'
+  | 'time12'
+  | 'time24'
+  | 'hour'
+  | 'minutes'
+  | 'seconds'
+  | 'niceDate'
+  | 'custom'
 
 /** Options for `format`; `format` is required only for the `custom` type. */
 export type FormatDate =
-  { type?: Exclude<FormatDateType, "custom">; format?: never } | { type: "custom"; format: string };
+  { type?: Exclude<FormatDateType, 'custom'>; format?: never } | { type: 'custom'; format: string }
 
 /** Direction used by `compare`. */
-export type CompareDateType = "before" | "after";
+export type CompareDateType = 'before' | 'after'
 
 /** Comparison direction and optional day adjustments for the second date. */
-export type CompareDate = { type?: CompareDateType; addDays?: number; removeDays?: number };
+export type CompareDate = { type?: CompareDateType; addDays?: number; removeDays?: number }
 
 /** Supported fixed granularity's and automatic range selection. */
-export type DateRangeType =
-  "sameHour" | "sameDay" | "sameWeek" | "sameMonth" | "sameYear" | "dynamic";
+export type DateRangeType = 'sameHour' | 'sameDay' | 'sameWeek' | 'sameMonth' | 'sameYear' | 'dynamic'
 
 /** The two values compared by `dateRange`. */
-export type DateRange = { first: DateType; second: DateType };
+export type DateRange = { first: DateType; second: DateType }
 
 /** The match flag and formatted strings returned by `dateRange`. */
-export type DateRangeResult = { match: boolean; range: string; fallback: string };
+export type DateRangeResult = { match: boolean; range: string; fallback: string }
 
-type NiceDate = { earlierDate?: DateType; locale?: string };
+type NiceDate = { earlierDate?: DateType; locale?: string }
 
 function Months() {
   const months = {
@@ -262,9 +261,9 @@ function Months() {
     OCT: { order: 10 },
     NOV: { order: 11 },
     DEC: { order: 12 },
-  } as const;
+  } as const
 
-  return months;
+  return months
 }
 
 /**
@@ -280,35 +279,32 @@ function Months() {
  * module documentation above.
  */
 export function useDates() {
-  const monthList = Months();
+  const monthList = Months()
 
-  const { useDates: useDatesConfig } = useLoomoraConfig();
+  const { useDates: useDatesConfig } = useLoomoraConfig()
 
   const GetMonths = <T extends object = object>(props?: GetMonths<T>): (MonthItem & T)[] => {
-    const { only = [], extra, except = [] } = props ?? {};
+    const { only = [], extra, except = [] } = props ?? {}
 
     let months = Object.entries(monthList).map(([key, month]) => ({
       key: key as MonthKey,
       ...month,
       ...useDatesConfig.months?.[key as MonthKey],
       ...extra?.[key as MonthKey],
-    }));
+    }))
 
-    if (only.length > 0) months = months.filter(({ key }) => only.includes(key));
-    if (except.length > 0) months = months.filter(({ key }) => !except.includes(key));
+    if (only.length > 0) months = months.filter(({ key }) => only.includes(key))
+    if (except.length > 0) months = months.filter(({ key }) => !except.includes(key))
 
-    return months.sort((a, b) => a.order - b.order);
-  };
+    return months.sort((a, b) => a.order - b.order)
+  }
 
-  const GetMonth = <T extends object = object>(
-    key: MonthKey,
-    props?: Pick<GetMonths<T>, "extra">,
-  ): MonthItem & T => ({
+  const GetMonth = <T extends object = object>(key: MonthKey, props?: Pick<GetMonths<T>, 'extra'>): MonthItem & T => ({
     key,
     ...monthList[key],
     ...useDatesConfig.months?.[key as MonthKey],
     ...props?.extra?.[key],
-  });
+  })
 
   const isValid = (date: DateType): boolean => {
     if (
@@ -316,22 +312,22 @@ export function useDates() {
       [
         undefined,
         null,
-        "",
-        "0000:00:00",
-        "0000:00:00 00:00:00",
-        "0000-00-00",
-        "0000-00-00 00:00:00",
-        "0000/00/00",
-        "0000/00/00 00:00:00",
+        '',
+        '0000:00:00',
+        '0000:00:00 00:00:00',
+        '0000-00-00',
+        '0000-00-00 00:00:00',
+        '0000/00/00',
+        '0000/00/00 00:00:00',
       ].includes(String(date))
     )
-      return false;
-    const d = new Date(date);
-    return d instanceof Date && !Number.isNaN(d.getTime());
-  };
+      return false
+    const d = new Date(date)
+    return d instanceof Date && !Number.isNaN(d.getTime())
+  }
 
   const compare = (first: DateType, second: DateType, props?: CompareDate) => {
-    const { type = "before", addDays = 0, removeDays = 0 } = props ?? {};
+    const { type = 'before', addDays = 0, removeDays = 0 } = props ?? {}
 
     if (!first || !isValid(first) || !second || !isValid(second))
       return {
@@ -341,15 +337,15 @@ export function useDates() {
         differenceInWeeks: 0,
         differenceInMonths: 0,
         differenceInYears: 0,
-      };
+      }
 
-    const firstDate = new Date(first);
-    const secondDate = new Date(second);
+    const firstDate = new Date(first)
+    const secondDate = new Date(second)
 
-    if (addDays) secondDate.setDate(secondDate.getDate() + addDays);
-    if (removeDays) secondDate.setDate(secondDate.getDate() - removeDays);
+    if (addDays) secondDate.setDate(secondDate.getDate() + addDays)
+    if (removeDays) secondDate.setDate(secondDate.getDate() - removeDays)
 
-    if (type === "before")
+    if (type === 'before')
       return {
         match: firstDate < secondDate,
         differenceInHours: differenceInHours(secondDate, firstDate),
@@ -357,8 +353,8 @@ export function useDates() {
         differenceInWeeks: differenceInWeeks(secondDate, firstDate),
         differenceInMonths: differenceInMonths(secondDate, firstDate),
         differenceInYears: differenceInYears(secondDate, firstDate),
-      };
-    if (type === "after")
+      }
+    if (type === 'after')
       return {
         match: firstDate > secondDate,
         differenceInHours: differenceInHours(firstDate, secondDate),
@@ -366,7 +362,7 @@ export function useDates() {
         differenceInWeeks: differenceInWeeks(firstDate, secondDate),
         differenceInMonths: differenceInMonths(firstDate, secondDate),
         differenceInYears: differenceInYears(firstDate, secondDate),
-      };
+      }
     return {
       match: false,
       differenceInHours: 0,
@@ -374,132 +370,128 @@ export function useDates() {
       differenceInWeeks: 0,
       differenceInMonths: 0,
       differenceInYears: 0,
-    };
-  };
+    }
+  }
 
-  const dateRange = (dates: DateRange, type: DateRangeType = "dynamic") => {
-    const { first, second } = dates;
+  const dateRange = (dates: DateRange, type: DateRangeType = 'dynamic') => {
+    const { first, second } = dates
 
-    if (!first || !isValid(first) || !second || !isValid(second))
-      return { match: false, range: "", fallback: "" };
+    if (!first || !isValid(first) || !second || !isValid(second)) return { match: false, range: '', fallback: '' }
 
-    const firstDate = new Date(first);
-    const secondDate = new Date(second);
+    const firstDate = new Date(first)
+    const secondDate = new Date(second)
 
-    const sameHour = isSameHour(firstDate, secondDate);
-    const sameDay = isSameDay(firstDate, secondDate);
-    const sameWeek = isSameWeek(firstDate, secondDate);
-    const sameMonth = isSameMonth(firstDate, secondDate);
-    const sameYear = isSameYear(firstDate, secondDate);
+    const sameHour = isSameHour(firstDate, secondDate)
+    const sameDay = isSameDay(firstDate, secondDate)
+    const sameWeek = isSameWeek(firstDate, secondDate)
+    const sameMonth = isSameMonth(firstDate, secondDate)
+    const sameYear = isSameYear(firstDate, secondDate)
 
-    const types: Record<Exclude<DateRangeType, "dynamic">, DateRangeResult> = {
+    const types: Record<Exclude<DateRangeType, 'dynamic'>, DateRangeResult> = {
       sameHour: {
         match: sameHour,
         range: `
-          ${format(first, { type: "custom", format: "HH:mm" })}
-            - ${format(second, { type: "custom", format: "HH:mm dd-MM-yyyy" })}
+          ${format(first, { type: 'custom', format: 'HH:mm' })}
+            - ${format(second, { type: 'custom', format: 'HH:mm dd-MM-yyyy' })}
         `,
         fallback: `
-          ${format(first, { type: "custom", format: "HH:mm dd-MM-yyyy" })}
-            - ${format(second, { type: "custom", format: "HH:mm dd-MM-yyyy" })}
+          ${format(first, { type: 'custom', format: 'HH:mm dd-MM-yyyy' })}
+            - ${format(second, { type: 'custom', format: 'HH:mm dd-MM-yyyy' })}
         `,
       },
       sameDay: {
         match: sameDay,
         range: `
-          ${format(first, { type: "custom", format: "dd" })}
-            - ${format(second, { type: "custom", format: "dd-MM-yyyy" })}
+          ${format(first, { type: 'custom', format: 'dd' })}
+            - ${format(second, { type: 'custom', format: 'dd-MM-yyyy' })}
         `,
         fallback: `
-          ${format(first, { type: "custom", format: "dd-MM-yyyy" })}
-            - ${format(second, { type: "custom", format: "dd-MM-yyyy" })}
+          ${format(first, { type: 'custom', format: 'dd-MM-yyyy' })}
+            - ${format(second, { type: 'custom', format: 'dd-MM-yyyy' })}
         `,
       },
       sameWeek: {
         match: sameWeek,
         range: `
-          ${format(first, { type: "custom", format: "dd MMM" })}
-            - ${format(second, { type: "custom", format: "dd MMM yyyy" })}
+          ${format(first, { type: 'custom', format: 'dd MMM' })}
+            - ${format(second, { type: 'custom', format: 'dd MMM yyyy' })}
         `,
         fallback: `
-          ${format(first, { type: "custom", format: "dd MMM yyyy" })}
-            - ${format(second, { type: "custom", format: "dd MMM yyyy" })}
+          ${format(first, { type: 'custom', format: 'dd MMM yyyy' })}
+            - ${format(second, { type: 'custom', format: 'dd MMM yyyy' })}
         `,
       },
       sameMonth: {
         match: sameMonth,
         range: `
-          ${format(first, { type: "custom", format: "dd MMM" })}
-            - ${format(second, { type: "custom", format: "dd MMM yyyy" })}
+          ${format(first, { type: 'custom', format: 'dd MMM' })}
+            - ${format(second, { type: 'custom', format: 'dd MMM yyyy' })}
         `,
         fallback: `
-          ${format(first, { type: "custom", format: "dd MMM yyyy" })}
-            - ${format(second, { type: "custom", format: "dd MMM yyyy" })}
+          ${format(first, { type: 'custom', format: 'dd MMM yyyy' })}
+            - ${format(second, { type: 'custom', format: 'dd MMM yyyy' })}
         `,
       },
       sameYear: {
         match: sameYear,
         range: `
-          ${format(first, { type: "custom", format: "dd MMM" })}
-            - ${format(second, { type: "custom", format: "dd MMM yyyy" })}
+          ${format(first, { type: 'custom', format: 'dd MMM' })}
+            - ${format(second, { type: 'custom', format: 'dd MMM yyyy' })}
         `,
         fallback: `
-          ${format(first, { type: "custom", format: "dd MMM yyyy" })}
-            - ${format(second, { type: "custom", format: "dd MMM yyyy" })}
+          ${format(first, { type: 'custom', format: 'dd MMM yyyy' })}
+            - ${format(second, { type: 'custom', format: 'dd MMM yyyy' })}
         `,
       },
-    };
-
-    if (type === "dynamic") {
-      if (sameHour) return types.sameHour;
-      if (sameDay) return types.sameDay;
-      if (sameWeek) return types.sameWeek;
-      if (sameMonth) return types.sameMonth;
-      if (sameYear) return types.sameYear;
-      return { match: false, range: "", fallback: "" };
     }
-    return types[type];
-  };
+
+    if (type === 'dynamic') {
+      if (sameHour) return types.sameHour
+      if (sameDay) return types.sameDay
+      if (sameWeek) return types.sameWeek
+      if (sameMonth) return types.sameMonth
+      if (sameYear) return types.sameYear
+      return { match: false, range: '', fallback: '' }
+    }
+    return types[type]
+  }
 
   const addDays = (date: DateType, days: number) => {
-    if (!date || !isValid(date)) return "";
-    return add(new Date(date ?? ""), days);
-  };
+    if (!date || !isValid(date)) return ''
+    return add(new Date(date ?? ''), days)
+  }
 
   const subDays = (date: DateType, days: number) => {
-    if (!date || !isValid(date)) return "";
-    return sub(new Date(date ?? ""), days);
-  };
+    if (!date || !isValid(date)) return ''
+    return sub(new Date(date ?? ''), days)
+  }
 
   const niceDate = (date: DateType, props?: NiceDate): string => {
-    const { earlierDate, locale = "en" } = props ?? {};
+    const { earlierDate, locale = 'en' } = props ?? {}
 
-    if (!date || !isValid(date)) return "";
+    if (!date || !isValid(date)) return ''
 
-    let baseDate = new Date();
+    let baseDate = new Date()
     if (earlierDate) {
-      if (!isValid(earlierDate)) return "";
-      baseDate = new Date(earlierDate);
+      if (!isValid(earlierDate)) return ''
+      baseDate = new Date(earlierDate)
     }
 
     return formatDistance(new Date(date), baseDate, {
       addSuffix: true,
       includeSeconds: true,
       locale: useDatesConfig.locales?.[locale],
-    });
-  };
+    })
+  }
 
   const format = (date: DateType, props?: FormatDate): string | number => {
-    const { type = "custom", format = "yyyy-MM-dd HH:mm:ss" } = props ?? {};
+    const { type = 'custom', format = 'yyyy-MM-dd HH:mm:ss' } = props ?? {}
 
-    if (!date || !isValid(date)) return "";
-    const sanitizedDate = new Date(date);
+    if (!date || !isValid(date)) return ''
+    const sanitizedDate = new Date(date)
     const dateMonth =
-      sanitizedDate?.getMonth() + 1 <= 9
-        ? "0" + (sanitizedDate?.getMonth() + 1)
-        : sanitizedDate?.getMonth() + 1;
-    const dateDay =
-      sanitizedDate?.getDate() <= 9 ? "0" + sanitizedDate?.getDate() : sanitizedDate?.getDate();
+      sanitizedDate?.getMonth() + 1 <= 9 ? '0' + (sanitizedDate?.getMonth() + 1) : sanitizedDate?.getMonth() + 1
+    const dateDay = sanitizedDate?.getDate() <= 9 ? '0' + sanitizedDate?.getDate() : sanitizedDate?.getDate()
 
     const types: Record<FormatDateType, string | number> = {
       number: `${sanitizedDate?.getFullYear()}${dateMonth}${dateDay}`,
@@ -507,23 +499,23 @@ export function useDates() {
       smallYear: sanitizedDate?.getFullYear().toString().slice(-2),
       month: dateMonth,
       day: dateDay,
-      dayName: formatDate(sanitizedDate, "EEEE"),
-      shortDayName: formatDate(sanitizedDate, "EEE"),
-      fullTime24: formatDate(sanitizedDate, "HH:mm:ss"),
-      fullTime12: formatDate(sanitizedDate, "hh:mm:ss aa"),
-      time24: formatDate(sanitizedDate, "HH:mm"),
-      time12: formatDate(sanitizedDate, "hh:mm aa"),
+      dayName: formatDate(sanitizedDate, 'EEEE'),
+      shortDayName: formatDate(sanitizedDate, 'EEE'),
+      fullTime24: formatDate(sanitizedDate, 'HH:mm:ss'),
+      fullTime12: formatDate(sanitizedDate, 'hh:mm:ss aa'),
+      time24: formatDate(sanitizedDate, 'HH:mm'),
+      time12: formatDate(sanitizedDate, 'hh:mm aa'),
       hour: sanitizedDate?.getHours(),
       minutes: sanitizedDate?.getMinutes(),
       seconds: sanitizedDate?.getSeconds(),
       niceDate: niceDate(sanitizedDate),
       custom: formatDate(sanitizedDate, format),
-    };
+    }
 
-    return types[type];
-  };
+    return types[type]
+  }
 
-  return { GetMonths, GetMonth, isValid, format, compare, dateRange, addDays, subDays, niceDate };
+  return { GetMonths, GetMonth, isValid, format, compare, dateRange, addDays, subDays, niceDate }
 }
 
 /**

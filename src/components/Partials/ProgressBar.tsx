@@ -166,9 +166,9 @@
  * for semantic tokens, or a project-wide accessible progress convention. Those
  * concerns remain with the caller and application styles.
  */
-import { cn } from "../../hooks";
-import { ChildSize, CSSProps, GlobalElementEssentials } from "../../types";
-import { ReactNode } from "react";
+import { cn } from '../../hooks'
+import { ChildSize, CSSProps, GlobalElementEssentials } from '../../types'
+import { ReactNode } from 'react'
 
 /**
  * Additional props for the labeled progress mode.
@@ -177,12 +177,12 @@ import { ReactNode } from "react";
  * output. `wrapper` controls the outer text-mode `div`.
  */
 export type ProgressBarWithLabelProps = {
-  showValueAsText: true;
-  label?: ReactNode;
-  labelClassName?: string;
-  valueClassName?: string;
-  wrapper?: GlobalElementEssentials<"div">;
-};
+  showValueAsText: true
+  label?: ReactNode
+  labelClassName?: string
+  valueClassName?: string
+  wrapper?: GlobalElementEssentials<'div'>
+}
 
 /**
  * Configuration accepted by `ProgressBar`.
@@ -191,15 +191,15 @@ export type ProgressBarWithLabelProps = {
  * accepts a label and wrapper configuration.
  */
 export type ProgressBarProps = {
-  value: number;
-  outOf: number;
-  height?: CSSProps["height"];
-  trackColor?: `bg-${string}` | `bg-${string}/${number}`;
-  trackClassName?: string;
-  barColor?: `bg-${string}` | `bg-${string}/${number}`;
-  barClassName?: string;
-  size?: ChildSize[];
-} & ({ showValueAsText?: false } | ProgressBarWithLabelProps);
+  value: number
+  outOf: number
+  height?: CSSProps['height']
+  trackColor?: `bg-${string}` | `bg-${string}/${number}`
+  trackClassName?: string
+  barColor?: `bg-${string}` | `bg-${string}/${number}`
+  barClassName?: string
+  size?: ChildSize[]
+} & ({ showValueAsText?: false } | ProgressBarWithLabelProps)
 
 /**
  * Renders a clamped visual progress bar and, optionally, its percentage text.
@@ -213,56 +213,52 @@ export function ProgressBar(props: Readonly<ProgressBarProps>) {
     value = 0,
     outOf = 100,
     height = 10,
-    trackColor = "bg-third",
-    trackClassName = "rounded-full",
-    barColor = "bg-info",
+    trackColor = 'bg-third',
+    trackClassName = 'rounded-full',
+    barColor = 'bg-info',
     barClassName,
     showValueAsText = false,
     size = [],
-  } = props;
+  } = props
   const {
     label,
-    labelClassName = "text-sm text-title-2 font-medium",
-    valueClassName = "text-xs text-body-1",
+    labelClassName = 'text-sm text-title-2 font-medium',
+    valueClassName = 'text-xs text-body-1',
     wrapper,
-  } = props as ProgressBarWithLabelProps;
-  const { className: wrapperClassName = "gap-2", ...wrapperRest } = wrapper ?? {};
+  } = props as ProgressBarWithLabelProps
+  const { className: wrapperClassName = 'gap-2', ...wrapperRest } = wrapper ?? {}
 
   // Configs
-  const percent = Math.min(Math.max((value / outOf) * 100, 0), 100);
+  const percent = Math.min(Math.max((value / outOf) * 100, 0), 100)
 
   const bar = (
     <div
       className={cn([
-        "overflow-hidden",
-        { value: size, fallback: "w-full", condition: showValueAsText },
+        'overflow-hidden',
+        { value: size, fallback: 'w-full', condition: showValueAsText },
         trackColor,
         trackClassName,
       ])}
       style={{ height }}
     >
       <div
-        className={cn([
-          "pointer-events-none h-full transition-all duration-300 ease-in-out",
-          barColor,
-          barClassName,
-        ])}
+        className={cn(['pointer-events-none h-full transition-all duration-300 ease-in-out', barColor, barClassName])}
         style={{ width: `${percent}%` }}
       />
     </div>
-  );
+  )
 
   if (showValueAsText)
     return (
-      <div className={cn(["flex flex-col flex-nowrap", wrapperClassName])} {...wrapperRest}>
+      <div className={cn(['flex flex-col flex-nowrap', wrapperClassName])} {...wrapperRest}>
         <div className="flex flex-nowrap items-end justify-between w-full">
           {label && <span className={labelClassName}>{label}</span>}
           <span className={valueClassName}>{Math.round(percent)}%</span>
         </div>
         {bar}
       </div>
-    );
-  return <>{bar}</>;
+    )
+  return <>{bar}</>
 }
 
 /**

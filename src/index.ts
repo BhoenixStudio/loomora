@@ -1,18 +1,18 @@
 // Configs
-export type { LoomoraConfig } from "./config";
-export { LoomoraProvider, useLoomoraConfig, defaultConfig } from "./config";
+export type { LoomoraConfig } from './config'
+export { LoomoraProvider, useLoomoraConfig, defaultConfig } from './config'
 
 // Databases
-export * from "./database";
+export * from './database'
 
 // Components
-export * from "./components";
+export * from './components'
 
 // Hooks
-export * from "./hooks";
+export * from './hooks'
 
 // Utils
-export * from "./utils";
+export * from './utils'
 
 // Types
-export * from "./types";
+export * from './types'

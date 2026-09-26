@@ -1,4 +1,4 @@
-import { Dispatch, isValidElement, ReactNode, SetStateAction } from "react";
+import { Dispatch, isValidElement, ReactNode, SetStateAction } from 'react'
 
 /**
  * Applies an open/show or close/hide transition through React state setters.
@@ -10,32 +10,32 @@ import { Dispatch, isValidElement, ReactNode, SetStateAction } from "react";
  * @example `UseToggle('close', { open, setOpen, setShow }, { closePeriod: 300 })`
  */
 export function UseToggle(
-  action: "toggle" | "open" | "close" | "show" | "hide",
+  action: 'toggle' | 'open' | 'close' | 'show' | 'hide',
   states: {
-    open?: boolean;
-    setOpen: Dispatch<SetStateAction<boolean>>;
-    setShow?: Dispatch<SetStateAction<boolean>>;
+    open?: boolean
+    setOpen: Dispatch<SetStateAction<boolean>>
+    setShow?: Dispatch<SetStateAction<boolean>>
   },
-  props?: { period?: number; closePeriod?: number },
+  props?: { period?: number; closePeriod?: number }
 ) {
-  const { open, setOpen, setShow } = states;
-  const { period = 100, closePeriod } = props ?? {};
+  const { open, setOpen, setShow } = states
+  const { period = 100, closePeriod } = props ?? {}
 
   function handleOpen() {
-    setShow?.(true);
-    setTimeout(() => setOpen(true), period);
+    setShow?.(true)
+    setTimeout(() => setOpen(true), period)
   }
   function handleClose() {
-    setOpen(false);
-    setTimeout(() => setShow?.(false), closePeriod ?? period);
+    setOpen(false)
+    setTimeout(() => setShow?.(false), closePeriod ?? period)
   }
 
-  if (["hide", "close"]?.includes(action)) handleClose();
-  else if (["show", "open"]?.includes(action)) handleOpen();
-  else if (["toggle"]?.includes(action)) {
-    if (open === undefined) return console.error('"open" parameter is required as boolean value!');
-    else if (open) handleClose();
-    else handleOpen();
+  if (['hide', 'close']?.includes(action)) handleClose()
+  else if (['show', 'open']?.includes(action)) handleOpen()
+  else if (['toggle']?.includes(action)) {
+    if (open === undefined) return console.error('"open" parameter is required as boolean value!')
+    else if (open) handleClose()
+    else handleOpen()
   }
 }
 
@@ -46,7 +46,7 @@ export function UseToggle(
  * @returns Original text when it fits, otherwise the truncated text with an ellipsis.
  */
 export function UseTruncate(text: string, maxLength: number = 50): string {
-  return text?.length > maxLength ? text?.substring(0, maxLength) + "..." : text;
+  return text?.length > maxLength ? text?.substring(0, maxLength) + '...' : text
 }
 
 /**
@@ -56,19 +56,11 @@ export function UseTruncate(text: string, maxLength: number = 50): string {
  * @returns Filtered value with all other characters removed.
  */
 export function onlyNumberAllowed(value: string, allowTel?: boolean): string {
-  return value.replace(allowTel ? /[^0-9+#]/g : /[^0-9,]/g, "");
+  return value.replace(allowTel ? /[^0-9+#]/g : /[^0-9,]/g, '')
 }
 
-export function isThisProps<T extends object>(
-  element: ReactNode | T,
-  keyToSearch: keyof T,
-): element is T {
-  return (
-    typeof element === "object" &&
-    element !== null &&
-    !isValidElement(element) &&
-    keyToSearch in element
-  );
+export function isThisProps<T extends object>(element: ReactNode | T, keyToSearch: keyof T): element is T {
+  return typeof element === 'object' && element !== null && !isValidElement(element) && keyToSearch in element
 }
 
 /**

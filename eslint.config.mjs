@@ -1,17 +1,17 @@
-import eslint from "@eslint/js";
-import prettier from "eslint-config-prettier";
-import reactHooks from "eslint-plugin-react-hooks";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import eslint from '@eslint/js'
+import prettier from 'eslint-config-prettier'
+import reactHooks from 'eslint-plugin-react-hooks'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
   {
-    ignores: ["dist/**", "coverage/**", "node_modules/**", "playground/**"],
+    ignores: ['dist/**', 'coverage/**', 'node_modules/**', 'playground/**'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ["**/*.{js,mjs,cjs,ts,tsx}"],
+    files: ['**/*.{js,mjs,cjs,ts,tsx}'],
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -20,12 +20,12 @@ export default tseslint.config(
       },
     },
     plugins: {
-      "react-hooks": reactHooks,
+      'react-hooks': reactHooks,
     },
     rules: {
-      "react-hooks/exhaustive-deps": "warn",
-      "react-hooks/rules-of-hooks": "error",
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
     },
   },
-  prettier,
-);
+  prettier
+)

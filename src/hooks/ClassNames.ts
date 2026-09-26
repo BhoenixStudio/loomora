@@ -68,8 +68,7 @@
  *
  * @interface ConditionalClass
  */
-type ConditionalClass =
-  string | undefined | { value: CNType; condition: boolean; fallback?: CNType };
+type ConditionalClass = string | undefined | { value: CNType; condition: boolean; fallback?: CNType }
 
 /**
  * Type-level input shape for the `cn` function.
@@ -91,7 +90,7 @@ type ConditionalClass =
  * ]
  * ```
  */
-export type CNType = string | undefined | ConditionalClass | ConditionalClass[];
+export type CNType = string | undefined | ConditionalClass | ConditionalClass[]
 
 /**
  * Combines one class name input into a normalized, space-separated string.
@@ -180,25 +179,25 @@ export type CNType = string | undefined | ConditionalClass | ConditionalClass[];
  *   precedence; consumers remain responsible for those concerns.
  */
 export function cn(inputs: CNType): string {
-  if (!inputs) return "";
+  if (!inputs) return ''
 
-  if (typeof inputs === "string" && inputs) return inputs.replaceAll(/\s+/g, " ").trim();
+  if (typeof inputs === 'string' && inputs) return inputs.replaceAll(/\s+/g, ' ').trim()
 
   const filtered = (inputs as ConditionalClass[]).map((c) => {
-    let value: string = "";
+    let value: string = ''
 
-    if (!c) return value;
-    else if (typeof c === "string") value = c?.trim();
-    else value = c.condition ? cn(isArray(c.value)) : cn(isArray(c.fallback));
+    if (!c) return value
+    else if (typeof c === 'string') value = c?.trim()
+    else value = c.condition ? cn(isArray(c.value)) : cn(isArray(c.fallback))
 
-    return value;
-  });
+    return value
+  })
 
   function isArray(value: CNType) {
-    return Array.isArray(value) ? value : [value];
+    return Array.isArray(value) ? value : [value]
   }
 
-  return filtered.filter(Boolean).join(" ").replaceAll(/\s+/g, " ").trim();
+  return filtered.filter(Boolean).join(' ').replaceAll(/\s+/g, ' ').trim()
 }
 
 /**

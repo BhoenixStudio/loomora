@@ -79,10 +79,10 @@
  * - `src/components/Partials/Elements/Modules/Number.tsx`: verified consumer.
  * - `src/components/index.ts`: barrel export for `Digit` and `UseDigit`.
  */
-import { Loader, LoaderProps } from "../../components";
-import { cn } from "../../hooks";
-import { GlobalElementEssentials } from "../../types";
-import { ElementType, ReactNode } from "react";
+import { Loader, LoaderProps } from '../../components'
+import { cn } from '../../hooks'
+import { GlobalElementEssentials } from '../../types'
+import { ElementType, ReactNode } from 'react'
 
 /**
  * Describes the intended presentation kind of a currency unit.
@@ -91,7 +91,7 @@ import { ElementType, ReactNode } from "react";
  * this file; callers must still pass the actual unit through `startUnit` or
  * `endUnit`.
  */
-export type DigitCurrencySymbolType = "code" | "symbol" | "icon";
+export type DigitCurrencySymbolType = 'code' | 'symbol' | 'icon'
 
 /**
  * Props for {@link Digit}.
@@ -135,38 +135,38 @@ export type DigitCurrencySymbolType = "code" | "symbol" | "icon";
  *   the root element. `className`, `style`, `ref`, and `id` are configured by
  *   their dedicated shared fields instead.
  */
-export type DigitProps<T extends ElementType = "span"> = GlobalElementEssentials<T> & {
-  as?: T;
-  value: number | null | undefined;
-  valueProps?: GlobalElementEssentials<"span">;
-  subProps?: GlobalElementEssentials<"small">;
-  fallback?: ReactNode;
-  startUnit?: ReactNode;
-  startUnitProps?: GlobalElementEssentials<"small">;
-  endUnit?: ReactNode;
-  endUnitProps?: GlobalElementEssentials<"small">;
-  decimalsMin?: number;
-  decimalsMax?: number;
-  thousandSeparator?: string;
-  decimalSeparator?: string;
-  loading?: boolean;
-  loaderProps?: Omit<LoaderProps, "counts" | "wrapperClassName">;
-};
+export type DigitProps<T extends ElementType = 'span'> = GlobalElementEssentials<T> & {
+  as?: T
+  value: number | null | undefined
+  valueProps?: GlobalElementEssentials<'span'>
+  subProps?: GlobalElementEssentials<'small'>
+  fallback?: ReactNode
+  startUnit?: ReactNode
+  startUnitProps?: GlobalElementEssentials<'small'>
+  endUnit?: ReactNode
+  endUnitProps?: GlobalElementEssentials<'small'>
+  decimalsMin?: number
+  decimalsMax?: number
+  thousandSeparator?: string
+  decimalSeparator?: string
+  loading?: boolean
+  loaderProps?: Omit<LoaderProps, 'counts' | 'wrapperClassName'>
+}
 
 function extractPrice(
-  props: Pick<DigitProps, "value" | "decimalsMin" | "decimalsMax" | "thousandSeparator">,
+  props: Pick<DigitProps, 'value' | 'decimalsMin' | 'decimalsMax' | 'thousandSeparator'>
 ): [string, string?] {
-  const { value, decimalsMin, decimalsMax, thousandSeparator } = props;
-  if (value === null || value === undefined) return ["", ""];
+  const { value, decimalsMin, decimalsMax, thousandSeparator } = props
+  if (value === null || value === undefined) return ['', '']
 
-  const formatted = value.toLocaleString("en-US", {
+  const formatted = value.toLocaleString('en-US', {
     maximumFractionDigits: decimalsMax,
     minimumFractionDigits: decimalsMin,
-  });
-  const [main, sub] = formatted.split(".");
-  const number = main.split(",").join(thousandSeparator);
+  })
+  const [main, sub] = formatted.split('.')
+  const number = main.split(',').join(thousandSeparator)
 
-  return [number, sub];
+  return [number, sub]
 }
 
 /**
@@ -204,55 +204,39 @@ function extractPrice(
  * locale formatter itself. The root receives `dir="ltr"` by default, while
  * nested value/unit elements do not receive a direction automatically.
  */
-export function Digit<T extends ElementType = "span">(props: Readonly<DigitProps<T>>) {
+export function Digit<T extends ElementType = 'span'>(props: Readonly<DigitProps<T>>) {
   const {
-    as: As = "span",
+    as: As = 'span',
     value,
     valueProps,
     subProps,
-    fallback = "-",
+    fallback = '-',
     startUnit,
     startUnitProps,
     endUnit,
     endUnitProps,
     decimalsMin,
     decimalsMax = 3,
-    decimalSeparator = ".",
-    thousandSeparator = ",",
-    className = "gap-0.5",
-    dir = "ltr",
+    decimalSeparator = '.',
+    thousandSeparator = ',',
+    className = 'gap-0.5',
+    dir = 'ltr',
     attributes,
     loading,
     loaderProps,
     ...attrs
-  } = props;
+  } = props
 
-  const {
-    className: sUClass = "font-normal leading-none",
-    attributes: sUAttrs,
-    ...sURest
-  } = startUnitProps ?? {};
-  const {
-    className: eUClass = "font-normal leading-none",
-    attributes: eUAttrs,
-    ...eURest
-  } = endUnitProps ?? {};
+  const { className: sUClass = 'font-normal leading-none', attributes: sUAttrs, ...sURest } = startUnitProps ?? {}
+  const { className: eUClass = 'font-normal leading-none', attributes: eUAttrs, ...eURest } = endUnitProps ?? {}
 
-  const {
-    className: vClass = "font-medium leading-none items-end",
-    attributes: vAttrs,
-    ...vRest
-  } = valueProps ?? {};
-  const {
-    className: sClass = "font-normal leading-none",
-    attributes: sAttrs,
-    ...sRest
-  } = subProps ?? {};
+  const { className: vClass = 'font-medium leading-none items-end', attributes: vAttrs, ...vRest } = valueProps ?? {}
+  const { className: sClass = 'font-normal leading-none', attributes: sAttrs, ...sRest } = subProps ?? {}
 
   // Configs
-  const [main, sub] = extractPrice({ value, decimalsMin, decimalsMax, thousandSeparator });
+  const [main, sub] = extractPrice({ value, decimalsMin, decimalsMax, thousandSeparator })
 
-  let content: ReactNode = <Loader height={20} className={className} {...loaderProps} />;
+  let content: ReactNode = <Loader height={20} className={className} {...loaderProps} />
   if (!loading)
     content = (
       <>
@@ -261,7 +245,7 @@ export function Digit<T extends ElementType = "span">(props: Readonly<DigitProps
             {startUnit}
           </small>
         )}
-        <span className={cn(["flex flex-nowrap text-nowrap", vClass])} {...vAttrs} {...vRest}>
+        <span className={cn(['flex flex-nowrap text-nowrap', vClass])} {...vAttrs} {...vRest}>
           {main}
           {sub && (
             <small className={sClass} {...sAttrs} {...sRest}>
@@ -276,18 +260,14 @@ export function Digit<T extends ElementType = "span">(props: Readonly<DigitProps
           </small>
         )}
       </>
-    );
+    )
 
-  if (value === null) return fallback;
+  if (value === null) return fallback
   return (
-    <As
-      className={cn(["inline-flex flex-nowrap items-end", className])}
-      {...{ dir, ...attributes }}
-      {...attrs}
-    >
+    <As className={cn(['inline-flex flex-nowrap items-end', className])} {...{ dir, ...attributes }} {...attrs}>
       {content}
     </As>
-  );
+  )
 }
 
 /**
@@ -308,8 +288,8 @@ export function Digit<T extends ElementType = "span">(props: Readonly<DigitProps
  */
 export type UseDigitProps = Pick<
   DigitProps,
-  "decimalsMin" | "decimalsMax" | "thousandSeparator" | "decimalSeparator"
-> & { fallback?: string; startUnit?: string; endUnit?: string; subSeparator?: boolean };
+  'decimalsMin' | 'decimalsMax' | 'thousandSeparator' | 'decimalSeparator'
+> & { fallback?: string; startUnit?: string; endUnit?: string; subSeparator?: boolean }
 
 /**
  * Format a numeric value as plain text using the same internal formatter as
@@ -341,29 +321,29 @@ export type UseDigitProps = Pick<
  * This helper accepts string units only and cannot represent the React-node
  * units, nested attributes, or loading UI supported by `Digit`.
  */
-export function UseDigit(value: DigitProps["value"], props: UseDigitProps = {}): string {
+export function UseDigit(value: DigitProps['value'], props: UseDigitProps = {}): string {
   const {
-    fallback = "-",
+    fallback = '-',
     startUnit,
     endUnit,
     decimalsMin,
     decimalsMax = 3,
-    thousandSeparator = ",",
-    decimalSeparator = ".",
+    thousandSeparator = ',',
+    decimalSeparator = '.',
     subSeparator = true,
-  } = props;
+  } = props
 
   // Configs
-  const [main, sub] = extractPrice({ value, decimalsMin, decimalsMax, thousandSeparator });
+  const [main, sub] = extractPrice({ value, decimalsMin, decimalsMax, thousandSeparator })
 
-  const parts = [];
-  if (startUnit) parts.push(startUnit);
-  const formattedNumber = sub === undefined ? main : `${main}${decimalSeparator}${sub}`;
-  parts.push(formattedNumber);
-  if (endUnit) parts.push(endUnit);
+  const parts = []
+  if (startUnit) parts.push(startUnit)
+  const formattedNumber = sub === undefined ? main : `${main}${decimalSeparator}${sub}`
+  parts.push(formattedNumber)
+  if (endUnit) parts.push(endUnit)
 
-  if (!value) return fallback;
-  return subSeparator ? parts.join(" ") : parts.join("");
+  if (!value) return fallback
+  return subSeparator ? parts.join(' ') : parts.join('')
 }
 
 /**

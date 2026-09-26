@@ -12,5 +12,5 @@ export default function HomePage() {
         <code>npm run dev</code>
       </div>
     </main>
-  );
+  )
 }

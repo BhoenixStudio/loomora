@@ -51,7 +51,7 @@ h1 {
 .intro code {
   margin: 0 0.25rem;
   color: #1e2428;
-  font-family: Consolas, "Courier New", monospace;
+  font-family: Consolas, 'Courier New', monospace;
   font-size: 0.95em;
 }
 
@@ -73,6 +73,6 @@ h1 {
 
 .command-card code {
   color: #8b4a2f;
-  font-family: Consolas, "Courier New", monospace;
+  font-family: Consolas, 'Courier New', monospace;
   font-weight: 700;
 }

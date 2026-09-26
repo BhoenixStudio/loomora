@@ -1,20 +1,20 @@
-"use client";
+'use client'
 
-import { ReactNode } from "react";
-import { useLoomoraConfig } from "../../../config";
-import { cn } from "../../../hooks";
-import { CSSProps } from "../../../types";
-import { ButtonProps, ButtonVariant, LinkButtonProps, RegularButtonProps } from "./helper";
+import { ReactNode } from 'react'
+import { useLoomoraConfig } from '../../../config'
+import { cn } from '../../../hooks'
+import { CSSProps } from '../../../types'
+import { ButtonProps, ButtonVariant, LinkButtonProps, RegularButtonProps } from './helper'
 
 export function Button(props: Readonly<ButtonProps>) {
   const {
-    variant = "fill",
-    size = "default",
+    variant = 'fill',
+    size = 'default',
     color,
-    corner = "default",
+    corner = 'default',
     borderThick = 1,
     animate = true,
-    className: customClass = "",
+    className: customClass = '',
     style: customStyle,
     title,
     startIcon,
@@ -26,7 +26,7 @@ export function Button(props: Readonly<ButtonProps>) {
 
     children,
     condition,
-  } = props;
+  } = props
 
   const {
     ref: linkRef,
@@ -36,30 +36,30 @@ export function Button(props: Readonly<ButtonProps>) {
     onClick: linkClick,
     attributes: linkAttrs,
     download = false,
-  } = props as LinkButtonProps;
+  } = props as LinkButtonProps
 
   const {
     ref: buttonRef,
     onClick: buttonClick,
-    type = "button",
+    type = 'button',
     attributes: buttonAttrs,
     disabled = false,
-  } = props as RegularButtonProps;
+  } = props as RegularButtonProps
 
-  const { LinkType, button } = useLoomoraConfig();
+  const { LinkType, button } = useLoomoraConfig()
 
-  const { defaultType, defaultColor, defaultLoadingTitle, sizes, colors, corners } = button ?? {};
+  const { defaultType, defaultColor, defaultLoadingTitle, sizes, colors, corners } = button ?? {}
 
   // Configs
-  const sVariant = variant as Exclude<ButtonVariant, "none">;
-  const { border, background, text } = colors?.[sVariant]?.[color ?? defaultColor ?? ""] ?? {};
+  const sVariant = variant as Exclude<ButtonVariant, 'none'>
+  const { border, background, text } = colors?.[sVariant]?.[color ?? defaultColor ?? ''] ?? {}
 
   const className = cn([
     // Core
-    "loomora-btn select-none transition-all duration-200 ease-in-out whitespace-nowrap",
-    { value: "inline-flex", condition: !/^d-(flex|block|grid|inline)/.test(customClass) },
+    'loomora-btn select-none transition-all duration-200 ease-in-out whitespace-nowrap',
+    { value: 'inline-flex', condition: !/^d-(flex|block|grid|inline)/.test(customClass) },
     {
-      value: "justify-center",
+      value: 'justify-center',
       condition: !/^justify-(center|start|end|between|around|evenly)/.test(customClass),
     },
     // Sizes
@@ -70,7 +70,7 @@ export function Button(props: Readonly<ButtonProps>) {
         ...sanitizeItem(sizes?.[size]?.fill?.gap),
         ...sanitizeItem(sizes?.[size]?.fill?.padding),
       ],
-      condition: ["fill"].includes(variant),
+      condition: ['fill'].includes(variant),
     },
     {
       value: [
@@ -79,7 +79,7 @@ export function Button(props: Readonly<ButtonProps>) {
         ...sanitizeItem(sizes?.[size]?.outline?.gap),
         ...sanitizeItem(sizes?.[size]?.outline?.padding),
       ],
-      condition: ["outline"].includes(variant),
+      condition: ['outline'].includes(variant),
     },
     {
       value: [
@@ -88,7 +88,7 @@ export function Button(props: Readonly<ButtonProps>) {
         ...sanitizeItem(sizes?.[size]?.text?.gap),
         ...sanitizeItem(sizes?.[size]?.text?.padding),
       ],
-      condition: ["text"].includes(variant),
+      condition: ['text'].includes(variant),
     },
     // Colors
     {
@@ -98,31 +98,31 @@ export function Button(props: Readonly<ButtonProps>) {
         { value: String(text), condition: Boolean(text) },
       ],
       fallback: [
-        { value: "bg-inherit", condition: variant === "fill" },
-        { value: "border-inherit text-inherit", condition: variant === "outline" },
-        { value: "text-inherit", condition: variant === "text" },
+        { value: 'bg-inherit', condition: variant === 'fill' },
+        { value: 'border-inherit text-inherit', condition: variant === 'outline' },
+        { value: 'text-inherit', condition: variant === 'text' },
       ],
-      condition: color !== "inherit",
+      condition: color !== 'inherit',
     },
     // Corners
-    { value: corners?.[corner], condition: !["none"].includes(variant) },
+    { value: corners?.[corner], condition: !['none'].includes(variant) },
     // Others
-    { value: "cursor-not-allowed", fallback: "cursor-pointer", condition: loading || disabled },
+    { value: 'cursor-not-allowed', fallback: 'cursor-pointer', condition: loading || disabled },
     {
       value:
-        "hover:transform hover:-translate-y-[3px] hover:scale-[0.99] focus:transform focus:-translate-y-[3px] focus:scale-[0.99]",
-      condition: !loading && !disabled && !["none", "text"].includes(variant) && animate,
+        'hover:transform hover:-translate-y-[3px] hover:scale-[0.99] focus:transform focus:-translate-y-[3px] focus:scale-[0.99]',
+      condition: !loading && !disabled && !['none', 'text'].includes(variant) && animate,
     },
     customClass,
-  ]);
+  ])
 
   const style: CSSProps = {
     ...customStyle,
-    ...(variant === "outline" && { borderWidth: borderThick }),
-  };
+    ...(variant === 'outline' && { borderWidth: borderThick }),
+  }
 
   // Components
-  let content: ReactNode = children;
+  let content: ReactNode = children
   if (loading)
     content = (
       <>
@@ -130,7 +130,7 @@ export function Button(props: Readonly<ButtonProps>) {
         {title && (loaderTitle ?? defaultLoadingTitle)}
         {loaderEndIcon}
       </>
-    );
+    )
   else if (title || startIcon || endIcon)
     content = (
       <>
@@ -138,7 +138,7 @@ export function Button(props: Readonly<ButtonProps>) {
         {title}
         {endIcon}
       </>
-    );
+    )
 
   let wrapper: ReactNode = (
     <button
@@ -149,7 +149,7 @@ export function Button(props: Readonly<ButtonProps>) {
     >
       {content}
     </button>
-  );
+  )
   if (href)
     wrapper = (
       <LinkType
@@ -160,15 +160,15 @@ export function Button(props: Readonly<ButtonProps>) {
       >
         {content}
       </LinkType>
-    );
+    )
 
   // Functions
-  function sanitizeItem<T>(item: "" | T | undefined) {
-    if (!item) return [];
-    if (typeof item === "string") return [item];
-    return item;
+  function sanitizeItem<T>(item: '' | T | undefined) {
+    if (!item) return []
+    if (typeof item === 'string') return [item]
+    return item
   }
 
-  if (condition === false) return null;
-  return <>{wrapper}</>;
+  if (condition === false) return null
+  return <>{wrapper}</>
 }

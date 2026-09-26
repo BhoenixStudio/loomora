@@ -1,33 +1,30 @@
-import type { LoomoraConfig, LoomoraConfigInput } from "./config-types";
+import type { LoomoraConfig, LoomoraConfigInput } from './config-types'
 
-type PlainObject = Record<string, unknown>;
+type PlainObject = Record<string, unknown>
 
 function isPlainObject(value: unknown): value is PlainObject {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false
 
-  const prototype = Object.getPrototypeOf(value);
-  return prototype === Object.prototype || prototype === null;
+  const prototype = Object.getPrototypeOf(value)
+  return prototype === Object.prototype || prototype === null
 }
 
 function mergeValues(base: unknown, override: unknown): unknown {
-  if (override === undefined) return base;
-  if (!isPlainObject(base) || !isPlainObject(override)) return override;
+  if (override === undefined) return base
+  if (!isPlainObject(base) || !isPlainObject(override)) return override
 
-  const result: PlainObject = { ...base };
+  const result: PlainObject = { ...base }
 
   for (const [key, value] of Object.entries(override)) {
-    if (value === undefined) continue;
-    result[key] = mergeValues(base[key], value);
+    if (value === undefined) continue
+    result[key] = mergeValues(base[key], value)
   }
 
-  return result;
+  return result
 }
 
 /** Recursively merges provider values without mutating either input object. */
-export function mergeConfig(
-  base: Required<LoomoraConfig>,
-  override?: LoomoraConfigInput,
-): Required<LoomoraConfig> {
-  if (!override) return base;
-  return mergeValues(base, override) as Required<LoomoraConfig>;
+export function mergeConfig(base: Required<LoomoraConfig>, override?: LoomoraConfigInput): Required<LoomoraConfig> {
+  if (!override) return base
+  return mergeValues(base, override) as Required<LoomoraConfig>
 }

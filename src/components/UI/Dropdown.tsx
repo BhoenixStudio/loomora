@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 /**
  * # Dropdown
@@ -219,10 +219,10 @@
  * - Unknown: browser-specific layout behavior and the accessibility of caller-
  *   supplied menu content are not tested by this file.
  */
-import { Button, ButtonBaseProps, RegularButtonProps } from "../index";
-import { UseCalculatePosition, UseClickOutside, cn } from "../../hooks";
-import { GlobalElement } from "../../types";
-import { AnimationEvent, MouseEvent, ReactNode, useRef, useState } from "react";
+import { Button, ButtonBaseProps, RegularButtonProps } from '../index'
+import { UseCalculatePosition, UseClickOutside, cn } from '../../hooks'
+import { GlobalElement } from '../../types'
+import { AnimationEvent, MouseEvent, ReactNode, useRef, useState } from 'react'
 
 /**
  * Public configuration for `Dropdown`.
@@ -250,23 +250,16 @@ import { AnimationEvent, MouseEvent, ReactNode, useRef, useState } from "react";
  *   used for layout only when `staticPosition` is true.
  */
 export type DropdownProps = {
-  trigger: ReactNode;
-  children: (close: () => void) => ReactNode;
-  wrapperProps?: Omit<GlobalElement<"div">, "children">;
-  triggerProps?: ButtonBaseProps & Omit<RegularButtonProps, "children" | "title" | "icon" | "href">;
-  menuClassName?: string;
-  onToggle?: (opened: boolean) => void;
-  staticPosition?: boolean;
+  trigger: ReactNode
+  children: (close: () => void) => ReactNode
+  wrapperProps?: Omit<GlobalElement<'div'>, 'children'>
+  triggerProps?: ButtonBaseProps & Omit<RegularButtonProps, 'children' | 'title' | 'icon' | 'href'>
+  menuClassName?: string
+  onToggle?: (opened: boolean) => void
+  staticPosition?: boolean
   position?:
-    | "TOP_START"
-    | "TOP_END"
-    | "TOP_LEFT"
-    | "TOP_RIGHT"
-    | "BOTTOM_START"
-    | "BOTTOM_END"
-    | "BOTTOM_LEFT"
-    | "BOTTOM_RIGHT";
-};
+    'TOP_START' | 'TOP_END' | 'TOP_LEFT' | 'TOP_RIGHT' | 'BOTTOM_START' | 'BOTTOM_END' | 'BOTTOM_LEFT' | 'BOTTOM_RIGHT'
+}
 
 /**
  * Renders a locally controlled, animated button-anchored dropdown menu.
@@ -285,56 +278,52 @@ export function Dropdown(props: Readonly<DropdownProps>) {
     trigger,
     triggerProps,
     children,
-    menuClassName = "w-56 rounded-2xl border border-third bg-main p-2 shadow-lg",
+    menuClassName = 'w-56 rounded-2xl border border-third bg-main p-2 shadow-lg',
     onToggle,
     staticPosition = false,
-    position: sPosition = "TOP_START",
-  } = props;
+    position: sPosition = 'TOP_START',
+  } = props
 
-  const { className = "", ...wrapperRestProps } = wrapperProps ?? {};
-  const { onClick, ...triggerRestProps } = triggerProps ?? {};
+  const { className = '', ...wrapperRestProps } = wrapperProps ?? {}
+  const { onClick, ...triggerRestProps } = triggerProps ?? {}
 
   // Refs
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   // States
-  const [open, setOpen] = useState(false);
-  const [menuMounted, setMenuMounted] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [menuMounted, setMenuMounted] = useState(false)
 
   // Functions
   const handleToggle = (newState: boolean) => {
-    setOpen(newState);
-    if (newState) setMenuMounted(true);
-    onToggle?.(newState);
-  };
+    setOpen(newState)
+    if (newState) setMenuMounted(true)
+    onToggle?.(newState)
+  }
   const handleMenuAnimationEnd = (event: AnimationEvent<HTMLDivElement>) => {
-    if (
-      event.animationName === "loomora-dropdown-exit" &&
-      !open &&
-      event.target === event.currentTarget
-    )
-      setMenuMounted(false);
-  };
-  const getStaticPosition = (pos: DropdownProps["position"]) => {
-    if (!pos) pos = sPosition;
+    if (event.animationName === 'loomora-dropdown-exit' && !open && event.target === event.currentTarget)
+      setMenuMounted(false)
+  }
+  const getStaticPosition = (pos: DropdownProps['position']) => {
+    if (!pos) pos = sPosition
     return {
-      v: (pos.startsWith("TOP_") ? "top" : "bottom") as "top" | "bottom",
-      h: (pos.endsWith("_START") ? "start" : "end") as "start" | "end",
-    };
-  };
+      v: (pos.startsWith('TOP_') ? 'top' : 'bottom') as 'top' | 'bottom',
+      h: (pos.endsWith('_START') ? 'start' : 'end') as 'start' | 'end',
+    }
+  }
 
   // Hooks
-  UseClickOutside(open, wrapperRef, () => handleToggle(false));
-  const calculatedPosition = UseCalculatePosition(open, wrapperRef, menuRef);
-  const position = staticPosition ? getStaticPosition(sPosition) : calculatedPosition;
+  UseClickOutside(open, wrapperRef, () => handleToggle(false))
+  const calculatedPosition = UseCalculatePosition(open, wrapperRef, menuRef)
+  const position = staticPosition ? getStaticPosition(sPosition) : calculatedPosition
 
   return (
-    <div ref={wrapperRef} className={cn(["relative", className])} {...wrapperRestProps}>
+    <div ref={wrapperRef} className={cn(['relative', className])} {...wrapperRestProps}>
       <Button
         onClick={(e: MouseEvent<HTMLButtonElement>) => {
-          handleToggle(!open);
-          onClick?.(e);
+          handleToggle(!open)
+          onClick?.(e)
         }}
         {...triggerRestProps}
       >
@@ -346,20 +335,18 @@ export function Dropdown(props: Readonly<DropdownProps>) {
           ref={menuRef}
           onAnimationEnd={handleMenuAnimationEnd}
           className={cn([
-            "loomora-dropdown absolute z-50",
-            open ? "loomora-dropdown--enter" : "loomora-dropdown--exit",
-            position.v === "top"
-              ? "loomora-dropdown--top bottom-full mb-2"
-              : "loomora-dropdown--bottom top-full mt-2",
-            position.h === "start" ? "inset-s-0" : "inset-e-0",
+            'loomora-dropdown absolute z-50',
+            open ? 'loomora-dropdown--enter' : 'loomora-dropdown--exit',
+            position.v === 'top' ? 'loomora-dropdown--top bottom-full mb-2' : 'loomora-dropdown--bottom top-full mt-2',
+            position.h === 'start' ? 'inset-s-0' : 'inset-e-0',
             menuClassName,
           ])}
         >
-          {typeof children === "function" ? children(() => handleToggle(false)) : children}
+          {typeof children === 'function' ? children(() => handleToggle(false)) : children}
         </div>
       )}
     </div>
-  );
+  )
 }
 
 /**
