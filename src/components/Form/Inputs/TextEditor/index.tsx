@@ -46,10 +46,10 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
 
   const editorRef = useRef<TinyMCEEditor | null>(null)
 
-  const { translations, settings } = useLoomoraConfig()
+  const { translations, form, settings } = useLoomoraConfig()
 
   const {
-    className: fieldsetClass = 'text-title-2 placeholder:text-body-3',
+    className: fieldsetClass = form?.fieldset?.className,
     style: fieldsetStyle,
     attributes: fieldsetAttrs,
     ...restFieldset

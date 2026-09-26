@@ -7,6 +7,7 @@ export * from './Modules/Label'
 
 // Inputs
 export * from './Inputs/SearchField'
+export * from './Inputs/Select'
 export * from './Inputs/Textarea'
 export * from './Inputs/TextEditor'
 export * from './Inputs/TextEditor/helper'

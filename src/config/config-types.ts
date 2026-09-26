@@ -70,6 +70,7 @@ export type LoomoraConfig = {
     textfield?: { className?: string }
     textarea?: { className?: string; defaultRows?: number }
     searchField?: { searchIcon?: ReactNode; clearIcon?: ReactNode }
+    select?: { triggerIcon?: ReactNode; optionClassName?: string; optionGroupClassName?: string }
   }
   // Others
   LinkType?: ElementType

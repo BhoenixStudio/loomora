@@ -589,6 +589,12 @@ const defaultConfig: Required<LoomoraConfig> = {
     fieldset: { className: 'text-title-2 [&_label]:bg-[inherit]' },
     textfield: { className: 'text-sm placeholder:text-body-3' },
     textarea: { className: 'text-sm placeholder:text-body-3', defaultRows: 2 },
+    searchField: { clearIcon: '🗙', searchIcon: '🔎︎' },
+    select: {
+      triggerIcon: '⮟',
+      optionClassName: 'bg-main hover:bg-third',
+      optionGroupClassName: 'bg-main hover:bg-third',
+    },
   },
   // Others
   LinkType: 'a',
