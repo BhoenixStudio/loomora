@@ -6,8 +6,6 @@
  * `Content.tsx` provides three related exports for rendering data-dependent
  * React content: `useContent` resolves loading, empty, conditional, and final
  * states; `Content` renders the resolved `content` state; and
- * `ConditionalParent` either wraps children in a chosen element or renders a
- * fallback without that wrapper.
  *
  * ## File overview
  *
@@ -20,8 +18,6 @@
  *   loading content, empty content, and render callbacks.
  * - `Content` is the convenience component for callers that only need the
  *   selected state.
- * - `ConditionalParentProps` and `ConditionalParent` support conditional
- *   element wrapping with optional fallback and secondary conditions.
  *
  * The module is not responsible for fetching data, authentication,
  * persistence, retries, error messages, translation, or accessibility markup
@@ -36,8 +32,6 @@
  * - Use `useContent` when the caller needs to place `loadingState`,
  *   `emptyState`, `conditionalState`, or `finalState` independently, or needs
  *   to compose the selected `content` with other JSX.
- * - Use `ConditionalParent` when the parent element itself should exist only
- *   when a condition is truthy, such as an optional `<section>` or `<div>`.
  * - Prefer ordinary JSX conditionals when no shared state precedence or
  *   conditional wrapper behavior is needed.
  *
@@ -77,8 +71,6 @@
  * is passed to the normal renderer once and to the selected conditional
  * renderer once when a matching condition exists.
  *
- * `ConditionalParent` defaults `as` to `div`, `childrenCondition` and
- * `fallbackCondition` to `true`, and `fallback` to `null`. When `condition`
  * is truthy, it renders the chosen element with the original `children` and
  * forwards the remaining extra props. When `condition` is falsy, it renders
  * no parent element and returns `fallback` when it is not `null` or
@@ -141,15 +133,6 @@
  *
  * Illustrative example: `isVisible` is supplied by the surrounding component.
  *
- * ```tsx
- * import { ConditionalParent } from '@components'
- *
- * const isVisible = true
- *
- * <ConditionalParent as='section' condition={isVisible} fallback={<span>Hidden</span>}>
- *   <p>Visible content</p>
- * </ConditionalParent>
- * ```
  *
  * ## AI agent guide
  *
@@ -163,9 +146,6 @@
  * - Reuse `NoData` through the existing `empty` input instead of adding a
  *   second empty-state abstraction. Check `src/components/Partials/NoData.tsx`
  *   before changing the accepted empty configuration.
- * - Preserve the fragment output and wrapper omission behavior of
- *   `ConditionalParent`; extra props are forwarded only when its condition is
- *   truthy.
  * - Treat caller render callbacks as render-time callbacks. Do not add side
  *   effects to this module or assume that a callback runs only for the state
  *   ultimately returned as `content`.
@@ -178,34 +158,6 @@
  *   of these three exports.
  * - Run the focused formatter and linter checks plus the project type check
  *   after source changes when they are available.
- *
- * ## Errors, edge cases, and limitations
- *
- * - There is no error or retry branch. Exceptions from a caller's render
- *   callback propagate to the surrounding React render path.
- * - `loading` wins even when data is present. If `loader` is absent, the
- *   selected loading state is falsy and `Content` renders nothing for loading.
- * - Array emptiness is determined by `data.length === 0`.
- * - Single mode uses truthiness for presence. Values such as `0`, `false`, and
- *   an empty string are treated as absent even though they can satisfy a
- *   generic `T`; use a truthy representation when those values are valid data.
- * - A `NoDataProps` object is recognized as such only when `title`,
- *   `description`, or `children` is truthy. A content-less props object is not
- *   converted to `<NoData />` by this module.
- * - `loaderCount` is passed to `Array.from({ length: loaderCount })`; the
- *   caller should provide a finite, non-negative number suitable for that
- *   operation.
- * - The first truthy condition is used. Conditions after it are ignored, and a
- *   truthy condition selects the conditional state only after the normal empty
- *   check has passed.
- * - `ConditionalParent` does not add accessibility attributes, animation, or
- *   focus management. When the condition is falsy, props intended for the
- *   chosen element are not rendered because the element is omitted.
- * - `childrenCondition` only affects the unwrapped fallback path. Truthy
- *   `condition` renders the original `children` regardless of that flag.
- * - This module performs no network calls, authentication, persistence, or
- *   browser API access. It has no client directive and supplies no built-in
- *   responsive, RTL, or translation behavior.
  *
  * ## Related references
  *
@@ -229,7 +181,7 @@
  * decisions remain with callers. The examples therefore use only the verified
  * prop names and local placeholder values.
  */
-import { ElementType, Fragment, ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 
 type RenderConditionArray<T> = {
   condition: boolean | undefined;
@@ -338,57 +290,6 @@ export function useContent<T>(props: UseContentProps<T>): UseContentReturn {
 export function Content<T>(props: Readonly<UseContentProps<T>>) {
   const { content } = useContent(props);
   return <>{content}</>;
-}
-
-/**
- * Props for `ConditionalParent`.
- *
- * `EX` can add extra props for the selected element. Those props are forwarded
- * only when `condition` is truthy because the element is omitted otherwise.
- *
- * @typeParam T The React element type used for the conditional parent.
- * @typeParam EX Additional props accepted and forwarded to that element.
- */
-export type ConditionalParentProps<T extends ElementType, EX = any> = EX & {
-  as?: T;
-  condition: boolean | undefined;
-  children: ReactNode;
-  childrenCondition?: boolean;
-  fallback?: ReactNode;
-  fallbackCondition?: boolean;
-};
-
-/**
- * Conditionally renders a parent element, fallback node, or children.
- *
- * When `condition` is truthy, `children` are rendered inside `as` (default
- * `div`) and extra props are forwarded. When it is falsy, no parent element is
- * created; `fallback` is preferred when non-nullish, otherwise `children` is
- * returned when `childrenCondition` is truthy.
- *
- * @typeParam T The React element type used for the conditional parent.
- * @typeParam EX Additional props accepted and forwarded when the parent exists.
- * @param props Conditional wrapper configuration and its children.
- * @returns The conditional parent or an unwrapped fallback/children fragment.
- */
-export function ConditionalParent<T extends ElementType, EX = any>(
-  props: Readonly<ConditionalParentProps<T, EX>>,
-) {
-  const {
-    as: As = "div",
-    condition,
-    children = null,
-    childrenCondition = true,
-    fallback = null,
-    fallbackCondition = true,
-    ...rest
-  } = props;
-
-  const dFallback = fallbackCondition ? fallback : null;
-  const dChildren = childrenCondition ? children : null;
-
-  if (condition) return <As {...rest}>{children}</As>;
-  return <>{dFallback ?? dChildren}</>;
 }
 
 /**
