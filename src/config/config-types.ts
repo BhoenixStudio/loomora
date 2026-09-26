@@ -14,7 +14,7 @@ export type LoomoraConfig = {
   // Utils
   socials?: Partial<Record<SocialType, Pick<SocialPlatform, 'name' | 'placeholder'>>>
   countries?: Partial<Record<CountryType, Pick<CountryProps, 'name'>>>
-  timezones?: Record<Exclude<TimezoneType, 'none'>, Pick<TimezoneProps, 'name' | 'region'>>
+  timezones?: Partial<Record<Exclude<TimezoneType, 'none'>, Pick<TimezoneProps, 'name' | 'region'>>>
   // Hooks
   useDates?: {
     locales?: Record<string, Locale>
@@ -66,6 +66,14 @@ export type LoomoraConfig = {
     fieldset?: { className?: string }
     textfield?: { className?: string }
     textarea?: { className?: string; defaultRows?: number }
+    textEditor?: {
+      menuTranslation?: Partial<Record<'menusEdit' | 'menusView' | 'menusInsert' | 'menusFormat', string>>
+    }
+  }
+  // Others
+  settings?: {
+    isRtl?: boolean
+    locale?: string
   }
 }
 
