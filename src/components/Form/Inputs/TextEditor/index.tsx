@@ -46,7 +46,7 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
 
   const editorRef = useRef<TinyMCEEditor | null>(null)
 
-  const { form, settings } = useLoomoraConfig()
+  const { translations, settings } = useLoomoraConfig()
 
   const {
     className: fieldsetClass = 'text-title-2 placeholder:text-body-3',
@@ -154,22 +154,22 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
           browser_spellcheck: true,
           menu: {
             edit: {
-              title: form?.textEditor?.menuTranslation?.menusEdit ?? '',
+              title: translations?.textEditor?.menusEdit ?? '',
               items:
                 'searchreplace spellchecker spellcheckerlanguage a11ycheck | undo redo | cut copy paste pastetext | selectall',
             },
             view: {
-              title: form?.textEditor?.menuTranslation?.menusView ?? '',
+              title: translations?.textEditor?.menusView ?? '',
               items:
                 'code wordcount | preview fullscreen | visualaid visualchars visualblocks | showcomments | export print | restoredraft deleteallconversations',
             },
             insert: {
-              title: form?.textEditor?.menuTranslation?.menusInsert ?? '',
+              title: translations?.textEditor?.menusInsert ?? '',
               items:
                 'image link media codesample | charmap emoticons | hr pagebreak nonbreaking anchor tableofcontents | insertdatetime',
             },
             format: {
-              title: form?.textEditor?.menuTranslation?.menusEdit ?? '',
+              title: translations?.textEditor?.menusEdit ?? '',
               items:
                 'underline strikethrough superscript subscript codeformat lineheight | blocks | language | removeformat',
             },

@@ -172,7 +172,7 @@ function Timezones() {
 /** Returns timezone list, lookup, grouping, and conversion helpers. */
 export function useTimezones() {
   const timezones = Timezones()
-  const { timezones: timezoneConfig } = useLoomoraConfig()
+  const { translations } = useLoomoraConfig()
 
   const { getCountry } = useCountries()
 
@@ -185,7 +185,7 @@ export function useTimezones() {
       const timezone = {
         key: key as TimezoneKey,
         ...value,
-        ...timezoneConfig[key as TimezoneKey],
+        ...translations?.timezones?.[key as TimezoneKey],
         country: getCountry(value.countryCode),
         ...extra[key as TimezoneKey],
       }

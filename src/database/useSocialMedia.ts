@@ -143,7 +143,7 @@ export type GetSocials<T extends object = object> = {
  */
 export function useSocials() {
   const socials = Socials()
-  const { socials: socialConfig } = useLoomoraConfig()
+  const { translations } = useLoomoraConfig()
 
   const getSocials = <T extends object = object>(props?: GetSocials<T>): (SocialPlatform & T)[] => {
     const { extra = {}, only = [], except = [] } = props ?? {}
@@ -151,7 +151,7 @@ export function useSocials() {
     let socialsList = Object.entries(socials).map(([key, social]) => ({
       key: key as SocialType,
       ...social,
-      ...socialConfig[key as SocialType],
+      ...translations?.socials?.[key as SocialType],
       ...extra?.[key as SocialType],
     })) as (SocialPlatform & T)[]
 
@@ -168,7 +168,7 @@ export function useSocials() {
     ({
       key: platform,
       ...socials[platform],
-      ...socialConfig[platform],
+      ...translations?.socials?.[platform],
       ...props?.extra?.[platform],
     }) as SocialPlatform & T
 

@@ -1053,7 +1053,7 @@ export type GetCountries<T extends object = object> = {
  */
 export function useCountries() {
   const countries = Countries()
-  const { countries: countriesConfig } = useLoomoraConfig()
+  const { translations } = useLoomoraConfig()
 
   const getCountries = <T extends object = object>(props?: GetCountries<T>): (CountryProps & T)[] => {
     const { only = [], extra, except = [] } = props ?? {}
@@ -1061,7 +1061,7 @@ export function useCountries() {
     let countriesList = Object.entries(countries).map(([code, country]) => ({
       code: code as CountryType,
       ...country,
-      ...countriesConfig[code as CountryType],
+      ...translations?.countries?.[code as CountryType],
       ...extra?.[code as CountryType],
     })) as (CountryProps & T)[]
 
@@ -1079,7 +1079,7 @@ export function useCountries() {
     return {
       code: key,
       ...countries[key],
-      ...countriesConfig[key],
+      ...translations?.countries?.[key],
       ...props?.extra?.[key],
     } as CountryProps & T
   }

@@ -281,7 +281,7 @@ function Months() {
 export function useDates() {
   const monthList = Months()
 
-  const { useDates: useDatesConfig } = useLoomoraConfig()
+  const { translations } = useLoomoraConfig()
 
   const GetMonths = <T extends object = object>(props?: GetMonths<T>): (MonthItem & T)[] => {
     const { only = [], extra, except = [] } = props ?? {}
@@ -289,7 +289,7 @@ export function useDates() {
     let months = Object.entries(monthList).map(([key, month]) => ({
       key: key as MonthKey,
       ...month,
-      ...useDatesConfig.months?.[key as MonthKey],
+      ...translations?.useDates?.months?.[key as MonthKey],
       ...extra?.[key as MonthKey],
     }))
 
@@ -302,7 +302,7 @@ export function useDates() {
   const GetMonth = <T extends object = object>(key: MonthKey, props?: Pick<GetMonths<T>, 'extra'>): MonthItem & T => ({
     key,
     ...monthList[key],
-    ...useDatesConfig.months?.[key as MonthKey],
+    ...translations?.useDates?.months?.[key as MonthKey],
     ...props?.extra?.[key],
   })
 
@@ -480,7 +480,7 @@ export function useDates() {
     return formatDistance(new Date(date), baseDate, {
       addSuffix: true,
       includeSeconds: true,
-      locale: useDatesConfig.locales?.[locale],
+      locale: translations?.useDates?.locales?.[locale],
     })
   }
 
