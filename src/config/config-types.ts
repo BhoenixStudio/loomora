@@ -25,6 +25,29 @@ export type LoomoraConfig = {
     }
     textEditor?: Partial<Record<'menusEdit' | 'menusView' | 'menusInsert' | 'menusFormat', string>>
     searchField?: Partial<Record<'searchButtonTitle' | 'clearSearchTitle', string>>
+    password?: Partial<
+      Record<
+        | 'placeholder'
+        | 'confirmMatch'
+        | 'confirmMismatch'
+        | 'copyTooltip'
+        | 'generate'
+        | 'hideTooltip'
+        | 'label'
+        | 'missing'
+        | 'missingButton'
+        | 'showTooltip',
+        string
+      >
+    > & {
+      validation?: Partial<Record<'medium' | 'strong' | 'weak', string>> &
+        Partial<
+          Record<
+            'lowercase' | 'minLength' | 'number' | 'special' | 'uppercase',
+            Partial<Record<'short' | 'long', string>>
+          >
+        >
+    }
   }
   // Hooks
   // Components
@@ -75,6 +98,36 @@ export type LoomoraConfig = {
       color?: `text-${string}` | `text-${string}/${number}`
       activeColor?: `text-${string}` | `text-${string}/${number}`
     }
+    password?: Partial<
+      Record<
+        'length' | 'maxLength' | 'uppercaseLength' | 'lowercaseLength' | 'numbersLength' | 'specialCharsLength',
+        number
+      >
+    > &
+      Partial<
+        Record<
+          | 'useLength'
+          | 'useUppercase'
+          | 'useLowercase'
+          | 'useNumbers'
+          | 'useSpecialChars'
+          | 'hasCopy'
+          | 'hasGenerate'
+          | 'hasValidation'
+          | 'hasShow'
+          | 'showValidationProgress'
+          | 'showValidationsList',
+          boolean
+        >
+      > &
+      Partial<
+        Record<
+          'validIcon' | 'invalidIcon' | 'showIcon' | 'hideIcon' | 'confirmMainIcon' | 'confirmingMainIcon' | 'copyIcon',
+          ReactNode
+        >
+      > & {
+        colors?: Partial<Record<0 | 20 | 40 | 60 | 80 | 100, Partial<Record<'textColor' | 'progressColor', string>>>>
+      }
   }
   // Others
   LinkType?: ElementType

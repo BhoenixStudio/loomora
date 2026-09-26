@@ -397,6 +397,65 @@ const defaultConfig: Required<LoomoraConfig> = {
     },
     textEditor: { menusView: 'View', menusEdit: 'Edit', menusFormat: 'Format', menusInsert: 'Insert' },
     searchField: { clearSearchTitle: 'Clear', searchButtonTitle: 'Search' },
+    password: {
+      placeholder: 'e.g.: ********',
+      confirmMatch: 'Match',
+      confirmMismatch: 'Mismatch',
+      copyTooltip: 'Copy {password} to clipboard',
+      get generate() {
+        return `Generate ${defaultConfig?.form?.password?.length}bit {password}`
+      },
+      hideTooltip: 'Hide {password}',
+      label: '{password}',
+      missing: 'Please enter a password.',
+      missingButton: 'Enter a password',
+      showTooltip: 'Show {password}',
+      validation: {
+        weak: 'Weak',
+        medium: 'Medium',
+        strong: 'Strong',
+        minLength: {
+          get short() {
+            return `${defaultConfig?.form?.password?.length}+ letter(s) long`
+          },
+          get long() {
+            return `At least ${defaultConfig?.form?.password?.maxLength}+ letter(s) long`
+          },
+        },
+        lowercase: {
+          get short() {
+            return `${defaultConfig?.form?.password?.lowercaseLength}+ Lowercase letter(s) long`
+          },
+          get long() {
+            return `At least ${defaultConfig?.form?.password?.lowercaseLength}+ Lowercase letter(s) long`
+          },
+        },
+        uppercase: {
+          get short() {
+            return `${defaultConfig?.form?.password?.uppercaseLength}+ Uppercase letter(s) long`
+          },
+          get long() {
+            return `At least ${defaultConfig?.form?.password?.uppercaseLength}+ Uppercase letter(s) long`
+          },
+        },
+        number: {
+          get short() {
+            return `${defaultConfig?.form?.password?.numbersLength}+ Number(s) long`
+          },
+          get long() {
+            return `At least ${defaultConfig?.form?.password?.numbersLength}+ Number(s) long`
+          },
+        },
+        special: {
+          get short() {
+            return `${defaultConfig?.form?.password?.specialCharsLength}+ special character(s) long`
+          },
+          get long() {
+            return `At least ${defaultConfig?.form?.password?.specialCharsLength}+ special character(s) long`
+          },
+        },
+      },
+    },
   },
   // Hooks
   // Components
@@ -596,6 +655,40 @@ const defaultConfig: Required<LoomoraConfig> = {
       optionGroupClassName: 'bg-main hover:bg-third',
     },
     check: { color: 'text-body-3', activeColor: 'text-success' },
+    password: {
+      useLength: true,
+      length: 8,
+      maxLength: undefined,
+      useLowercase: true,
+      lowercaseLength: 1,
+      useUppercase: true,
+      uppercaseLength: 1,
+      useNumbers: true,
+      numbersLength: 1,
+      useSpecialChars: true,
+      specialCharsLength: 1,
+      hasCopy: true,
+      hasGenerate: false,
+      hasShow: true,
+      hasValidation: false,
+      showValidationProgress: true,
+      showValidationsList: false,
+      colors: {
+        0: { textColor: 'text-error', progressColor: 'bg-error' },
+        20: { textColor: 'text-error', progressColor: 'bg-error' },
+        40: { textColor: 'text-warning', progressColor: 'bg-warning' },
+        60: { textColor: 'text-info', progressColor: 'bg-info' },
+        80: { textColor: 'text-primary', progressColor: 'bg-primary' },
+        100: { textColor: 'text-success', progressColor: 'bg-success' },
+      },
+      invalidIcon: '✘',
+      validIcon: '✔',
+      showIcon: '👁',
+      hideIcon: '⊘',
+      confirmMainIcon: '🔒︎',
+      confirmingMainIcon: 'ᗢ',
+      copyIcon: '🗐',
+    },
   },
   // Others
   LinkType: 'a',
