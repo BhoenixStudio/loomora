@@ -59,6 +59,24 @@ export function onlyNumberAllowed(value: string, allowTel?: boolean): string {
   return value.replace(allowTel ? /[^0-9+#]/g : /[^0-9,]/g, '')
 }
 
+/** Optional behavior for `CopyToClipboard`. */
+export type CopyProps = { disabled?: boolean; message?: string; onCopy?: (message: string) => void }
+
+/**
+ * Shows a success toast and writes text to the browser clipboard unless disabled.
+ * @param text Text to copy.
+ * @param props Optional disabled flag and success message.
+ * @returns A promise that rejects if the Clipboard API write fails; this helper does not catch it.
+ * @remarks The success toast is shown before the clipboard write completes, so this is browser-only.
+ */
+export async function CopyToClipboard(text: string, props?: CopyProps) {
+  const { disabled, message, onCopy } = props ?? {}
+  if (disabled) return
+
+  onCopy?.(message ?? `"${text}" successfully copied to clipboard`)
+  await navigator.clipboard.writeText(text)
+}
+
 export function isThisProps<T extends object>(element: ReactNode | T, keyToSearch: keyof T): element is T {
   return typeof element === 'object' && element !== null && !isValidElement(element) && keyToSearch in element
 }
