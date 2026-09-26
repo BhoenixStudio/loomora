@@ -11,20 +11,23 @@ export type DeepPartial<T> = {
 
 /** Fully resolved Loomora configuration. */
 export type LoomoraConfig = {
-  // Utils
-  socials?: Partial<Record<SocialType, Pick<SocialPlatform, 'name' | 'placeholder'>>>
-  countries?: Partial<Record<CountryType, Pick<CountryProps, 'name'>>>
-  timezones?: Partial<Record<Exclude<TimezoneType, 'none'>, Pick<TimezoneProps, 'name' | 'region'>>>
-  // Hooks
-  useDates?: {
-    locales?: Record<string, Locale>
-    months?: Record<
-      'JAN' | 'FEB' | 'MAR' | 'APR' | 'MAY' | 'JUN' | 'JUL' | 'AUG' | 'SEP' | 'OCT' | 'NOV' | 'DEC',
-      { name: string; shortName: string }
-    >
+  // Translations
+  translations?: {
+    socials?: Partial<Record<SocialType, Pick<SocialPlatform, 'name' | 'placeholder'>>>
+    countries?: Partial<Record<CountryType, Pick<CountryProps, 'name'>>>
+    timezones?: Partial<Record<Exclude<TimezoneType, 'none'>, Pick<TimezoneProps, 'name' | 'region'>>>
+    useDates?: {
+      locales?: Record<string, Locale>
+      months?: Record<
+        'JAN' | 'FEB' | 'MAR' | 'APR' | 'MAY' | 'JUN' | 'JUL' | 'AUG' | 'SEP' | 'OCT' | 'NOV' | 'DEC',
+        { name: string; shortName: string }
+      >
+    }
+    textEditor?: Partial<Record<'menusEdit' | 'menusView' | 'menusInsert' | 'menusFormat', string>>
+    searchField?: Partial<Record<'searchButtonTitle' | 'clearSearchTitle', string>>
   }
+  // Hooks
   // Components
-  LinkType?: ElementType
   button?: {
     defaultType?: ButtonHTMLAttributes<HTMLButtonElement>['type']
     defaultColor?: string
@@ -66,15 +69,11 @@ export type LoomoraConfig = {
     fieldset?: { className?: string }
     textfield?: { className?: string }
     textarea?: { className?: string; defaultRows?: number }
-    textEditor?: {
-      menuTranslation?: Partial<Record<'menusEdit' | 'menusView' | 'menusInsert' | 'menusFormat', string>>
-    }
+    searchField?: { searchIcon?: ReactNode; clearIcon?: ReactNode }
   }
   // Others
-  settings?: {
-    isRtl?: boolean
-    locale?: string
-  }
+  LinkType?: ElementType
+  settings?: { isRtl?: boolean; locale?: string }
 }
 
 /** Partial configuration accepted by `LoomoraProvider`. */
