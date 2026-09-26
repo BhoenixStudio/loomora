@@ -17,7 +17,7 @@ export interface TextareaProps extends InputBase, InputFieldset, InputLabel, Inp
   properties?: InputProps
 }
 
-export const TextField = forwardRef<HTMLTextAreaElement, TextareaProps>((props, ref) => {
+export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((props, ref) => {
   const {
     size = [],
     properties,
