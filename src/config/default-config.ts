@@ -580,12 +580,9 @@ const defaultConfig: Required<LoomoraConfig> = {
       inactiveClassName: 'inset-px scale-100 px-3 pointer-events-none',
       activeClassName: 'top-0 inset-s-3 translate-y-[-50%] scale-90 max-w-[calc(100%-0.5rem)] px-1.5 py-px',
     },
-    fieldset: {
-      className: 'text-title-2 [&_label]:bg-[inherit]',
-    },
-    textfield: {
-      className: 'text-sm placeholder:text-body-3',
-    },
+    fieldset: { className: 'text-title-2 [&_label]:bg-[inherit]' },
+    textfield: { className: 'text-sm placeholder:text-body-3' },
+    textarea: { className: 'text-sm placeholder:text-body-3', defaultRows: 2 },
   },
 }
 

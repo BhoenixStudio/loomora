@@ -65,6 +65,7 @@ export type LoomoraConfig = {
     }
     fieldset?: { className?: string }
     textfield?: { className?: string }
+    textarea?: { className?: string; defaultRows?: number }
   }
 }
 
