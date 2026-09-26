@@ -70,9 +70,10 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@tinymce/tinymce-react": ">=6.3.0",
+    "date-fns": ">=4.4.0",
     "react": ">=18.2.0 <20",
-    "react-dom": ">=18.2.0 <20",
-    "date-fns": "~4.4.0"
+    "react-dom": ">=18.2.0 <20"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -85,6 +86,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "concurrently": "^10.0.5",
+    "date-fns": "~4.4.0",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.1.1",
@@ -93,7 +95,7 @@
     "prettier": "^3.9.8",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "date-fns": "~4.4.0",
+    "tinymce": "^8.9.2",
     "tsup": "^8.5.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.70.0",
