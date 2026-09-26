@@ -397,7 +397,7 @@ const defaultConfig: Required<LoomoraConfig> = {
   button: {
     defaultType: "button",
     defaultColor: "info",
-    defaultLoadingTitle: 'Loading',
+    defaultLoadingTitle: "Loading",
     colors: {
       fill: {
         success: { background: "bg-success", border: "border-success", text: "text-white" },
@@ -567,6 +567,25 @@ const defaultConfig: Required<LoomoraConfig> = {
           padding: ["p-5"],
         },
       },
+    },
+  },
+  breadcrumbs: { defaultSeparator: "|" },
+  form: {
+    label: {
+      as: "label",
+      showRequiredIndicator: true,
+      className: "flex-nowrap items-center text-xs font-medium text-title-2 gap-1",
+      stateSharedClassName:
+        "absolute flex-nowrap items-center origin-left z-25 rtl:origin-right rounded transition-all duration-300 ease-in-out",
+      inactiveClassName: "inset-px scale-100 px-3 pointer-events-none",
+      activeClassName:
+        "top-0 inset-s-3 translate-y-[-50%] scale-90 max-w-[calc(100%-0.5rem)] px-1.5 py-px",
+    },
+    fieldset: {
+      className: "text-title-2 [&_label]:bg-[inherit]",
+    },
+    textfield: {
+      className: "text-sm placeholder:text-body-3",
     },
   },
 };

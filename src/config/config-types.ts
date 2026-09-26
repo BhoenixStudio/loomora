@@ -64,9 +64,19 @@ export type LoomoraConfig = {
       >
     >;
   };
-  breadcrumbs?: {
-    defaultSeparator?: '|'
-  }
+  breadcrumbs?: { defaultSeparator?: ReactNode };
+  form?: {
+    label?: {
+      as?: "label" | "legend";
+      showRequiredIndicator?: boolean;
+      className?: string;
+      stateSharedClassName?: string;
+      inactiveClassName?: string;
+      activeClassName?: string;
+    };
+    fieldset?: { className?: string };
+    textfield?: { className?: string };
+  };
 };
 
 /** Partial configuration accepted by `LoomoraProvider`. */
