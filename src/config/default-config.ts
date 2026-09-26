@@ -595,6 +595,7 @@ const defaultConfig: Required<LoomoraConfig> = {
       optionClassName: 'bg-main hover:bg-third',
       optionGroupClassName: 'bg-main hover:bg-third',
     },
+    check: { color: 'text-body-3', activeColor: 'text-success' },
   },
   // Others
   LinkType: 'a',

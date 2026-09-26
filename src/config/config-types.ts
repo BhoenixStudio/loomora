@@ -71,6 +71,10 @@ export type LoomoraConfig = {
     textarea?: { className?: string; defaultRows?: number }
     searchField?: { searchIcon?: ReactNode; clearIcon?: ReactNode }
     select?: { triggerIcon?: ReactNode; optionClassName?: string; optionGroupClassName?: string }
+    check?: {
+      color?: `text-${string}` | `text-${string}/${number}`
+      activeColor?: `text-${string}` | `text-${string}/${number}`
+    }
   }
   // Others
   LinkType?: ElementType
