@@ -689,6 +689,7 @@ const defaultConfig: Required<LoomoraConfig> = {
       confirmingMainIcon: 'ᗢ',
       copyIcon: '🗐',
     },
+    otp: { length: 6, className: 'rounded-xl text-center text-xl font-bold text-title-1' },
   },
   // Others
   LinkType: 'a',

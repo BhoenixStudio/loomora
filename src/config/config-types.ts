@@ -104,6 +104,7 @@ export type LoomoraConfig = {
         'validIcon' | 'invalidIcon' | 'showIcon' | 'hideIcon' | 'confirmMainIcon' | 'confirmingMainIcon' | 'copyIcon',
         ReactNode
       > & { colors?: PR<0 | 20 | 40 | 60 | 80 | 100, PR<'textColor' | 'progressColor', string>> }
+    otp?: { length?: number; className?: string }
   }
   // Others
   LinkType?: ElementType
