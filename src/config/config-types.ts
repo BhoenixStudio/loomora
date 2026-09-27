@@ -106,6 +106,14 @@ export type LoomoraConfig = {
         ReactNode
       > & { colors?: PR<0 | 20 | 40 | 60 | 80 | 100, PR<'textColor' | 'progressColor', string>> }
     otp?: { length?: number; className?: string }
+    range?: {
+      step?: number
+      showValue?: boolean
+      showMinMax?: boolean
+      valuePrefix?: ReactNode
+      valueSuffix?: ReactNode
+      className?: string
+    }
   }
   // Others
   LinkType?: ElementType
