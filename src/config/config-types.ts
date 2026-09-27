@@ -23,6 +23,7 @@ export type LoomoraConfig = {
         { name: string; shortName: string }
       >
     }
+    form?: PR<'dialogCloseTitle' | 'dialogTitle', string>
     textEditor?: PR<'menusEdit' | 'menusView' | 'menusInsert' | 'menusFormat', string>
     searchField?: PR<'searchButtonTitle' | 'clearSearchTitle', string>
     password?: PR<

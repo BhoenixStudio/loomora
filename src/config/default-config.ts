@@ -395,6 +395,7 @@ const defaultConfig: Required<LoomoraConfig> = {
         DEC: { name: 'December', shortName: 'Dec' },
       },
     },
+    form: { dialogTitle: 'Form', dialogCloseTitle: 'Close' },
     textEditor: { menusView: 'View', menusEdit: 'Edit', menusFormat: 'Format', menusInsert: 'Insert' },
     searchField: { clearSearchTitle: 'Clear', searchButtonTitle: 'Search' },
     password: {
