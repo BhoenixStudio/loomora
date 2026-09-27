@@ -20,6 +20,8 @@ export interface TextFieldProps extends InputBase, InputFieldset, InputLabel, In
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
+  const { form } = useLoomoraConfig()
+
   const {
     size = [],
     properties,
@@ -37,8 +39,6 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, re
     loading = false,
     condition,
   } = props
-
-  const { form } = useLoomoraConfig()
 
   const {
     className: fieldsetClass = form?.fieldset?.className,
