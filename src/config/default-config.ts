@@ -457,6 +457,12 @@ const defaultConfig: Required<LoomoraConfig> = {
         },
       },
     },
+    phone: {
+      startPlaceholder: '[{start}]XXXXXXXXX',
+      startPlaceholderOne: '{start}XXXXXXXXX',
+      defaultTitle: 'Country',
+      startError: 'Phone number must start with one of [{start}] for {country}'
+    },
   },
   // Hooks
   // Components
@@ -692,13 +698,11 @@ const defaultConfig: Required<LoomoraConfig> = {
     },
     otp: { length: 6, className: 'rounded-xl text-center text-xl font-bold text-title-1' },
     range: { step: 1, showMinMax: true, showValue: true, valuePrefix: '', valueSuffix: '', className: 'text-sm' },
+    phone: { worldwide: true, codePrefix: '+', showCountriesName: true, selectedCountriesOnly: [] },
   },
   // Others
   LinkType: 'a',
-  settings: {
-    isRtl: false,
-    locale: 'en',
-  },
+  settings: { isRtl: false, locale: 'en' },
 }
 
 export { defaultConfig }

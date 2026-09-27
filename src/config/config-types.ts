@@ -1,6 +1,6 @@
 import { Locale } from 'date-fns'
 import { ButtonHTMLAttributes, ElementType, ReactNode } from 'react'
-import { ButtonCorner, ButtonSize, ButtonVariant } from '../components'
+import { ButtonCorner, ButtonSize, ButtonVariant, PhonePrefix } from '../components'
 import { CountryProps, CountryType, SocialPlatform, SocialType, TimezoneProps, TimezoneType } from '../database'
 import { MQ, PartialRecord as PR, TWColorName, TWColorSName, TWGap, TWPadding, TWTextSize } from '../types'
 
@@ -42,6 +42,7 @@ export type LoomoraConfig = {
       validation?: PR<'medium' | 'strong' | 'weak', string> &
         PR<'lowercase' | 'minLength' | 'number' | 'special' | 'uppercase', PR<'short' | 'long', string>>
     }
+    phone?: PR<'startPlaceholder' | 'startPlaceholderOne' | 'defaultTitle' | 'startError', string>
   }
   // Hooks
   // Components
@@ -113,6 +114,13 @@ export type LoomoraConfig = {
       valuePrefix?: ReactNode
       valueSuffix?: ReactNode
       className?: string
+    }
+    phone?: {
+      worldwide?: boolean
+      codePrefix?: PhonePrefix
+      showCountriesName?: boolean
+      showCountriesFlags?: boolean
+      selectedCountriesOnly?: CountryType[]
     }
   }
   // Others
