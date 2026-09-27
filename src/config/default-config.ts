@@ -654,7 +654,7 @@ const defaultConfig: Required<LoomoraConfig> = {
       optionClassName: 'bg-main hover:bg-third',
       optionGroupClassName: 'bg-main hover:bg-third',
     },
-    check: { color: 'text-body-3', activeColor: 'text-success' },
+    check: { color: 'text-', activeColor: 'text-success' },
     password: {
       useLength: true,
       length: 8,

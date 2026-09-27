@@ -78,40 +78,44 @@ export type Enumerate<N extends number, E extends number[] = [], T extends numbe
 
 export type Neverify<T> = { [K in keyof T]?: never }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type PartialRecord<K extends keyof any, T> = Partial<Record<K, T>>
+
 export type PageParams<P extends object, Ex = unknown> = Readonly<{ params: Promise<P> } & Ex>
 export type PageQueries<S extends object, Ex = unknown> = Readonly<{ searchParams: Promise<S> } & Ex>
 export type PageParamsQueries<P extends object, S extends object, Ex = unknown> = Readonly<
   { params: Promise<P>; searchParams: Promise<S> } & Ex
 >
 
-export type ColorName<T extends string> = T
-export type TWColorOpacity<T extends string> =
-  T | `${T}/${0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50 | 55 | 60 | 65 | 70 | 75 | 80 | 85 | 90 | 95 | 100}`
-export type TWColorName<T extends string> = MQ<
-  | `bg-${T}`
-  | TWColorOpacity<`bg-${T}`>
-  | `text-${T}`
-  | TWColorOpacity<`text-${T}`>
-  | `decoration-${T}`
-  | TWColorOpacity<`decoration-${T}`>
-  | `border-${T}`
-  | TWColorOpacity<`border-${T}`>
-  | `outline-${T}`
-  | TWColorOpacity<`outline-${T}`>
-  | `shadow-${T}`
-  | TWColorOpacity<`shadow-${T}`>
-  | `inset-shadow-${T}`
-  | TWColorOpacity<`inset-shadow-${T}`>
-  | `ring-${T}`
-  | TWColorOpacity<`ring-${T}`>
-  | `inset-ring-${T}`
-  | TWColorOpacity<`inset-ring-${T}`>
-  | `accent-${T}`
-  | TWColorOpacity<`accent-${T}`>
-  | `caret-${T}`
-  | TWColorOpacity<`caret-${T}`>
-  | `fill-${T}`
-  | TWColorOpacity<`fill-${T}`>
-  | `stroke-${T}`
-  | TWColorOpacity<`stroke-${T}`>
->
+export type TWColorOpacity<V extends string = ''> =
+  V | `${V}/${0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50 | 55 | 60 | 65 | 70 | 75 | 80 | 85 | 90 | 95 | 100}`
+export type TWColorSName<
+  T extends
+    | 'text'
+    | 'bg'
+    | 'decoration'
+    | 'border'
+    | 'outline'
+    | 'shadow'
+    | 'inset-shadow'
+    | 'ring'
+    | 'inset-ring'
+    | 'accent'
+    | 'caret'
+    | 'fill'
+    | 'stroke',
+> = MQ<`${T}-${string}` | TWColorOpacity<`${T}-${string}`>>
+export type TWColorName =
+  | TWColorSName<'text'>
+  | TWColorSName<'bg'>
+  | TWColorSName<'border'>
+  | TWColorSName<'caret'>
+  | TWColorSName<'decoration'>
+  | TWColorSName<'fill'>
+  | TWColorSName<'inset-ring'>
+  | TWColorSName<'inset-shadow'>
+  | TWColorSName<'outline'>
+  | TWColorSName<'ring'>
+  | TWColorSName<'shadow'>
+  | TWColorSName<'stroke'>
+  | TWColorSName<'text'>

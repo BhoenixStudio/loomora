@@ -95,6 +95,8 @@
  */
 
 import { useCallback, useEffect, useState } from 'react'
+import { TWColorName } from '../types'
+import { cn } from './ClassNames'
 
 /** Output format accepted by `getColor`. */
 export type GetColorType = 'HEX' | 'RGB' | 'HSL'
@@ -217,6 +219,10 @@ export function useColors<T extends string = ''>() {
   const getColor = useCallback((color: T, props: GetColorProps = {}) => resolveColor(color, props), [tick])
 
   return { getColor, hexToRgb, rgbToHsl }
+}
+
+export function useColorsString(colors: TWColorName[]): string {
+  return cn(colors)
 }
 
 /**

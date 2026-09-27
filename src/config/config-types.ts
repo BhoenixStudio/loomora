@@ -2,7 +2,7 @@ import { Locale } from 'date-fns'
 import { ButtonHTMLAttributes, ElementType, ReactNode } from 'react'
 import { ButtonCorner, ButtonSize, ButtonVariant } from '../components'
 import { CountryProps, CountryType, SocialPlatform, SocialType, TimezoneProps, TimezoneType } from '../database'
-import { MQ, TWColorName, TWGap, TWPadding, TWTextSize } from '../types'
+import { MQ, PartialRecord as PR, TWColorName, TWColorSName, TWGap, TWPadding, TWTextSize } from '../types'
 
 /** Recursively optional configuration values accepted by a provider. */
 export type DeepPartial<T> = {
@@ -13,40 +13,33 @@ export type DeepPartial<T> = {
 export type LoomoraConfig = {
   // Translations
   translations?: {
-    socials?: Partial<Record<SocialType, Pick<SocialPlatform, 'name' | 'placeholder'>>>
-    countries?: Partial<Record<CountryType, Pick<CountryProps, 'name'>>>
-    timezones?: Partial<Record<Exclude<TimezoneType, 'none'>, Pick<TimezoneProps, 'name' | 'region'>>>
+    socials?: PR<SocialType, Pick<SocialPlatform, 'name' | 'placeholder'>>
+    countries?: PR<CountryType, Pick<CountryProps, 'name'>>
+    timezones?: PR<Exclude<TimezoneType, 'none'>, Pick<TimezoneProps, 'name' | 'region'>>
     useDates?: {
-      locales?: Record<string, Locale>
-      months?: Record<
+      locales?: PR<string, Locale>
+      months?: PR<
         'JAN' | 'FEB' | 'MAR' | 'APR' | 'MAY' | 'JUN' | 'JUL' | 'AUG' | 'SEP' | 'OCT' | 'NOV' | 'DEC',
         { name: string; shortName: string }
       >
     }
-    textEditor?: Partial<Record<'menusEdit' | 'menusView' | 'menusInsert' | 'menusFormat', string>>
-    searchField?: Partial<Record<'searchButtonTitle' | 'clearSearchTitle', string>>
-    password?: Partial<
-      Record<
-        | 'placeholder'
-        | 'confirmMatch'
-        | 'confirmMismatch'
-        | 'copyTooltip'
-        | 'generate'
-        | 'hideTooltip'
-        | 'label'
-        | 'missing'
-        | 'missingButton'
-        | 'showTooltip',
-        string
-      >
+    textEditor?: PR<'menusEdit' | 'menusView' | 'menusInsert' | 'menusFormat', string>
+    searchField?: PR<'searchButtonTitle' | 'clearSearchTitle', string>
+    password?: PR<
+      | 'placeholder'
+      | 'confirmMatch'
+      | 'confirmMismatch'
+      | 'copyTooltip'
+      | 'generate'
+      | 'hideTooltip'
+      | 'label'
+      | 'missing'
+      | 'missingButton'
+      | 'showTooltip',
+      string
     > & {
-      validation?: Partial<Record<'medium' | 'strong' | 'weak', string>> &
-        Partial<
-          Record<
-            'lowercase' | 'minLength' | 'number' | 'special' | 'uppercase',
-            Partial<Record<'short' | 'long', string>>
-          >
-        >
+      validation?: PR<'medium' | 'strong' | 'weak', string> &
+        PR<'lowercase' | 'minLength' | 'number' | 'special' | 'uppercase', PR<'short' | 'long', string>>
     }
   }
   // Hooks
@@ -55,27 +48,21 @@ export type LoomoraConfig = {
     defaultType?: ButtonHTMLAttributes<HTMLButtonElement>['type']
     defaultColor?: string
     defaultLoadingTitle?: ReactNode
-    colors?: Partial<
-      Record<
-        Exclude<ButtonVariant, 'none'>,
-        Record<string, Partial<Record<'text' | 'border' | 'background', TWColorName<string>>>>
-      >
+    colors?: PR<
+      Exclude<ButtonVariant, 'none'>,
+      Record<string, Partial<Record<'text' | 'border' | 'background', TWColorName>>>
     >
-    corners?: Partial<Record<ButtonCorner, MQ<'rounded' | `rounded-${string}`>[]>>
-    sizes?: Partial<
-      Record<
-        ButtonSize,
-        Partial<
-          Record<
-            Exclude<ButtonVariant, 'none'>,
-            {
-              textSize?: TWTextSize[] | ''
-              textWeight?: MQ<'font-normal' | 'font-medium' | 'font-bold'>[] | ''
-              gap?: TWGap[] | ''
-              padding?: TWPadding[] | ''
-            }
-          >
-        >
+    corners?: PR<ButtonCorner, MQ<'rounded' | `rounded-${string}`>[]>
+    sizes?: PR<
+      ButtonSize,
+      PR<
+        Exclude<ButtonVariant, 'none'>,
+        {
+          textSize?: TWTextSize[] | ''
+          textWeight?: MQ<'font-normal' | 'font-medium' | 'font-bold'>[] | ''
+          gap?: TWGap[] | ''
+          padding?: TWPadding[] | ''
+        }
       >
     >
   }
@@ -94,40 +81,29 @@ export type LoomoraConfig = {
     textarea?: { className?: string; defaultRows?: number }
     searchField?: { searchIcon?: ReactNode; clearIcon?: ReactNode }
     select?: { triggerIcon?: ReactNode; optionClassName?: string; optionGroupClassName?: string }
-    check?: {
-      color?: `text-${string}` | `text-${string}/${number}`
-      activeColor?: `text-${string}` | `text-${string}/${number}`
-    }
-    password?: Partial<
-      Record<
-        'length' | 'maxLength' | 'uppercaseLength' | 'lowercaseLength' | 'numbersLength' | 'specialCharsLength',
-        number
-      >
+    check?: { color?: TWColorSName<'text'>; activeColor?: TWColorSName<'text'> }
+    password?: PR<
+      'length' | 'maxLength' | 'uppercaseLength' | 'lowercaseLength' | 'numbersLength' | 'specialCharsLength',
+      number
     > &
-      Partial<
-        Record<
-          | 'useLength'
-          | 'useUppercase'
-          | 'useLowercase'
-          | 'useNumbers'
-          | 'useSpecialChars'
-          | 'hasCopy'
-          | 'hasGenerate'
-          | 'hasValidation'
-          | 'hasShow'
-          | 'showValidationProgress'
-          | 'showValidationsList',
-          boolean
-        >
+      PR<
+        | 'useLength'
+        | 'useUppercase'
+        | 'useLowercase'
+        | 'useNumbers'
+        | 'useSpecialChars'
+        | 'hasCopy'
+        | 'hasGenerate'
+        | 'hasValidation'
+        | 'hasShow'
+        | 'showValidationProgress'
+        | 'showValidationsList',
+        boolean
       > &
-      Partial<
-        Record<
-          'validIcon' | 'invalidIcon' | 'showIcon' | 'hideIcon' | 'confirmMainIcon' | 'confirmingMainIcon' | 'copyIcon',
-          ReactNode
-        >
-      > & {
-        colors?: Partial<Record<0 | 20 | 40 | 60 | 80 | 100, Partial<Record<'textColor' | 'progressColor', string>>>>
-      }
+      PR<
+        'validIcon' | 'invalidIcon' | 'showIcon' | 'hideIcon' | 'confirmMainIcon' | 'confirmingMainIcon' | 'copyIcon',
+        ReactNode
+      > & { colors?: PR<0 | 20 | 40 | 60 | 80 | 100, PR<'textColor' | 'progressColor', string>> }
   }
   // Others
   LinkType?: ElementType
