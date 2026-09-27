@@ -43,6 +43,7 @@ export type LoomoraConfig = {
         PR<'lowercase' | 'minLength' | 'number' | 'special' | 'uppercase', PR<'short' | 'long', string>>
     }
     phone?: PR<'startPlaceholder' | 'startPlaceholderOne' | 'defaultTitle' | 'startError', string>
+    autoComplete?: PR<'loadingState' | 'emptyState' | 'searchPlaceholder' | 'selectedCount', string>
   }
   // Hooks
   // Components
@@ -121,6 +122,16 @@ export type LoomoraConfig = {
       showCountriesName?: boolean
       showCountriesFlags?: boolean
       selectedCountriesOnly?: CountryType[]
+    }
+    autoComplete?: {
+      triggerIcon?: ReactNode
+      triggerWrapperClassName?: string
+      searchable?: boolean
+      multiple?: boolean
+      searchViaLabel?: boolean
+      showClearSearch?: boolean
+      ClearSearchIcon?: ReactNode
+      multipleTagsCloseIcon?: ReactNode
     }
   }
   // Others

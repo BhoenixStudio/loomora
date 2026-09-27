@@ -461,7 +461,13 @@ const defaultConfig: Required<LoomoraConfig> = {
       startPlaceholder: '[{start}]XXXXXXXXX',
       startPlaceholderOne: '{start}XXXXXXXXX',
       defaultTitle: 'Country',
-      startError: 'Phone number must start with one of [{start}] for {country}'
+      startError: 'Phone number must start with one of [{start}] for {country}',
+    },
+    autoComplete: {
+      loadingState: 'Loading options...',
+      emptyState: 'No options available',
+      searchPlaceholder: 'Search...',
+      selectedCount: '{count} selected',
     },
   },
   // Hooks
@@ -699,6 +705,16 @@ const defaultConfig: Required<LoomoraConfig> = {
     otp: { length: 6, className: 'rounded-xl text-center text-xl font-bold text-title-1' },
     range: { step: 1, showMinMax: true, showValue: true, valuePrefix: '', valueSuffix: '', className: 'text-sm' },
     phone: { worldwide: true, codePrefix: '+', showCountriesName: true, selectedCountriesOnly: [] },
+    autoComplete: {
+      triggerIcon: '⮟',
+      triggerWrapperClassName: 'text-sm',
+      multiple: false,
+      searchable: true,
+      searchViaLabel: true,
+      showClearSearch: true,
+      ClearSearchIcon: '🗙',
+      multipleTagsCloseIcon: '🗙',
+    },
   },
   // Others
   LinkType: 'a',

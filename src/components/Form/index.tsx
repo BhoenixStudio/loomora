@@ -6,6 +6,8 @@ export * from './Modules/Helper'
 export * from './Modules/Label'
 
 // Inputs
+export * from './Inputs/Autocomplete'
+export * from './Inputs/Autocomplete/helper'
 export * from './Inputs/Check'
 export * from './Inputs/Otp'
 export * from './Inputs/Password'
