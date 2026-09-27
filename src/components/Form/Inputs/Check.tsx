@@ -7,13 +7,14 @@ import { useLoomoraConfig } from '../../../config'
 import { Label, LabelProps } from '../Modules/Label'
 import { ConditionalWrapper } from '../../Helper'
 import { InputHelper } from '../Modules/Helper'
+import { TWColorSName } from '../../../types'
 
 export type CheckFieldType = 'checkbox' | 'radio' | 'switch'
 
 export interface CheckFieldProps
   extends InputBase, Omit<InputFieldset, 'fieldsetPrefix' | 'fieldsetSuffix'>, InputLabel, InputHelperAndError {
-  color?: `text-${string}` | `text-${string}/${number}`
-  activeColor?: `text-${string}` | `text-${string}/${number}`
+  color?: TWColorSName<'text'>
+  activeColor?: TWColorSName<'text'>
   properties?: Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value'> & { type?: CheckFieldType }
 }
 
