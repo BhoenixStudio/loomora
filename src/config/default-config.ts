@@ -3,6 +3,7 @@ import type { LoomoraConfig } from './config-types'
 /** Built-in values used when no provider or override is supplied. */
 const defaultConfig: Required<LoomoraConfig> = {
   // Translations
+  hasTranslationStrategy: false,
   translations: {
     socials: {
       behance: { name: 'Behance', placeholder: 'ex: username' },
@@ -469,6 +470,10 @@ const defaultConfig: Required<LoomoraConfig> = {
       searchPlaceholder: 'Search...',
       selectedCount: '{count} selected',
     },
+    uploader: {
+      allCatAccepted: 'All {cat} file(s) allowed',
+      extsAccepted: 'Only {exts} files allowed',
+    },
   },
   // Hooks
   // Components
@@ -704,7 +709,13 @@ const defaultConfig: Required<LoomoraConfig> = {
     },
     otp: { length: 6, className: 'rounded-xl text-center text-xl font-bold text-title-1' },
     range: { step: 1, showMinMax: true, showValue: true, valuePrefix: '', valueSuffix: '', className: 'text-sm' },
-    phone: { worldwide: true, codePrefix: '+', showCountriesName: true, selectedCountriesOnly: [] },
+    phone: {
+      worldwide: true,
+      codePrefix: '+',
+      showCountriesName: true,
+      selectedCountriesOnly: [],
+      showCountriesFlags: true,
+    },
     autoComplete: {
       triggerIcon: '⮟',
       triggerWrapperClassName: 'text-sm',

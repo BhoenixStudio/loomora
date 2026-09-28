@@ -12,6 +12,7 @@ export type DeepPartial<T> = {
 /** Fully resolved Loomora configuration. */
 export type LoomoraConfig = {
   // Translations
+  hasTranslationStrategy?: boolean
   translations?: {
     socials?: PR<SocialType, Pick<SocialPlatform, 'name' | 'placeholder'>>
     countries?: PR<CountryType, Pick<CountryProps, 'name'>>
@@ -44,6 +45,7 @@ export type LoomoraConfig = {
     }
     phone?: PR<'startPlaceholder' | 'startPlaceholderOne' | 'defaultTitle' | 'startError', string>
     autoComplete?: PR<'loadingState' | 'emptyState' | 'searchPlaceholder' | 'selectedCount', string>
+    uploader?: PR<'allCatAccepted' | 'extsAccepted', string>
   }
   // Hooks
   // Components

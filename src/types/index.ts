@@ -78,6 +78,16 @@ export type Enumerate<N extends number, E extends number[] = [], T extends numbe
 
 export type Neverify<T> = { [K in keyof T]?: never }
 
+export type NestedKeyOf<ObjectType> = ObjectType extends null | undefined
+  ? never
+  : ObjectType extends object
+    ? {
+        [Key in keyof ObjectType & (string | number)]: NonNullable<ObjectType[Key]> extends object
+          ? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
+          : `${Key}`
+      }[keyof ObjectType & (string | number)]
+    : never
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PartialRecord<K extends keyof any, T> = Partial<Record<K, T>>
 
