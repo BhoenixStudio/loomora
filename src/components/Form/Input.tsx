@@ -1,28 +1,57 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { InputProps, InputsWrapperProps } from './helper'
 import { cn } from '../../hooks'
+import {
+  Autocomplete,
+  AutocompleteProps,
+  CheckField,
+  CheckFieldProps,
+  InputProps,
+  InputsWrapperProps,
+  Label,
+  LabelProps,
+  OtpField,
+  OtpFieldProps,
+  PasswordField,
+  PasswordFieldProps,
+  PhoneInput,
+  PhoneInputProps,
+  RangeField,
+  RangeFieldProps,
+  SearchField,
+  SearchFieldProps,
+  Select,
+  SelectProps,
+  TextareaField,
+  TextareaProps,
+  TextEditor,
+  TextEditorProps,
+  TextField,
+  TextFieldProps,
+  UploaderField,
+  UploaderFieldProps,
+} from '../index'
 
 export function Input(props: Readonly<InputProps>) {
-  const { type = 'text' } = props
+  const { type = 'text', ...rest } = props
 
   // Configs
   const types: Record<Exclude<InputProps['type'], undefined>, ReactNode> = {
-    text: '',
-    textarea: '',
-    textEditor: '',
-    label: '',
-    search: '',
-    phone: '',
-    password: '',
-    select: '',
-    autocomplete: '',
-    file: '',
-    check: '',
-    otp: '',
-    range: '',
-    custom: '',
+    text: <TextField {...(rest as TextFieldProps)} />,
+    textarea: <TextareaField {...(rest as TextareaProps)} />,
+    textEditor: <TextEditor {...(rest as TextEditorProps)} />,
+    label: <Label {...(rest as LabelProps)} />,
+    search: <SearchField {...(rest as SearchFieldProps)} />,
+    phone: <PhoneInput {...(rest as PhoneInputProps)} />,
+    password: <PasswordField {...(rest as PasswordFieldProps)} />,
+    select: <Select {...(rest as SelectProps)} />,
+    autocomplete: <Autocomplete {...(rest as AutocompleteProps)} />,
+    file: <UploaderField {...(rest as UploaderFieldProps)} />,
+    check: <CheckField {...(rest as CheckFieldProps)} />,
+    otp: <OtpField {...(rest as OtpFieldProps)} />,
+    range: <RangeField {...(rest as RangeFieldProps)} />,
+    custom: (rest as { element: ReactNode }).element,
   }
 
   return types[type ?? 'text'] ?? types.text
