@@ -1,8 +1,8 @@
 import { Locale } from 'date-fns'
 import { ButtonHTMLAttributes, ElementType, ReactNode } from 'react'
-import { ButtonCorner, ButtonSize, ButtonVariant, PhonePrefix } from '../components'
+import { ButtonCorner, ButtonSize, ButtonVariant, PhonePrefix, FileExtType } from '../components'
 import { CountryProps, CountryType, SocialPlatform, SocialType, TimezoneProps, TimezoneType } from '../database'
-import { MQ, PartialRecord as PR, TWColorName, TWColorSName, TWGap, TWPadding, TWTextSize } from '../types'
+import { CSSProps, MQ, PartialRecord as PR, TWColorName, TWColorSName, TWGap, TWPadding, TWTextSize } from '../types'
 
 /** Recursively optional configuration values accepted by a provider. */
 export type DeepPartial<T> = {
@@ -45,7 +45,29 @@ export type LoomoraConfig = {
     }
     phone?: PR<'startPlaceholder' | 'startPlaceholderOne' | 'defaultTitle' | 'startError', string>
     autoComplete?: PR<'loadingState' | 'emptyState' | 'searchPlaceholder' | 'selectedCount', string>
-    uploader?: PR<'allCatAccepted' | 'extsAccepted', string>
+    uploader?: PR<
+      | 'allCatAccepted'
+      | 'extsAccepted'
+      | 'duplicateFileRule'
+      | 'minFilesRule'
+      | 'maxFilesRule'
+      | 'acceptRule'
+      | 'minSizeRule'
+      | 'maxSizeRule'
+      | 'minFilesSizeRule'
+      | 'maxFilesSizeRule'
+      | 'uploadError'
+      | 'dialogTitle'
+      | 'placeholder'
+      | 'pasteAndDragAndDropSupportRule'
+      | 'pasteSupportRule'
+      | 'dragAndDropSupportRule',
+      string
+    > & {
+      dropFilesHere?: PR<'title' | 'description', string>
+      actions?: PR<'update' | 'view' | 'removeFile', string>
+      item?: PR<'number' | 'id' | 'size' | 'ext', string>
+    }
   }
   // Hooks
   // Components
@@ -134,6 +156,37 @@ export type LoomoraConfig = {
       showClearSearch?: boolean
       ClearSearchIcon?: ReactNode
       multipleTagsCloseIcon?: ReactNode
+    }
+    uploader?: PR<
+      | 'fileIcon'
+      | 'filesIcon'
+      | 'imageIcon'
+      | 'imagesIcon'
+      | 'videoIcon'
+      | 'videosIcon'
+      | 'audioIcon'
+      | 'audiosIcon'
+      | 'textIcon'
+      | 'textsIcon'
+      | 'applicationIcon'
+      | 'applicationsIcon'
+      | 'executableIcon'
+      | 'executablesIcon',
+      ReactNode
+    > & {
+      defaultFileCategory?: FileExtType[]
+      onDetectErrors?: (errors: string[]) => void
+      minBlockHeight?: `min-h-[${CSSProps['minHeight']}]`
+      showProgress?: boolean
+      progressColor?: TWColorSName<'text'>
+      minFiles?: number
+      maxFiles?: number
+      minSize?: number
+      maxSize?: number
+      minFilesSize?: number
+      maxFilesSize?: number
+      allowPaste?: boolean
+      allowDragAndDrop?: boolean
     }
   }
   // Others
