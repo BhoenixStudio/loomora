@@ -1,17 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { ChangeEvent, isValidElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLoomoraConfig } from '../../../../config'
 import { cn, isThisProps } from '../../../../hooks'
-import { Button, ButtonBaseProps } from '../../../UI'
-import { AutocompleteMultiple, AutocompleteOption, AutocompleteProps, AutocompleteSingle } from './helper'
-import { Label, LabelProps } from '../../Modules/Label'
 import { ConditionalWrapper } from '../../../Helper'
+import { Button, ButtonBaseProps } from '../../../UI'
 import { InputHelper } from '../../Modules/Helper'
+import { Label, LabelProps } from '../../Modules/Label'
+import {
+  AutocompleteMultiple,
+  AutocompleteMultipleProps,
+  AutocompleteOption,
+  AutocompleteProps,
+  AutocompleteSingle,
+  AutocompleteSingleProps,
+} from './helper'
 
-export function Autocomplete<T extends Record<string, unknown> = Record<string, unknown>>(
-  props: Readonly<AutocompleteProps<T>>
-) {
+export function Autocomplete<T = any>(props: Readonly<AutocompleteMultipleProps<T>>): ReactNode
+export function Autocomplete<T = any>(props: Readonly<AutocompleteSingleProps<T>>): ReactNode
+export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
   const { t, form } = useLoomoraConfig()
 
   const {

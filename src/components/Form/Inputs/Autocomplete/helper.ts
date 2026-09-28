@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 'use client'
 
 import { ChangeEvent, HTMLAttributes, ReactNode } from 'react'
@@ -40,9 +39,7 @@ export type AutocompleteMultiple<T = any> = {
   max?: number
 }
 
-type InputProps<T = any> = (
-  ({ multiple?: false } & AutocompleteSingle<T>) | ({ multiple: true } & AutocompleteMultiple<T>)
-) & {
+type InputSharedProps = {
   onClear?: () => void
   disabled?: boolean
   required?: boolean
@@ -52,6 +49,16 @@ type InputProps<T = any> = (
   searchViaLabel?: boolean
   showClearSearch?: boolean
 }
+
+export type AutocompleteSingleProperties<T = any> = InputSharedProps & {
+  multiple?: false
+} & AutocompleteSingle<T>
+
+export type AutocompleteMultipleProperties<T = any> = InputSharedProps & {
+  multiple: true
+} & AutocompleteMultiple<T>
+
+type InputProps<T = any> = AutocompleteSingleProperties<T> | AutocompleteMultipleProperties<T>
 
 export interface AutocompleteProps<T = any>
   extends InputBase, Pick<InputFieldset, 'fieldset'>, InputLabel, InputHelperAndError {
@@ -67,4 +74,12 @@ export interface AutocompleteProps<T = any>
   showTrigger?: boolean
   trigger?: ReactNode | (Pick<ButtonBaseProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode })
   onToggle?: (opened: boolean) => void
+}
+
+export type AutocompleteSingleProps<T = any> = Omit<AutocompleteProps<T>, 'properties'> & {
+  properties?: AutocompleteSingleProperties<T>
+}
+
+export type AutocompleteMultipleProps<T = any> = Omit<AutocompleteProps<T>, 'properties'> & {
+  properties?: AutocompleteMultipleProperties<T>
 }
