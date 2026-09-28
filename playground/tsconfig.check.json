@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["app/page.tsx", "app/next-intl.ts", "app/library-compat.d.ts"],
+  "exclude": ["node_modules"]
+}

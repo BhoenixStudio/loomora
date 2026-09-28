@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import './globals.css'
+import 'loomora/styles/index.css'
 
 export const metadata: Metadata = {
   title: 'Loomora Playground',
-  description: 'Private development playground for Loomora components and hooks.',
+  description: 'Interactive catalog for Loomora components, hooks, and data helpers.',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -21,7 +21,11 @@
     ],
     "paths": {
       "loomora": ["../src/index.ts"],
-      "loomora/*": ["../src/*"]
+      "loomora/*": ["../src/*"],
+      "@components": ["../src/components/index.ts"],
+      "@hooks": ["../src/hooks/index.ts"],
+      "next-intl": ["./app/next-intl.ts"],
+      "next-intl/server": ["./app/next-intl.ts"]
     }
   },
   "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", ".next/dev/types/**/*.ts"],
