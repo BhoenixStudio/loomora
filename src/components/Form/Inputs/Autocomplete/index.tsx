@@ -19,6 +19,7 @@ import {
 
 export function Autocomplete<T = any>(props: Readonly<AutocompleteMultipleProps<T>>): ReactNode
 export function Autocomplete<T = any>(props: Readonly<AutocompleteSingleProps<T>>): ReactNode
+export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>): ReactNode
 export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
   const { t, form } = useLoomoraConfig()
 
