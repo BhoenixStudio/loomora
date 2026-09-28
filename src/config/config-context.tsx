@@ -11,7 +11,7 @@ import '../styles/index.css'
 
 export type TranslateFn = <K extends NestedKeyOf<LoomoraConfig['translations']>>(
   key: K,
-  vars?: PR<string, string>
+  vars?: PR<string, string | number | undefined | null>
 ) => string
 
 const ConfigContext = createContext<Required<LoomoraConfig> & { t: TranslateFn }>({ ...defaultConfig, t: () => '' })
