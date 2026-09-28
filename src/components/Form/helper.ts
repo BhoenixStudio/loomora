@@ -1,25 +1,40 @@
 import { Dispatch, ElementType, FocusEvent, ReactNode, SetStateAction } from 'react'
 import { ChildSize, GlobalElementEssentials, WrapperSize } from '../../types'
-import { InputHelperProps } from './Modules/Helper'
-import { LabelProps } from './Modules/Label'
+import {
+  AutocompleteProps,
+  ButtonProps,
+  CheckFieldProps,
+  InputHelperProps,
+  LabelProps,
+  OtpFieldProps,
+  PasswordFieldProps,
+  PhoneInputProps,
+  RangeFieldProps,
+  SearchFieldProps,
+  SelectProps,
+  TextareaProps,
+  TextEditorProps,
+  TextFieldProps,
+  UploaderFieldProps,
+} from '../index'
 
 export type InputBase = { size?: ChildSize[]; condition?: boolean; loading?: boolean }
 export type InputProps = InputBase &
   (
-    | { type?: 'text' }
-    | { type: 'textarea' }
-    | { type: 'textEditor' }
-    | { type: 'label' }
-    | { type: 'search' }
-    | { type: 'phone' }
-    | { type: 'password' }
-    | { type: 'select' }
-    | { type: 'autocomplete' }
-    | { type: 'file' }
-    | { type: 'check' }
-    | { type: 'otp' }
-    | { type: 'range' }
-    | { type: 'custom' }
+    | ({ type?: 'text' } & TextFieldProps)
+    | ({ type: 'textarea' } & TextareaProps)
+    | ({ type: 'textEditor' } & TextEditorProps)
+    | ({ type: 'label' } & LabelProps)
+    | ({ type: 'search' } & SearchFieldProps)
+    | ({ type: 'phone' } & PhoneInputProps)
+    | ({ type: 'password' } & PasswordFieldProps)
+    | ({ type: 'select' } & SelectProps)
+    | ({ type: 'autocomplete' } & AutocompleteProps)
+    | ({ type: 'file' } & UploaderFieldProps)
+    | ({ type: 'check' } & CheckFieldProps)
+    | ({ type: 'otp' } & OtpFieldProps)
+    | ({ type: 'range' } & RangeFieldProps)
+    | ({ type: 'custom'; element: ReactNode } & Pick<InputBase, 'condition'>)
   )
 
 export type InputFieldset = {
@@ -42,23 +57,17 @@ export type InputsWrapperProps = {
   empty?: ReactNode
 }
 
-export type FormProps<T extends ElementType = 'form'> = GlobalElementEssentials<T> & {
+export type FormProps<T extends ElementType = 'form'> = Omit<GlobalElementEssentials<T>, 'clearDefaultClassName'> & {
+  as?: T
   inputs?: InputsWrapperProps['inputs']
   inputsWrapper?: InputsWrapperProps['wrapper']
   prefix?: ReactNode
   suffix?: ReactNode
   actionsPrefix?: ReactNode
   actionsSuffix?: ReactNode
-  // actions?: ActionProps[];
+  actions?: ButtonProps[]
   actionWrapper?: GlobalElementEssentials<'div'>
-  empty?:
-    | InputsWrapperProps['empty']
-    | ((
-        prefix?: ReactNode,
-        suffix?: ReactNode,
-        actionsPrefix?: ReactNode,
-        actionsSuffix?: ReactNode
-      ) => InputsWrapperProps['empty'])
+  empty?: InputsWrapperProps['empty']
   loading?: boolean
   condition?: boolean
 }
