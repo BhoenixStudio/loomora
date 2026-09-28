@@ -10,7 +10,7 @@ import { TextField } from '../TextField'
 import { PasswordFieldProps, usePasswordHelper } from './helper'
 
 export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>((props) => {
-  const { translations, form } = useLoomoraConfig()
+  const { t, form } = useLoomoraConfig()
 
   const {
     prefix,
@@ -26,8 +26,8 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>((p
     showValidationsList = form?.password?.showValidationsList,
     onValidate,
     confirmValue = '',
-    matchText = translations?.password?.confirmMismatch,
-    mismatchText = translations?.password?.confirmMatch,
+    matchText = t('password.confirmMismatch'),
+    mismatchText = t('password.confirmMatch'),
     showConfirmIcon,
     onConfirm,
     onShow,
@@ -39,7 +39,7 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>((p
 
   const { GeneratePassword, ValidatePassword } = usePasswordHelper()
 
-  const { value = '', placeholder = translations?.password?.placeholder, ...inputProps } = properties ?? {}
+  const { value = '', placeholder = t('password.placeholder'), ...inputProps } = properties ?? {}
   const { items, textColor, progressColor, strength, note, valid } = ValidatePassword(value, validationSettings)
 
   // States
@@ -82,7 +82,7 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>((p
       className={cn([{ value: 'self-end', condition: hasGenerate && !hasValidation }])}
       onClick={HandleGenerate}
     >
-      {generateText ?? translations?.password?.generate}
+      {generateText ?? t('password.generate')}
     </Button>
   )
 

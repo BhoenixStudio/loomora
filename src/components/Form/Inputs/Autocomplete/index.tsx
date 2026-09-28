@@ -12,7 +12,7 @@ import { InputHelper } from '../../Modules/Helper'
 export function Autocomplete<T extends Record<string, unknown> = Record<string, unknown>>(
   props: Readonly<AutocompleteProps<T>>
 ) {
-  const { translations, form } = useLoomoraConfig()
+  const { t, form } = useLoomoraConfig()
 
   const {
     size = [],
@@ -30,8 +30,8 @@ export function Autocomplete<T extends Record<string, unknown> = Record<string, 
     loading = false,
     options = [],
     optionsMenu,
-    emptyState = translations?.autoComplete?.emptyState,
-    loadingState = translations?.autoComplete?.loadingState,
+    emptyState = t('autoComplete.emptyState'),
+    loadingState = t('autoComplete.loadingState'),
     showTrigger,
     trigger: dTrigger,
     onToggle,
@@ -51,7 +51,7 @@ export function Autocomplete<T extends Record<string, unknown> = Record<string, 
     disabled,
     searchable = form?.autoComplete?.searchable ?? true,
     onSearch,
-    searchPlaceholder = translations?.autoComplete?.searchPlaceholder,
+    searchPlaceholder = t('autoComplete.searchPlaceholder'),
     searchViaLabel = form?.autoComplete?.searchViaLabel ?? true,
     showClearSearch = form?.autoComplete?.showClearSearch ?? true,
   } = properties ?? {}
@@ -103,7 +103,7 @@ export function Autocomplete<T extends Record<string, unknown> = Record<string, 
   const triggerContent = useMemo(() => {
     if (multiple) {
       if (selected.length === 0) return null
-      return multiRenderValue?.(selected) ?? translations?.autoComplete?.selectedCount
+      return multiRenderValue?.(selected) ?? t('autoComplete.selectedCount', { count: selected.length })
     }
     const current = selected[0]
     if (!current) return null

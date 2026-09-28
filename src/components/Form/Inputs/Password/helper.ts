@@ -61,7 +61,7 @@ export interface PasswordFieldProps extends Omit<TextFieldProps, 'properties'> {
 }
 
 export function usePasswordHelper() {
-  const { translations, form } = useLoomoraConfig()
+  const { t, form } = useLoomoraConfig()
 
   const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const LOWERCASE = 'abcdefghijklmnopqrstuvwxyz'
@@ -80,24 +80,12 @@ export function usePasswordHelper() {
       progressColor: PasswordValidationReturn['progressColor']
     }
   > = {
-    0: { note: translations?.password?.validation?.weak ?? '', textColor: 'text-error', progressColor: 'bg-error' },
-    20: { note: translations?.password?.validation?.weak ?? '', textColor: 'text-error', progressColor: 'bg-error' },
-    40: {
-      note: translations?.password?.validation?.medium ?? '',
-      textColor: 'text-warning',
-      progressColor: 'bg-warning',
-    },
-    60: { note: translations?.password?.validation?.medium ?? '', textColor: 'text-info', progressColor: 'bg-info' },
-    80: {
-      note: translations?.password?.validation?.strong ?? '',
-      textColor: 'text-primary',
-      progressColor: 'bg-primary',
-    },
-    100: {
-      note: translations?.password?.validation?.strong ?? '',
-      textColor: 'text-success',
-      progressColor: 'bg-success',
-    },
+    0: { note: t('password.validation.weak') ?? '', textColor: 'text-error', progressColor: 'bg-error' },
+    20: { note: t('password.validation.weak') ?? '', textColor: 'text-error', progressColor: 'bg-error' },
+    40: { note: t('password.validation.medium') ?? '', textColor: 'text-warning', progressColor: 'bg-warning' },
+    60: { note: t('password.validation.medium') ?? '', textColor: 'text-info', progressColor: 'bg-info' },
+    80: { note: t('password.validation.strong') ?? '', textColor: 'text-primary', progressColor: 'bg-primary' },
+    100: { note: t('password.validation.strong') ?? '', textColor: 'text-success', progressColor: 'bg-success' },
   }
 
   // Functions
@@ -178,37 +166,37 @@ export function usePasswordHelper() {
       const passwordStr = String(password)
       const validations = [
         {
-          message: translations?.password?.validation?.minLength?.long,
-          excerpt: translations?.password?.validation?.minLength?.short,
+          message: t('password.validation.minLength.long', { length: minLength }),
+          excerpt: t('password.validation.minLength.short', { length: minLength }),
           valid: passwordStr.length >= minLength,
           condition: useLength,
         },
         {
-          message: translations?.password?.validation?.lowercase?.long,
-          excerpt: translations?.password?.validation?.lowercase?.short,
+          message: t('password.validation.lowercase.long', { length: lowercaseLength }),
+          excerpt: t('password.validation.lowercase.short', { length: lowercaseLength }),
           valid:
             /[a-z]/.test(passwordStr) ||
             (useLowercase && (passwordStr.match(/[a-z]/g) || []).length >= lowercaseLength),
           condition: useLowercase,
         },
         {
-          message: translations?.password?.validation?.uppercase?.long,
-          excerpt: translations?.password?.validation?.uppercase?.short,
+          message: t('password.validation.uppercase.long', { length: uppercaseLength }),
+          excerpt: t('password.validation.uppercase.short', { length: uppercaseLength }),
           valid:
             /[A-Z]/.test(passwordStr) ||
             (useUppercase && (passwordStr.match(/[A-Z]/g) || []).length >= uppercaseLength),
           condition: useUppercase,
         },
         {
-          message: translations?.password?.validation?.number?.long,
-          excerpt: translations?.password?.validation?.number?.short,
+          message: t('password.validation.number.long', { length: numbersLength }),
+          excerpt: t('password.validation.number.short', { length: numbersLength }),
           valid:
             /[0-9]/.test(passwordStr) || (useNumbers && (passwordStr.match(/[0-9]/g) || []).length >= numbersLength),
           condition: useNumbers,
         },
         {
-          message: translations?.password?.validation?.special?.long,
-          excerpt: translations?.password?.validation?.special?.short,
+          message: t('password.validation.special.long', { length: specialCharsLength }),
+          excerpt: t('password.validation.special.short', { length: specialCharsLength }),
           valid:
             specialCharsRegex.test(passwordStr) ||
             (useSpecialChars &&

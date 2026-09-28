@@ -11,9 +11,9 @@ export type DialogFormProps<T extends ElementType = 'form'> = FormProps<T> &
   DialogProcess & { dialog?: DialogProps; title?: ReactNode }
 
 export function DialogForm(props: DialogFormProps) {
-  const { translations } = useLoomoraConfig()
+  const { t } = useLoomoraConfig()
 
-  const { title = translations?.form?.dialogTitle, open, setOpen, show, setShow, dialog, condition, } = props
+  const { title = t('form.dialogTitle'), open, setOpen, show, setShow, dialog, condition } = props
 
   const { isMobile } = useResponsive()
 
@@ -35,7 +35,7 @@ export function DialogForm(props: DialogFormProps) {
           color="third"
           variant="text"
           startIcon="zondicons:close-outline"
-          attributes={{ 'aria-label': translations?.form?.dialogCloseTitle }}
+          attributes={{ 'aria-label': t('form.dialogCloseTitle') }}
           onClick={() => {
             UseToggle('close', { open, setOpen, setShow })
             onClose?.()

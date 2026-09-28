@@ -30,7 +30,7 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>((props
     ...inputRest
   } = props
 
-  const { translations, form } = useLoomoraConfig()
+  const { t, form } = useLoomoraConfig()
 
   const { attributes: wrapperAttrs, ...restWrapperProps } = wrapper ?? {}
   const { onMouseEnter, onMouseLeave, ...restWrapperAttrs } = wrapperAttrs ?? {}
@@ -97,7 +97,7 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>((props
               color={sColor}
               corner={sCorner}
               onClick={handleSearchClick}
-              attributes={{ 'aria-label': translations?.searchField?.searchButtonTitle }}
+              attributes={{ 'aria-label': t('searchField.searchButtonTitle') }}
             >
               {form?.searchField?.searchIcon}
             </Button>
@@ -113,7 +113,7 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>((props
               color={cColor}
               corner={cCorner}
               onClick={handleClearClick}
-              attributes={{ 'aria-label': translations?.searchField?.clearSearchTitle }}
+              attributes={{ 'aria-label': t('searchField.clearSearchTitle') }}
             >
               {form?.searchField?.clearIcon}
             </Button>
