@@ -6,9 +6,11 @@ import { CountryType, useCountries } from '../../../../database'
 import { Flag } from '../../../UI'
 import { TextField } from '../TextField'
 import { PhoneInputProps, usePhoneHelper } from './helper'
+import { Autocomplete } from '../Autocomplete'
+import { AutocompleteOption } from '../Autocomplete/helper'
 
 export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props) => {
-  const { translations, form } = useLoomoraConfig()
+  const { t, form } = useLoomoraConfig()
 
   const {
     worldwide = form?.phone?.worldwide ?? true,
@@ -57,7 +59,9 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props) 
   const { name, phone } = sCountry ?? {}
 
   const startPH =
-    Number(phone?.start?.length) > 1 ? translations?.phone?.startPlaceholder : translations?.phone?.startPlaceholderOne
+    Number(phone?.start?.length) > 1
+      ? t('phone.startPlaceholder', { start: String(phone?.start?.join(', ')) })
+      : t('phone.startPlaceholderOne', { start: String(phone?.start?.[0] ?? '') })
   const placeholder = worldwide && phone?.start?.length ? startPH : (ph ?? startPH)
 
   const countryTitle = GetPhoneTitle({
@@ -65,7 +69,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props) 
     showCountriesFlags,
     codePrefix,
     worldwide,
-    defaultTitle: translations?.phone?.defaultTitle ?? 'Country',
+    defaultTitle: t('phone.defaultTitle') ?? 'Country',
     render: ({ country, showCountriesFlags, codePrefix }) => (
       <>
         {showCountriesFlags && country?.code && <Flag country={country.code} className="me-1" />}
@@ -74,42 +78,6 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props) 
       </>
     ),
   })
-
-  const pre = (
-    <div className="flex items-center text-sm font-medium gap-1">
-      {worldwide ? (
-        <></>
-      ) : (
-        // <Autocomplete
-        //   options={countryOptions}
-        //   wrapper={{ className: 'border-[unset]' }}
-        //   properties={{
-        //     searchable: true,
-        //     onSearch: (e) => setSearchQuery(e.target.value),
-        //     searchViaLabel: false,
-        //     showClearSearch: false,
-        //     value: country ?? selectedCountry,
-        //     onChange: (value) => setSelectedCountry(value as CountryType),
-        //     renderValue: (option) => {
-        //       const c = filteredCountries.find((fc) => fc.code === option.value) ?? sCountry
-        //       return (
-        //         <span className="flex items-center gap-1">
-        //           {showCountriesFlags && c?.code && <Flag country={c.code} />}
-        //           <span className="text-body-2 shrink-0">
-        //             {codePrefix}
-        //             {c?.phone?.code}
-        //           </span>
-        //         </span>
-        //       )
-        //     },
-        //   }}
-        // />
-        countryTitle
-      )}
-      {prefix}
-    </div>
-  )
-
   const filteredCountries = useMemo(() => {
     if (!searchQuery.trim()) return countries
     const q = searchQuery.toLowerCase().trim()
@@ -133,6 +101,43 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props) 
       ),
     }))
   }, [worldwide, filteredCountries, showCountriesFlags, showCountriesName, codePrefix])
+
+  const pre = (
+    <div className="flex items-center text-sm font-medium gap-1">
+      {worldwide ? (
+        <></>
+      ) : (
+        <>
+          <Autocomplete
+            options={countryOptions}
+            wrapper={{ className: 'border-[unset]' }}
+            properties={{
+              searchable: true,
+              onSearch: (e) => setSearchQuery(e.target.value),
+              searchViaLabel: false,
+              showClearSearch: false,
+              value: country ?? selectedCountry,
+              onChange: (value) => setSelectedCountry(typeof value === 'string' ? (value as CountryType) : undefined),
+              renderValue: (option) => {
+                const c = filteredCountries.find((fc) => fc.code === option.value) ?? sCountry
+                return (
+                  <span className="flex items-center gap-1">
+                    {showCountriesFlags && c?.code && <Flag country={c.code} />}
+                    <span className="text-body-2 shrink-0">
+                      {codePrefix}
+                      {c?.phone?.code}
+                    </span>
+                  </span>
+                )
+              },
+            }}
+          />
+          {countryTitle}
+        </>
+      )}
+      {prefix}
+    </div>
+  )
 
   // Functions
   const phoneValue = (value: string) => ({
@@ -176,7 +181,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props) 
             country: sCountry,
             setValue,
             setValueError,
-            startError: translations?.phone?.startError,
+            startError: t('phone.startError', { country: String(name), start: String(phone?.start?.join(', ')) }),
             onInput,
             isPasting,
             setIsPasting,
@@ -187,7 +192,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props) 
             country: sCountry,
             setValue,
             setValueError,
-            startError: translations?.phone?.startError,
+            startError: t('phone.startError', { country: String(name), start: String(phone?.start?.join(', ')) }),
             onPaste,
             setIsPasting,
             codePrefix,
