@@ -9,6 +9,7 @@ import {
   ReactNode,
   SetStateAction,
   useEffect,
+  useId,
   useRef,
   useState,
 } from 'react'
@@ -405,6 +406,7 @@ export function useUploaderHelper() {
   const useUploader = <T extends string | number = number>(
     options: UseUploaderOptions<T> = {} as UseUploaderOptions<T>
   ): UseUploaderReturn<T> => {
+    const generatedId = useId().replaceAll(':', '')
     const {
       id,
       name,
@@ -435,6 +437,7 @@ export function useUploaderHelper() {
     const onChangeMultiple = multiOptions.onChange
 
     const { accept, rules } = acceptRules(extensions)
+    const generatedName = name ?? `uploader-${generatedId}`
 
     // Refs
     const inputRef = useRef<HTMLInputElement>(null)
@@ -563,7 +566,7 @@ export function useUploaderHelper() {
       inputRef,
       inputProps: {
         type: 'file',
-        name: name ?? `uploader-${Math.random().toString(36).substring(2, 11)}`,
+        name: generatedName,
         className: 'hidden',
         disabled: disabled || isLoading,
         ...(id ? { id } : {}),

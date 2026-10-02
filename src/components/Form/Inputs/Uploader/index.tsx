@@ -1,6 +1,6 @@
 'use client'
 
-import { DragEvent, InputHTMLAttributes, MouseEvent, ReactNode, useEffect, useRef, useState } from 'react'
+import { DragEvent, InputHTMLAttributes, MouseEvent, ReactNode, useEffect, useId, useRef, useState } from 'react'
 import { useLoomoraConfig } from '../../../../config'
 import { cn, isThisProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
@@ -81,6 +81,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
   } = (properties ?? {}) as UploaderFieldMultipleProps<T>
 
   const inputRef = useRef<HTMLInputElement>(null)
+  const generatedName = `uploader-${useId().replaceAll(':', '')}`
 
   const { acceptRules, calcFileSize, upload } = useUploaderHelper()
 
@@ -331,7 +332,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
       <input
         ref={inputRef}
         type="file"
-        name={name ?? `uploader-${Math.random().toString(36).substring(2, 11)}`}
+        name={name ?? generatedName}
         className="hidden"
         onChange={(e) => {
           setValue(e.target.value)

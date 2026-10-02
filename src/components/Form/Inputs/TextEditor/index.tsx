@@ -1,7 +1,7 @@
 'use client'
 
 import { Editor, IAllProps } from '@tinymce/tinymce-react'
-import { useRef, useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import { useLoomoraConfig } from '../../../../config'
 import { cn, isThisProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
@@ -45,6 +45,7 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
   } = props
 
   const editorRef = useRef<TinyMCEEditor | null>(null)
+  const editorId = `loomora-editor-${useId().replaceAll(':', '')}`
 
   const { t, form, settings } = useLoomoraConfig()
 
@@ -132,6 +133,7 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
       )}
 
       <Editor
+        id={editorId}
         tinymceScriptSrc="/js/tinymce/tinymce.min.js"
         licenseKey="gpl"
         onInit={(_, editor) => {
