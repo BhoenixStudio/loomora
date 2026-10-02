@@ -153,7 +153,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
       onClick={onClick}
     />
   )
-  const viewButton = (
+  const viewButton = preview?.url && (
     <Button
       attributes={{ 'aria-label': t('uploader.actions.view') }}
       startIcon="icon-park-twotone:preview-open"
