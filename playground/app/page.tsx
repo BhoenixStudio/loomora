@@ -749,7 +749,10 @@ function Playground() {
                     label="PhoneInput"
                     properties={{ defaultCountry: 'OM', value: '', setValue: () => undefined }}
                   />
-                  <UploaderField label="UploaderField" properties={{ accept: ['image'] }} />
+                  <UploaderField
+                    label="UploaderField"
+                    properties={{ multiple: true, value: [], viewType: 'list', accept: ['image'] }}
+                  />
                   <Inputs
                     inputs={[
                       { type: 'text', label: 'Inputs wrapper', properties: { placeholder: 'Direct Inputs export' } },
@@ -814,7 +817,7 @@ function Playground() {
                     </span>
                   </div>
                   <Result>
-                    getCountry('{selectedCountry}')\n
+                    getCountry(&apos;{selectedCountry}&apos;)\n
                     {JSON.stringify(
                       { code: country.code, name: country.name, phone: country.phone, currency: country.currency },
                       null,
@@ -837,7 +840,7 @@ function Playground() {
                       </div>
                     ))}
                   </div>
-                  <Result>getSocial('github')\n{JSON.stringify(getSocial('github'), null, 2)}</Result>
+                  <Result>getSocial(&apos;github&apos;)\n{JSON.stringify(getSocial('github'), null, 2)}</Result>
                 </div>
               )}
               {dataMode === 'timezones' && (
@@ -942,7 +945,12 @@ function Playground() {
                   </div>
                   <div className="color-row">
                     <span className="color-swatch" />
-                    <code>getColor('primary') → {getCurrentThemeColor() || 'theme token unavailable'}</code>
+                    <code>
+                      getColor(&apos;primary&apos;) →{' '}
+                      {typeof window === 'undefined'
+                        ? 'theme token unavailable'
+                        : getCurrentThemeColor() || 'theme token unavailable'}
+                    </code>
                     <code>hexToRgb → {hexToRgb('#b9694e').join(', ')}</code>
                     <code>rgbToHsl → {rgbToHsl(185, 105, 78).join(', ')}</code>
                   </div>
@@ -960,7 +968,7 @@ function Playground() {
                     addDays → {format(addDays(new Date('2026-09-29'), 7), { type: 'dayName' })},{' '}
                     {format(addDays(new Date('2026-09-29'), 7), { type: 'custom', format: 'MMM d' })}\nsubDays →{' '}
                     {format(subDays(new Date('2026-09-29'), 7), { type: 'custom', format: 'MMM d' })}\nniceDate →{' '}
-                    {niceDate(new Date(Date.now() - 60_000))}\ncompare →{' '}
+                    {niceDate(new Date('2026-09-29T14:29:00'))}\ncompare →{' '}
                     {JSON.stringify(compare('2026-09-29', '2026-10-01'))}\ndateRange →{' '}
                     {JSON.stringify(dateRange({ first: '2026-09-29', second: '2026-09-30' }, 'sameMonth'))}
                   </Result>

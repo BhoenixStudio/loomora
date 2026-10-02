@@ -5,13 +5,13 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev -p 5001",
     "lint": "eslint .",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "loomora": "file:..",
+    "loomora": "workspace:*",
     "next": "^16.3.5",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"

@@ -58,7 +58,7 @@
     "build:watch": "tsup --watch",
     "check": "npm run lint && npm run typecheck && npm run test:run && npm run build && npm run pack:dry",
     "check:playground": "npm run typecheck --workspace playground && npm run lint --workspace playground && npm run build --workspace playground",
-    "dev": "concurrently --kill-others-on-fail --names library,playground \"npm run build:watch\" \"npm run dev:playground\"",
+    "dev": "npm run dev:playground",
     "dev:playground": "npm run dev --workspace playground",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

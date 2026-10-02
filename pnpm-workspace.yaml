@@ -1,5 +1,9 @@
+packages:
+  - playground
+
 allowBuilds:
   esbuild: true
+  unrs-resolver: true
 minimumReleaseAgeExclude:
   - '@types/node@22.20.4'
   - eslint@10.11.0

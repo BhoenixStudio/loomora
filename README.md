@@ -110,13 +110,17 @@ pnpm run build
 npm run build
 yarn run build
 
-# Start the library watch build and private Next.js playground
+# Start the private Next.js playground
 pnpm run dev
 npm run dev
 yarn run dev
+
+# Or run from the playground directory
+cd playground
+pnpm dev
 ```
 
-The root development command runs the library build in watch mode alongside the playground. The playground is private and is not included in the published package.
+The root development command starts the playground, which aliases `loomora` to the local `src/` files for live development. The playground is private and is not included in the published package.
 
 ## Scripts
 
@@ -124,7 +128,7 @@ The root development command runs the library build in watch mode alongside the 
 | ------------------------- | --------------------------------------------------------------------------- |
 | `build`                   | Build ESM, CommonJS, source maps, and TypeScript declarations into `dist/`. |
 | `build:watch`             | Rebuild the library when source files change.                               |
-| `dev`                     | Run the library watch build and playground development server together.     |
+| `dev`                     | Start the private playground development server.                            |
 | `dev:playground`          | Start the playground's Next.js development server.                          |
 | `test`                    | Start Vitest in watch mode.                                                 |
 | `test:run`                | Run the complete test suite once.                                           |

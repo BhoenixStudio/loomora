@@ -10,9 +10,9 @@ const nextConfig: NextConfig = {
   transpilePackages: ['loomora'],
   turbopack: {
     resolveAlias: {
-      loomora: librarySource,
-      'next-intl': playgroundTranslations,
-      'next-intl/server': playgroundIntlServer,
+      loomora: '../src/index.ts',
+      'next-intl': './app/next-intl.ts',
+      'next-intl/server': './app/next-intl-server.ts',
     },
   },
   webpack: (config) => {
