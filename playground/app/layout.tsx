@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
-import './globals.css'
+
+import '../public/css/globals.css'
 import 'loomora/styles/index.css'
 
 export const metadata: Metadata = {
