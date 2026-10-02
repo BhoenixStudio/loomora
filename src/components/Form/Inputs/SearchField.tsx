@@ -1,9 +1,9 @@
 'use client'
 
-import { forwardRef, KeyboardEvent, MouseEvent, useRef, useState } from 'react'
+import { KeyboardEvent, MouseEvent, useRef, useState } from 'react'
+import { useLoomoraConfig } from '../../../config'
 import { Button, ButtonProps } from '../../UI'
 import { TextField, TextFieldProps } from './TextField'
-import { useLoomoraConfig } from '../../../config'
 
 export interface SearchFieldProps extends Omit<TextFieldProps, 'properties'> {
   properties?: TextFieldProps['properties'] & {
@@ -17,7 +17,7 @@ export interface SearchFieldProps extends Omit<TextFieldProps, 'properties'> {
   clearIconProps?: Pick<ButtonProps, 'variant' | 'color' | 'corner'>
 }
 
-export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>((props) => {
+export function SearchField(props: SearchFieldProps) {
   const {
     showSearchIcon = true,
     searchIconProps,
@@ -124,4 +124,4 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>((props
       {...inputRest}
     />
   )
-})
+}

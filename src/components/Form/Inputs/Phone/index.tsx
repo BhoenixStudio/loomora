@@ -1,15 +1,15 @@
 'use client'
 
-import { forwardRef, ReactNode, useEffect, useMemo, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useLoomoraConfig } from '../../../../config'
 import { CountryType, useCountries } from '../../../../database'
 import { Flag } from '../../../UI'
-import { TextField } from '../TextField'
-import { PhoneInputProps, usePhoneHelper } from './helper'
 import { Autocomplete } from '../Autocomplete'
 import { AutocompleteOption } from '../Autocomplete/helper'
+import { TextField } from '../TextField'
+import { PhoneInputProps, usePhoneHelper } from './helper'
 
-export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props) => {
+export function PhoneInput(props: PhoneInputProps) {
   const { t, form } = useLoomoraConfig()
 
   const {
@@ -202,4 +202,4 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>((props) 
       {...{ active: forceActive, ...attrs }}
     />
   )
-})
+}

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import { forwardRef, ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useLoomoraConfig } from '../../../../config'
 import { cn, CopyToClipboard } from '../../../../hooks'
 import { ProgressBar } from '../../../Partials'
@@ -9,7 +9,7 @@ import { Button } from '../../../UI'
 import { TextField } from '../TextField'
 import { PasswordFieldProps, usePasswordHelper } from './helper'
 
-export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>((props) => {
+export function PasswordField(props: PasswordFieldProps) {
   const { t, form } = useLoomoraConfig()
 
   const {
@@ -168,4 +168,4 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>((p
       {...inputRest}
     />
   )
-})
+}
