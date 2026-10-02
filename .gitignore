@@ -9,3 +9,5 @@ out/
 
 // Custom
 /Reports/*
+/playground/public/flags/
+/playground/public/js/tinymce/
