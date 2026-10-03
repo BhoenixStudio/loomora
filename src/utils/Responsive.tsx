@@ -62,7 +62,9 @@ export function ResponsiveProvider({ children }: Readonly<{ children: ReactNode 
     conditions.isUltra = UseAgent('2xl')
 
     // Helper Functions
-    const UseMQ = (size: ScreenSize): ScreenSizeValue => sizes[size] || 0
+    function UseMQ(size: ScreenSize): ScreenSizeValue {
+      return sizes[size] || 0
+    }
     function UseCondition(size: ScreenSize, condition: ScreenSizeCondition = '<=') {
       const mqValue = UseMQ(size)
       const numericValue = typeof mqValue === 'string' ? parseFloat(mqValue) : mqValue
