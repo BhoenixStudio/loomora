@@ -1,0 +1,186 @@
+@import 'tailwindcss';
+@source '../../src';
+@source '../components';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  --loomora-primary: #f37035;
+  --loomora-secondary: #173e58;
+  --loomora-success: #1a841f;
+  --loomora-error: #c92020;
+  --loomora-warning: #efd002;
+  --loomora-info: #0c86f2;
+  --loomora-star: #cdb001;
+  --loomora-main: #f5f7fa;
+  --loomora-second: #ffffff;
+  --loomora-third: #e7ebf0;
+  --loomora-title-1: #18212b;
+  --loomora-title-2: #344252;
+  --loomora-title-3: #485769;
+  --loomora-body-1: #475569;
+  --loomora-body-2: #66758a;
+  --loomora-body-3: #8390a1;
+}
+
+.dark:root {
+  color-scheme: dark;
+  --loomora-secondary: #72b3cc;
+  --loomora-main: #10151b;
+  --loomora-second: #19212a;
+  --loomora-third: #2a3440;
+  --loomora-title-1: #f4f7fa;
+  --loomora-title-2: #e0e7ef;
+  --loomora-title-3: #c3ceda;
+  --loomora-body-1: #c3ceda;
+  --loomora-body-2: #a1afbe;
+  --loomora-body-3: #8390a1;
+}
+
+:root,
+.dark:root {
+  --color-primary: var(--loomora-primary);
+  --color-secondary: var(--loomora-secondary);
+  --color-success: var(--loomora-success);
+  --color-error: var(--loomora-error);
+  --color-warning: var(--loomora-warning);
+  --color-info: var(--loomora-info);
+  --color-star: var(--loomora-star);
+  --color-main: var(--loomora-main);
+  --color-second: var(--loomora-second);
+  --color-third: var(--loomora-third);
+  --color-title-1: var(--loomora-title-1);
+  --color-title-2: var(--loomora-title-2);
+  --color-title-3: var(--loomora-title-3);
+  --color-body-1: var(--loomora-body-1);
+  --color-body-2: var(--loomora-body-2);
+  --color-body-3: var(--loomora-body-3);
+  --switch-speed: 0.5s;
+  --switch-size: 1.4em;
+  --switch-padding: 0.12em;
+  --checkbox-speed: 0.4s;
+  --checkbox-size: 1.35em;
+}
+
+@theme {
+  --color-primary: var(--loomora-primary);
+  --color-secondary: var(--loomora-secondary);
+  --color-success: var(--loomora-success);
+  --color-error: var(--loomora-error);
+  --color-warning: var(--loomora-warning);
+  --color-info: var(--loomora-info);
+  --color-star: var(--loomora-star);
+  --color-main: var(--loomora-main);
+  --color-second: var(--loomora-second);
+  --color-third: var(--loomora-third);
+  --color-title-1: var(--loomora-title-1);
+  --color-title-2: var(--loomora-title-2);
+  --color-title-3: var(--loomora-title-3);
+  --color-body-1: var(--loomora-body-1);
+  --color-body-2: var(--loomora-body-2);
+  --color-body-3: var(--loomora-body-3);
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+body {
+  @apply bg-main font-sans text-title-1 antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--loomora-primary) 28%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@keyframes switch-slider {
+  0% {
+    width: unset;
+    margin-inline-start: unset;
+  }
+  25%,
+  90% {
+    width: 100%;
+    margin-inline-start: unset;
+  }
+  91% {
+    margin-inline-start: auto;
+  }
+  100% {
+    width: unset;
+  }
+}
+
+@keyframes switch-slider-reverse {
+  0% {
+    width: unset;
+    margin-inline-start: auto;
+  }
+  10%,
+  75% {
+    width: 100%;
+    margin-inline-start: unset;
+  }
+  100% {
+    width: unset;
+    margin-inline-start: unset;
+  }
+}
+
+@keyframes checkbox-ripple {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(20);
+    opacity: 0;
+  }
+}
+
+input,
+textarea,
+select {
+  @apply appearance-none scheme-light accent-primary disabled:cursor-not-allowed dark:scheme-dark;
+}
+
+.range-field__input {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  outline: none;
+}
+
+.range-field__input::-webkit-slider-runnable-track,
+.range-field__input::-moz-range-track {
+  height: 24px;
+  border: 0;
+  background: transparent;
+}
+
+.range-field__input::-webkit-slider-thumb,
+.range-field__input::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: grab;
+}
+
+.range-field__input:active::-webkit-slider-thumb,
+.range-field__input:active::-moz-range-thumb {
+  cursor: grabbing;
+}

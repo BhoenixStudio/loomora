@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 
-import '../public/css/globals.css'
+import './globals.css'
 import 'loomora/styles/index.css'
 
 export const metadata: Metadata = {
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning={false}>
+      <body suppressHydrationWarning={false}>{children}</body>
     </html>
   )
 }
