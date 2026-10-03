@@ -491,6 +491,18 @@ const defaultConfig: Required<LoomoraConfig> = {
       pasteSupportRule: 'Hover & paste files here',
       dragAndDropSupportRule: 'Drag and drop files here',
     },
+    settings: {
+      darkMode: 'Dark Mode',
+      darkModeEndTime: 'Dark Mode End Time',
+      darkModeStartTime: 'Dark Mode Start Time',
+      dynamicMode: 'Dynamic Mode',
+      dynamicModeDescription:
+        'Dynamic Mode auto-switches between Light and Dark based on time. Set start and end times for Dark Mode',
+      lightMode: 'Light Mode',
+      systemDetection: 'System Detection',
+      systemDetectionDescription:
+        'System Detection mode follows your device settings and auto-switches between Light and Dark',
+    },
   },
   // Hooks
   // Components
@@ -775,7 +787,23 @@ const defaultConfig: Required<LoomoraConfig> = {
   },
   // Others
   LinkType: 'a',
-  settings: { isRtl: false, locale: 'en' },
+  theme: {
+    default: 'LIGHT',
+    switchingAnimation: true,
+    themeStorageKey: 'theme',
+    themeRangeStorageKey: 'theme-dynamic-range',
+    themeDynamicStartTime: '06:00',
+    themeDynamicEndTime: '18:00',
+    lightModeIcon: '☼',
+    darkModeIcon: '☾︎',
+    systemDetectionIcon: '🖧',
+    dynamicModeIcon: '◐',
+  },
+  responsive: { xs: 0, sm: '40rem', md: '48rem', lg: '64rem', xl: '80rem', '2xl': '96rem', '3xl': '120rem' },
+  settings: {
+    isRtl: false,
+    locale: 'en',
+  },
 }
 
 export { defaultConfig }

@@ -3,6 +3,7 @@ import { ButtonHTMLAttributes, ElementType, ReactNode } from 'react'
 import { ButtonCorner, ButtonSize, ButtonVariant, PhonePrefix, FileExtType } from '../components'
 import { CountryProps, CountryType, SocialPlatform, SocialType, TimezoneProps, TimezoneType } from '../database'
 import { CSSProps, MQ, PartialRecord as PR, TWColorName, TWColorSName, TWGap, TWPadding, TWTextSize } from '../types'
+import { ScreenSize, ScreenSizeValue, ThemeType } from '../utils'
 
 /** Recursively optional configuration values accepted by a provider. */
 export type DeepPartial<T> = {
@@ -68,6 +69,17 @@ export type LoomoraConfig = {
       actions?: PR<'update' | 'view' | 'removeFile', string>
       item?: PR<'number' | 'id' | 'size' | 'ext', string>
     }
+    settings?: PR<
+      | 'lightMode'
+      | 'darkMode'
+      | 'systemDetection'
+      | 'systemDetectionDescription'
+      | 'dynamicMode'
+      | 'dynamicModeDescription'
+      | 'darkModeStartTime'
+      | 'darkModeEndTime',
+      string
+    >
   }
   // Hooks
   // Components
@@ -191,7 +203,23 @@ export type LoomoraConfig = {
   }
   // Others
   LinkType?: ElementType
-  settings?: { isRtl?: boolean; locale?: string }
+  theme?: {
+    default?: ThemeType
+    switchingAnimation?: boolean
+    themeStorageKey?: string
+    themeRangeStorageKey?: string
+    themeDynamicStartTime?: string
+    themeDynamicEndTime?: string
+    lightModeIcon?: ReactNode
+    darkModeIcon?: ReactNode
+    systemDetectionIcon?: ReactNode
+    dynamicModeIcon?: ReactNode
+  }
+  responsive?: PR<ScreenSize, ScreenSizeValue>
+  settings?: {
+    isRtl?: boolean
+    locale?: string
+  }
 }
 
 /** Partial configuration accepted by `LoomoraProvider`. */
