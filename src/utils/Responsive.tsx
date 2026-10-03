@@ -63,8 +63,20 @@ export function ResponsiveProvider({ children }: Readonly<{ children: ReactNode 
 
     // Helper Functions
     const UseMQ = (size: ScreenSize): ScreenSizeValue => sizes[size] || 0
-    const UseCondition = (size: ScreenSize, condition: ScreenSizeCondition = '<=') =>
-      eval(`${windowSize?.width} ${condition} ${UseMQ(size)}`)
+    function UseCondition(size: ScreenSize, condition: ScreenSizeCondition = '<=') {
+      const mqValue = UseMQ(size)
+      const numericValue = typeof mqValue === 'string' ? parseFloat(mqValue) : mqValue
+      const breakpointPx = typeof mqValue === 'string' && mqValue.includes('rem') ? numericValue * 16 : numericValue
+      const width = windowSize?.width || 0
+      const operators: Record<ScreenSizeCondition, boolean> = {
+        '<': width < breakpointPx,
+        '<=': width <= breakpointPx,
+        '=': width === breakpointPx,
+        '>=': width >= breakpointPx,
+        '>': width > breakpointPx,
+      }
+      return operators[condition] ?? false
+    }
 
     // Functions
     function UseAgent(agent: keyof Responsive): boolean {
