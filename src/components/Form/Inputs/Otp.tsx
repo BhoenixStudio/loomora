@@ -1,7 +1,7 @@
 'use client'
 
 import { ClipboardEvent, Dispatch, InputHTMLAttributes, KeyboardEvent, SetStateAction, useEffect, useRef } from 'react'
-import { useLoomoraConfig } from '../../../config'
+import { useLoomora } from '../../../config'
 import { cn, isThisProps } from '../../../hooks'
 import { GlobalElementEssentials } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
@@ -19,7 +19,7 @@ export interface OtpFieldProps extends InputBase, Pick<InputFieldset, 'fieldset'
 }
 
 export function OtpField(props: Readonly<OtpFieldProps>) {
-  const { form } = useLoomoraConfig()
+  const { form } = useLoomora()
 
   const {
     size = [],

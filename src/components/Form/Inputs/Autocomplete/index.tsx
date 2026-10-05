@@ -2,7 +2,7 @@
 'use client'
 
 import { ChangeEvent, isValidElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useLoomoraConfig } from '../../../../config'
+import { useLoomora } from '../../../../config'
 import { cn, isThisProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
 import { Button, ButtonBaseProps } from '../../../UI'
@@ -21,7 +21,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteMultipleProps<
 export function Autocomplete<T = any>(props: Readonly<AutocompleteSingleProps<T>>): ReactNode
 export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>): ReactNode
 export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
-  const { t, form } = useLoomoraConfig()
+  const { t, form } = useLoomora()
 
   const {
     size = [],

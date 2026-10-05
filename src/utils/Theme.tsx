@@ -3,7 +3,7 @@
 import { createContext, MouseEvent, ReactNode, useContext, useMemo, useReducer } from 'react'
 import { useContextFns, useContextSharedFns } from '.'
 import { InputProps } from '../components'
-import { useLoomoraConfig } from '../config'
+import { useLoomora } from '../config'
 import { AddLocalStorage, UseLocalStorage } from '../hooks'
 
 export type ThemeType = 'LIGHT' | 'DARK' | 'SYSTEM' | 'DYNAMIC'
@@ -22,7 +22,7 @@ type ThemeContext = Theme & NonEditableTheme
 const Context = createContext<ThemeContext | undefined>(undefined)
 
 export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
-  const { t: th, theme: themeSettings } = useLoomoraConfig()
+  const { t: th, theme: themeSettings } = useLoomora()
 
   const {
     default: dTheme = 'LIGHT',

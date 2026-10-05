@@ -1,7 +1,7 @@
 'use client'
 
 import { forwardRef, TextareaHTMLAttributes, useEffect, useState } from 'react'
-import { useLoomoraConfig } from '../../../config'
+import { useLoomora } from '../../../config'
 import { cn, isThisProps } from '../../../hooks'
 import { GlobalElementEssentials } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
@@ -34,7 +34,7 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
     condition,
   } = props
 
-  const { form } = useLoomoraConfig()
+  const { form } = useLoomora()
 
   const {
     className: fieldsetClass = form?.fieldset?.className,

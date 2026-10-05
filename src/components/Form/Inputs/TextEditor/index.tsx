@@ -2,7 +2,7 @@
 
 import { Editor, IAllProps } from '@tinymce/tinymce-react'
 import { useId, useRef, useState } from 'react'
-import { useLoomoraConfig } from '../../../../config'
+import { useLoomora } from '../../../../config'
 import { cn, isThisProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
 import { Loader } from '../../../Partials'
@@ -47,7 +47,7 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
   const editorRef = useRef<TinyMCEEditor | null>(null)
   const editorId = `loomora-editor-${useId().replaceAll(':', '')}`
 
-  const { t, form, settings } = useLoomoraConfig()
+  const { t, form, settings } = useLoomora()
 
   const {
     className: fieldsetClass = form?.fieldset?.className,

@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { useLoomoraConfig } from '../../config'
+import { useLoomora } from '../../config'
 import { cn } from '../../hooks'
 import { Button, ButtonProps } from '../index'
 
@@ -59,7 +59,7 @@ export function Breadcrumb(props: Readonly<BreadcrumbProps>) {
 export function Breadcrumbs(props: Readonly<BreadcrumbsProps>) {
   const { items, separator, className = 'flex flex-wrap gap-2', ...attrs } = props
 
-  const { breadcrumbs } = useLoomoraConfig()
+  const { breadcrumbs } = useLoomora()
   const dSeparator = separator ?? breadcrumbs?.defaultSeparator
 
   // Configs

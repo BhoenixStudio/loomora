@@ -13,7 +13,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { useLoomoraConfig } from '../../../../config'
+import { useLoomora } from '../../../../config'
 import { GlobalElementEssentials, TWColorSName } from '../../../../types'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../../helper'
 
@@ -161,7 +161,7 @@ export interface UploaderFieldProps<T extends string | number = number>
 }
 
 export function useUploaderHelper() {
-  const { t, form } = useLoomoraConfig()
+  const { t, form } = useLoomora()
 
   // Functions
   const acceptRules = (exts: FileExtType[] = form?.uploader?.defaultFileCategory ?? ['all']) => {

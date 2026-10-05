@@ -1,7 +1,7 @@
 'use client'
 
 import { DragEvent, InputHTMLAttributes, MouseEvent, ReactNode, useEffect, useId, useRef, useState } from 'react'
-import { useLoomoraConfig } from '../../../../config'
+import { useLoomora } from '../../../../config'
 import { cn, isThisProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
 import { InputHelper } from '../../Modules/Helper'
@@ -17,7 +17,7 @@ import {
 import { useUploaderModules } from './Modules'
 
 export function UploaderField<T extends string | number = number>(props: Readonly<UploaderFieldProps<T>>) {
-  const { t, form } = useLoomoraConfig()
+  const { t, form } = useLoomora()
 
   const {
     size = [],

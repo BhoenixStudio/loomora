@@ -1,6 +1,6 @@
 'use client'
 
-import { useLoomoraConfig } from '../config'
+import { useLoomora } from '../config'
 
 /**
  * Localized country metadata and lookup helpers.
@@ -1053,7 +1053,7 @@ export type GetCountries<T extends object = object> = {
  */
 export function useCountries() {
   const countries = Countries()
-  const { translations } = useLoomoraConfig()
+  const { translations } = useLoomora()
 
   const getCountries = <T extends object = object>(props?: GetCountries<T>): (CountryProps & T)[] => {
     const { only = [], extra, except = [] } = props ?? {}

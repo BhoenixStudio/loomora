@@ -3,7 +3,7 @@
 import { ReactNode } from 'react'
 import { GlobalElementEssentials } from '../../../types'
 import { InputBase } from '../helper'
-import { useLoomoraConfig } from '../../../config'
+import { useLoomora } from '../../../config'
 import { cn } from '../../../hooks'
 import { Loader } from '../../Partials'
 
@@ -15,7 +15,7 @@ export type LabelProps = Omit<GlobalElementEssentials<'label'>, 'assignDefaultCl
 }
 
 export function Label(props: Readonly<InputBase & LabelProps>) {
-  const { form } = useLoomoraConfig()
+  const { form } = useLoomora()
 
   const {
     size = [],

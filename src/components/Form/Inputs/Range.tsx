@@ -1,7 +1,7 @@
 'use client'
 
 import { forwardRef, InputHTMLAttributes, ReactNode, useMemo } from 'react'
-import { useLoomoraConfig } from '../../../config'
+import { useLoomora } from '../../../config'
 import { cn, isThisProps } from '../../../hooks'
 import { GlobalElementEssentials } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
@@ -36,7 +36,7 @@ export interface RangeFieldProps extends InputBase, InputFieldset, InputLabel, I
 }
 
 export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, ref) => {
-  const { form } = useLoomoraConfig()
+  const { form } = useLoomora()
 
   const {
     size = [],

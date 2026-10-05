@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode, useEffect, useMemo, useState } from 'react'
-import { useLoomoraConfig } from '../../../../config'
+import { useLoomora } from '../../../../config'
 import { CountryType, useCountries } from '../../../../database'
 import { Flag } from '../../../UI'
 import { Autocomplete } from '../Autocomplete'
@@ -10,7 +10,7 @@ import { TextField } from '../TextField'
 import { PhoneInputProps, usePhoneHelper } from './helper'
 
 export function PhoneInput(props: PhoneInputProps) {
-  const { t, form } = useLoomoraConfig()
+  const { t, form } = useLoomora()
 
   const {
     worldwide = form?.phone?.worldwide ?? true,

@@ -41,7 +41,7 @@ export function LoomoraProvider({ children, config }: Readonly<{ children: React
   )
 }
 
-export function useLoomoraConfig() {
+export function useLoomora() {
   return useContext(ConfigContext)
 }
 

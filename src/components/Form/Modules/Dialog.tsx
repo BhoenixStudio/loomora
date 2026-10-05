@@ -5,13 +5,13 @@ import { UseToggle } from '../../../hooks'
 import { useResponsive } from '../../../utils'
 import { Button, Dialog, DialogProcess, DialogProps } from '../../UI'
 import { FormProps } from '../helper'
-import { useLoomoraConfig } from '../../../config'
+import { useLoomora } from '../../../config'
 
 export type DialogFormProps<T extends ElementType = 'form'> = FormProps<T> &
   DialogProcess & { dialog?: DialogProps; title?: ReactNode }
 
 export function DialogForm(props: DialogFormProps) {
-  const { t } = useLoomoraConfig()
+  const { t } = useLoomora()
 
   const { title = t('form.dialogTitle'), open, setOpen, show, setShow, dialog, condition } = props
 

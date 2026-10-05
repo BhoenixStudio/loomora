@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
 import type { PropsWithChildren, ReactNode } from 'react'
-import { LoomoraProvider, useLoomoraConfig } from '../src/config/config-context'
+import { LoomoraProvider, useLoomora } from '../src/config/config-context'
 import { defaultConfig } from '../src/config/defaults'
 import { mergeConfig } from '../src/config/helper'
 import { useSocials } from '../src/database/useSocialMedia'
@@ -11,7 +11,7 @@ function TestLink({ href, children }: { href: string; children?: ReactNode }) {
 
 describe('Loomora configuration', () => {
   it('returns built-in defaults without a provider', () => {
-    const { result } = renderHook(() => useLoomoraConfig())
+    const { result } = renderHook(() => useLoomora())
 
     expect(result.current.socials.github).toEqual({ name: 'GitHub', placeholder: 'ex: username' })
     expect(result.current.linkType).toBe('a')
@@ -21,7 +21,7 @@ describe('Loomora configuration', () => {
     const wrapper = ({ children }: PropsWithChildren) => (
       <LoomoraProvider config={{ linkType: TestLink }}>{children}</LoomoraProvider>
     )
-    const { result } = renderHook(() => useLoomoraConfig(), { wrapper })
+    const { result } = renderHook(() => useLoomora(), { wrapper })
 
     expect(result.current.linkType).toBe(TestLink)
   })

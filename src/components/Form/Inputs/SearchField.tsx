@@ -1,7 +1,7 @@
 'use client'
 
 import { KeyboardEvent, MouseEvent, useRef, useState } from 'react'
-import { useLoomoraConfig } from '../../../config'
+import { useLoomora } from '../../../config'
 import { Button, ButtonProps } from '../../UI'
 import { TextField, TextFieldProps } from './TextField'
 
@@ -30,7 +30,7 @@ export function SearchField(props: SearchFieldProps) {
     ...inputRest
   } = props
 
-  const { t, form } = useLoomoraConfig()
+  const { t, form } = useLoomora()
 
   const { attributes: wrapperAttrs, ...restWrapperProps } = wrapper ?? {}
   const { onMouseEnter, onMouseLeave, ...restWrapperAttrs } = wrapperAttrs ?? {}

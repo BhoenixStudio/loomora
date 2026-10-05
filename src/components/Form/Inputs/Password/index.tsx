@@ -2,7 +2,7 @@
 'use client'
 
 import { ReactNode, useEffect, useState } from 'react'
-import { useLoomoraConfig } from '../../../../config'
+import { useLoomora } from '../../../../config'
 import { cn, CopyToClipboard } from '../../../../hooks'
 import { ProgressBar } from '../../../Partials'
 import { Button } from '../../../UI'
@@ -10,7 +10,7 @@ import { TextField } from '../TextField'
 import { PasswordFieldProps, usePasswordHelper } from './helper'
 
 export function PasswordField(props: PasswordFieldProps) {
-  const { t, form } = useLoomoraConfig()
+  const { t, form } = useLoomora()
 
   const {
     prefix,

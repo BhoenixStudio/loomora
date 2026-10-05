@@ -185,7 +185,7 @@ import {
   isSameYear,
   subDays as sub,
 } from 'date-fns'
-import { useLoomoraConfig } from '../config'
+import { useLoomora } from '../config'
 
 /** The twelve translated month keys currently produced by `Months`. */
 export type MonthKey = keyof ReturnType<typeof Months>
@@ -281,7 +281,7 @@ function Months() {
 export function useDates() {
   const monthList = Months()
 
-  const { translations } = useLoomoraConfig()
+  const { translations } = useLoomora()
 
   const GetMonths = <T extends object = object>(props?: GetMonths<T>): (MonthItem & T)[] => {
     const { only = [], extra, except = [] } = props ?? {}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useLoomoraConfig } from '../../config'
+import { useLoomora } from '../../config'
 import { useDates } from '../../hooks'
 import { GlobalElementEssentials } from '../../types'
 
@@ -15,7 +15,7 @@ export type CopyrightsProps = GlobalElementEssentials<'p'> & {
 export function Copyrights(props: Readonly<CopyrightsProps>) {
   const { format } = useDates()
 
-  const { LinkType } = useLoomoraConfig()
+  const { LinkType } = useLoomora()
 
   const {
     className = 'text-sm text-body-3',

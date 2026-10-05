@@ -1,7 +1,7 @@
 'use client'
 
 import { DragEvent, ElementType, MouseEvent, ReactNode, useState } from 'react'
-import { useLoomoraConfig } from '../../../../config'
+import { useLoomora } from '../../../../config'
 import { cn, UseToggle } from '../../../../hooks'
 import { Button, ButtonProps, Dialog, DialogProps } from '../../../UI'
 import { FileProps, UploaderFieldProperties, UploaderFieldProps, UploaderValidation, useUploaderHelper } from './helper'
@@ -58,7 +58,7 @@ interface ModuleProps<T extends string | number = number> extends UBase<T>, Prop
 }
 
 export function useUploaderModules<T extends string | number = number>(props: Readonly<ModuleProps<T>>) {
-  const { t, form } = useLoomoraConfig()
+  const { t, form } = useLoomora()
 
   const {
     previews = [],

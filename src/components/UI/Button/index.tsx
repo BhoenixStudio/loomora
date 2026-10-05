@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { useLoomoraConfig } from '../../../config'
+import { useLoomora } from '../../../config'
 import { cn } from '../../../hooks'
 import { CSSProps } from '../../../types'
 import { ButtonProps, ButtonVariant, LinkButtonProps, RegularButtonProps } from './helper'
@@ -46,7 +46,7 @@ export function Button(props: Readonly<ButtonProps>) {
     disabled = false,
   } = props as RegularButtonProps
 
-  const { LinkType, button } = useLoomoraConfig()
+  const { LinkType, button } = useLoomora()
 
   const { defaultType, defaultColor, defaultLoadingTitle, sizes, colors, corners } = button ?? {}
 

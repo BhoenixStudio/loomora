@@ -1,6 +1,6 @@
 'use client'
 
-import { useLoomoraConfig } from '../config/config-context'
+import { useLoomora } from '../config/config-context'
 import { CountryProps, CountryType, useCountries } from './index'
 
 type TimezonesProps = ReturnType<typeof Timezones>
@@ -172,7 +172,7 @@ function Timezones() {
 /** Returns timezone list, lookup, grouping, and conversion helpers. */
 export function useTimezones() {
   const timezones = Timezones()
-  const { translations } = useLoomoraConfig()
+  const { translations } = useLoomora()
 
   const { getCountry } = useCountries()
 

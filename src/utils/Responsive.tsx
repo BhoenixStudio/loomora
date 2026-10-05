@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react'
-import { useLoomoraConfig } from '../config'
+import { useLoomora } from '../config'
 
 type RangePrefix = '' | 'gt' | 'lt'
 type WidowSize = { width: number; height: number }
@@ -27,7 +27,7 @@ type ResponsiveContext = ResponsiveReturn & NonEditableResponsive
 const Context = createContext<ResponsiveContext | undefined>(undefined)
 
 export function ResponsiveProvider({ children }: Readonly<{ children: ReactNode }>) {
-  const { responsive: responsiveSettings } = useLoomoraConfig()
+  const { responsive: responsiveSettings } = useLoomora()
 
   const {
     xs = 0,

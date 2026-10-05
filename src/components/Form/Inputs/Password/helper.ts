@@ -1,7 +1,7 @@
 'use client'
 
 import { InputHTMLAttributes, ReactNode, useMemo } from 'react'
-import { useLoomoraConfig } from '../../../../config'
+import { useLoomora } from '../../../../config'
 import { TextFieldProps } from '../TextField'
 
 type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>
@@ -61,7 +61,7 @@ export interface PasswordFieldProps extends Omit<TextFieldProps, 'properties'> {
 }
 
 export function usePasswordHelper() {
-  const { t, form } = useLoomoraConfig()
+  const { t, form } = useLoomora()
 
   const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const LOWERCASE = 'abcdefghijklmnopqrstuvwxyz'

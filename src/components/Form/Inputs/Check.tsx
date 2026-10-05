@@ -3,7 +3,7 @@
 import { ElementType, InputHTMLAttributes, ReactNode, useRef } from 'react'
 import { cn, isThisProps } from '../../../hooks'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
-import { useLoomoraConfig } from '../../../config'
+import { useLoomora } from '../../../config'
 import { Label, LabelProps } from '../Modules/Label'
 import { ConditionalWrapper } from '../../Helper'
 import { InputHelper } from '../Modules/Helper'
@@ -38,7 +38,7 @@ function CheckIcon() {
 }
 
 export function CheckField(props: Readonly<CheckFieldProps>) {
-  const { form } = useLoomoraConfig()
+  const { form } = useLoomora()
 
   const {
     size = [],

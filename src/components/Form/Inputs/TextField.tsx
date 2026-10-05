@@ -1,7 +1,7 @@
 'use client'
 
 import { forwardRef, InputHTMLAttributes, ReactNode, useEffect, useState } from 'react'
-import { useLoomoraConfig } from '../../../config'
+import { useLoomora } from '../../../config'
 import { cn, isThisProps } from '../../../hooks'
 import { GlobalElementEssentials } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
@@ -20,7 +20,7 @@ export interface TextFieldProps extends InputBase, InputFieldset, InputLabel, In
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
-  const { form } = useLoomoraConfig()
+  const { form } = useLoomora()
 
   const {
     size = [],

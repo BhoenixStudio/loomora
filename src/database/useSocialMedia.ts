@@ -1,6 +1,6 @@
 'use client'
 
-import { useLoomoraConfig } from '../config/config-context'
+import { useLoomora } from '../config/config-context'
 
 /**
  * Configurable social-platform metadata and filtered lookup helpers.
@@ -143,7 +143,7 @@ export type GetSocials<T extends object = object> = {
  */
 export function useSocials() {
   const socials = Socials()
-  const { translations } = useLoomoraConfig()
+  const { translations } = useLoomora()
 
   const getSocials = <T extends object = object>(props?: GetSocials<T>): (SocialPlatform & T)[] => {
     const { extra = {}, only = [], except = [] } = props ?? {}
