@@ -6,12 +6,13 @@ export type { ConvertCase } from './casify'
 export { useHue } from './chroma'
 export type { HueFormat, HueOptions } from './chroma'
 
-//
-export * from './Consoles'
-
 // CX
 export { cx } from './cx'
 export type { CXValue } from './cx'
+
+// Echo
+export { echo } from './echo'
+export type { EchoItem, EchoOptions } from './echo'
 
 export * from './DocumentAtts'
 export * from './ElementFns'
