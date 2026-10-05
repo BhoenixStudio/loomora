@@ -22,7 +22,10 @@ export type { FloatPos } from './dom'
 export { echo } from './echo'
 export type { EchoItem, EchoOptions } from './echo'
 
+// Storage
+export { cookie, local, session } from './storage'
+export type { CookieOptions, StoreOptions } from './storage'
+
 export * from './helpers'
-export * from './LocalStorage'
 export * from './useDates'
 export * from './Validate'
