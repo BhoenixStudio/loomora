@@ -96,7 +96,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
     restTrigger = { color: tColor, corner: tCorner, variant: tVariant, ...triggerRest }
   }
 
-  const labelClassName = cn([
+  const labelClassName = cx([
     form?.label?.stateSharedClassName,
     {
       value: form?.label?.activeClassName,
@@ -111,14 +111,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
   if (condition === false) return null
   return (
     <fieldset
-      className={cn(['flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
+      className={cx(['flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
       {...fieldsetAttrs}
       {...restFieldset}
     >
       {fieldsetPrefix}
 
       <div
-        className={cn([
+        className={cx([
           'flex flex-nowrap items-center',
           {
             value: wrapperClass,
@@ -148,7 +148,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
         {prefix}
         <select
           ref={ref}
-          className={cn([
+          className={cx([
             'flex-1 bg-transparent outline-none disabled:cursor-not-allowed py-3',
             { value: 'ps-2', fallback: 'ps-3', condition: Boolean(prefix) },
             { value: 'pe-2', fallback: 'pe-3', condition: Boolean(suffix) },

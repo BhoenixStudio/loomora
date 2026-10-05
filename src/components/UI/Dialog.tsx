@@ -279,7 +279,7 @@ export function Dialog(props: Readonly<DialogPropsFull>) {
 
   // Configs
   const positions: Record<DialogPosition, string> = {
-    center: cn([
+    center: cx([
       'inset-x-0 mx-auto max-w-[95%] max-h-[95%] ease-[cubic-bezier(0,2.5,1,1)]',
       {
         value: positionActiveClassName ?? 'top-1/2 -translate-y-1/2',
@@ -287,7 +287,7 @@ export function Dialog(props: Readonly<DialogPropsFull>) {
         condition: open,
       },
     ]),
-    top: cn([
+    top: cx([
       'inset-x-0 mx-auto ease-in-out',
       {
         value: positionActiveClassName ?? 'top-0',
@@ -295,7 +295,7 @@ export function Dialog(props: Readonly<DialogPropsFull>) {
         condition: open,
       },
     ]),
-    bottom: cn([
+    bottom: cx([
       'inset-x-0 mx-auto ease-in-out',
       {
         value: positionActiveClassName ?? 'bottom-0',
@@ -303,7 +303,7 @@ export function Dialog(props: Readonly<DialogPropsFull>) {
         condition: open,
       },
     ]),
-    left: cn([
+    left: cx([
       'top-0 inset-r-[unset] h-[100dvh] ease-in-out',
       {
         value: positionActiveClassName ?? 'left-0',
@@ -311,7 +311,7 @@ export function Dialog(props: Readonly<DialogPropsFull>) {
         condition: open,
       },
     ]),
-    right: cn([
+    right: cx([
       'top-0 left-[unset] h-[100dvh] ease-in-out',
       {
         value: positionActiveClassName ?? 'right-0',
@@ -319,7 +319,7 @@ export function Dialog(props: Readonly<DialogPropsFull>) {
         condition: open,
       },
     ]),
-    start: cn([
+    start: cx([
       'top-0 inset-e-[unset] h-[100dvh] ease-in-out',
       {
         value: positionActiveClassName ?? 'inset-s-0',
@@ -327,7 +327,7 @@ export function Dialog(props: Readonly<DialogPropsFull>) {
         condition: open,
       },
     ]),
-    end: cn([
+    end: cx([
       'top-0 inset-s-[unset] h-[100dvh] ease-in-out',
       {
         value: positionActiveClassName ?? 'inset-e-0',
@@ -353,7 +353,7 @@ export function Dialog(props: Readonly<DialogPropsFull>) {
           type="button"
           aria-label="Close Dialog"
           {...(closeOnOverlayClick && { onClick: HandleClose })}
-          className={cn([
+          className={cx([
             'fixed inset-0 z-1900',
             'transition-opacity duration-300 ease-in-out',
             { value: 'opacity-100', fallback: 'opacity-0 pointer-events-none', condition: open },
@@ -364,7 +364,7 @@ export function Dialog(props: Readonly<DialogPropsFull>) {
       )}
 
       <dialog
-        className={cn([
+        className={cx([
           'flex fixed z-2000 overflow-y-auto m-0',
           baseClassName,
           'transition-all duration-250',

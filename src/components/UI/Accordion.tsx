@@ -253,7 +253,7 @@ export function Accordion(props: Readonly<AccordionProps>) {
   // Configs
   const trigger = (
     <div
-      className={cn([
+      className={cx([
         'loomora-accordion__trigger shrink-0 ms-auto',
         { value: 'cursor-pointer', condition: !allTitleClickable },
         { value: 'loomora-accordion__trigger--collapsed', condition: collapsed },
@@ -275,7 +275,7 @@ export function Accordion(props: Readonly<AccordionProps>) {
   )
 
   let titleElement: ReactNode = (
-    <div ref={headDivRef} className={cn(['flex flex-nowrap items-start', tDClassName])} {...tDAttributes} {...tDAttrs}>
+    <div ref={headDivRef} className={cx(['flex flex-nowrap items-start', tDClassName])} {...tDAttributes} {...tDAttrs}>
       {title}
       {trigger}
     </div>
@@ -288,7 +288,7 @@ export function Accordion(props: Readonly<AccordionProps>) {
           handleCollapseChange()
           onTBClick?.(e)
         }}
-        className={cn([
+        className={cx([
           'flex flex-nowrap items-start cursor-pointer',
           tBClassName,
           { value: 'loomora-accordion__title--effects', condition: hasEffects },
@@ -316,7 +316,7 @@ export function Accordion(props: Readonly<AccordionProps>) {
   return (
     <section
       ref={containerRef}
-      className={cn([
+      className={cx([
         'loomora-accordion flex flex-col flex-nowrap',
         { value: 'loomora-accordion--entered', condition: hasEntered },
         'transition-all duration-300 ease-in-out',
@@ -329,7 +329,7 @@ export function Accordion(props: Readonly<AccordionProps>) {
     >
       {titleElement}
       <div
-        className={cn([
+        className={cx([
           'loomora-accordion__content',
           { value: 'loomora-accordion__content--collapsed', condition: collapsed },
           { value: childrenClassName, condition: typeof children === 'string' },

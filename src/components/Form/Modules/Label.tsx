@@ -30,9 +30,9 @@ export function Label(props: Readonly<InputBase & LabelProps>) {
   } = props
 
   if (condition === false) return
-  if (loading) return <Loader height={20} className={cn([...size])} />
+  if (loading) return <Loader height={20} className={cx([...size])} />
   return (
-    <label className={cn(['flex', ...size, className])} {...attributes} {...attrs}>
+    <label className={cx(['flex', ...size, className])} {...attributes} {...attrs}>
       {children}
       {required && showRequiredIndicator && <span className="text-[1.2em]">*</span>}
     </label>

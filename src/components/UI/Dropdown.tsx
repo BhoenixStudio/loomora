@@ -319,7 +319,7 @@ export function Dropdown(props: Readonly<DropdownProps>) {
   const position = staticPosition ? getStaticPosition(sPosition) : calculatedPosition
 
   return (
-    <div ref={wrapperRef} className={cn(['relative', className])} {...wrapperRestProps}>
+    <div ref={wrapperRef} className={cx(['relative', className])} {...wrapperRestProps}>
       <Button
         onClick={(e: MouseEvent<HTMLButtonElement>) => {
           handleToggle(!open)
@@ -334,7 +334,7 @@ export function Dropdown(props: Readonly<DropdownProps>) {
         <div
           ref={menuRef}
           onAnimationEnd={handleMenuAnimationEnd}
-          className={cn([
+          className={cx([
             'loomora-dropdown absolute z-50',
             open ? 'loomora-dropdown--enter' : 'loomora-dropdown--exit',
             position.v === 'top' ? 'loomora-dropdown--top bottom-full mb-2' : 'loomora-dropdown--bottom top-full mt-2',

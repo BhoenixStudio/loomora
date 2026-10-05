@@ -105,7 +105,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
 
   const rulesComp = rules.length > 0 && (
     <div
-      className={cn([
+      className={cx([
         'flex flex-col items-center text-[10px] text-body-2 gap-0.5 mt-1 pointer-events-none',
         { value: 'text-white', fallback: 'text-body-1', condition: hasFiles },
       ])}
@@ -117,7 +117,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
   )
   const allowanceComp = allowance.length > 0 && (
     <div
-      className={cn([
+      className={cx([
         'flex flex-col flex-nowrap items-center gap-1 text-[10px] text-body-3 mt-2 pointer-events-none',
         { value: 'text-white', fallback: 'text-body-2', condition: hasFiles },
       ])}
@@ -127,7 +127,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
   )
   const progressComp = showProgress && loading && (
     <div
-      className={cn([
+      className={cx([
         'bg-third rounded-full pointer-events-none h-1 overflow-hidden',
         { value: color, fallback: 'text-body-1', condition: Boolean(color) },
         progressClass,
@@ -299,7 +299,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
   const UploaderBackground = () => (
     <>
       <As
-        className={cn([
+        className={cx([
           'flex flex-col flex-nowrap items-center relative isolate overflow-hidden w-full',
           { value: 'cursor-not-allowed', fallback: 'cursor-pointer', condition: disabled },
           wrapperClass,
@@ -349,11 +349,11 @@ export function useUploaderModules<T extends string | number = number>(props: Re
 
   const UploaderProfilePicture = () => (
     <As
-      className={cn(['flex flex-nowrap items-center justify-center relative isolate w-full gap-3', wrapperClass])}
+      className={cx(['flex flex-nowrap items-center justify-center relative isolate w-full gap-3', wrapperClass])}
       {...{ onDragOver, onDragLeave, onDrop, onMouseEnter, onMouseLeave, ...restWrapper }}
     >
       <As
-        className={cn([
+        className={cx([
           'flex flex-nowrap relative isolate overflow-hidden rounded-full w-30 h-30 border-4 border-third',
           { value: 'cursor-not-allowed', fallback: 'cursor-pointer', condition: disabled },
         ])}
@@ -396,7 +396,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
   const UploaderThumbs = () => (
     <>
       <As
-        className={cn([
+        className={cx([
           'flex flex-col flex-nowrap items-center relative isolate overflow-hidden w-full',
           { value: 'cursor-not-allowed', fallback: 'cursor-pointer', condition: disabled },
           wrapperClass,
@@ -404,7 +404,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
         {...{ onDragOver, onDragLeave, onDrop, onMouseEnter, onMouseLeave, onClick, ...restWrapper }}
       >
         <span
-          className={cn([
+          className={cx([
             'absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[75%] h-[75%] opacity-10 pointer-events-none z-[-1]',
           ])}
         >
@@ -478,7 +478,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
   const UploaderList = () => (
     <>
       <As
-        className={cn([
+        className={cx([
           'flex flex-col flex-nowrap items-center relative isolate overflow-hidden w-full',
           { value: 'cursor-not-allowed', fallback: 'cursor-pointer', condition: disabled },
           wrapperClass,
@@ -486,7 +486,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
         {...{ onDragOver, onDragLeave, onDrop, onMouseEnter, onMouseLeave, onClick, ...restWrapper }}
       >
         <span
-          className={cn([
+          className={cx([
             'absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[75%] h-[75%] opacity-10 pointer-events-none z-[-1]',
           ])}
         >

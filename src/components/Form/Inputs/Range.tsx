@@ -103,10 +103,10 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
     restLabel = restOfLabel
   }
 
-  const labelClassName = cn([form?.label?.stateSharedClassName, labelClass])
+  const labelClassName = cx([form?.label?.stateSharedClassName, labelClass])
   const labelValue = showValue && (
     <span
-      className={cn([
+      className={cx([
         'rounded-md text-center text-xs font-semibold tabular-nums ms-auto',
         'bg-primary/10 text-primary px-2 py-0.5',
       ])}
@@ -118,7 +118,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
   if (condition === false) return null
   return (
     <fieldset
-      className={cn(['flex flex-col w-full gap-3', ...(size ?? []), fieldsetClass])}
+      className={cx(['flex flex-col w-full gap-3', ...(size ?? []), fieldsetClass])}
       {...fieldsetAttrs}
       {...restFieldset}
     >
@@ -139,7 +139,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
       </ConditionalWrapper>
 
       <div
-        className={cn([
+        className={cx([
           'group range-field relative flex w-full flex-nowrap items-center select-none',
           { value: 'opacity-50 cursor-not-allowed pointer-events-none', condition: Boolean(disabled) },
           wrapperClass,
@@ -158,7 +158,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
         <input
           ref={ref}
           type="range"
-          className={cn([
+          className={cx([
             'range-field__input absolute inset-0 z-10 h-full w-full cursor-pointer appearance-none bg-transparent',
             'outline-none disabled:cursor-not-allowed m-0 p-0',
             'transition-all duration-300 ease-in-out',
@@ -178,7 +178,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
                 <button
                   key={m.value}
                   type="button"
-                  className={cn([
+                  className={cx([
                     'flex absolute -bottom-1 -translate-x-1/2',
                     'text-[10px] leading-none font-medium tabular-nums whitespace-nowrap cursor-pointer',
                     'px-1.5 py-0.5 rounded-md transition-all duration-150 ease-out',
@@ -203,7 +203,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
           style={{ insetInlineStart: `${percent}%` }}
         >
           <span
-            className={cn([
+            className={cx([
               'block h-5 w-5 rounded-full border-2 border-second bg-primary',
               'shadow-[0_2px_8px_-2px] shadow-primary/40',
               'transition-transform duration-150 ease-out',

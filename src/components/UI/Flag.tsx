@@ -215,7 +215,7 @@ export function Flag(props: Readonly<FlagProps>) {
   )
 
   return (
-    <span className={cn(['inline-block', className])} style={{ width: size, height, ...style }} {...attrs}>
+    <span className={cx(['inline-block', className])} style={{ width: size, height, ...style }} {...attrs}>
       {flag}
       {fallback}
     </span>

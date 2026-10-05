@@ -22,7 +22,7 @@ export function InputHelper(props: Readonly<InputHelperProps>) {
 
   return (
     <span
-      className={cn([
+      className={cx([
         'flex flex-nowrap items-center',
         { value: errorClassName, fallback: className, condition: asError },
       ])}

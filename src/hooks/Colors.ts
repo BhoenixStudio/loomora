@@ -96,7 +96,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { TWColorName } from '../types'
-import { cn } from './ClassNames'
+import { cn } from './cx'
 
 /** Output format accepted by `getColor`. */
 export type GetColorType = 'HEX' | 'RGB' | 'HSL'
@@ -222,7 +222,7 @@ export function useColors<T extends string = ''>() {
 }
 
 export function useColorsString(colors: TWColorName[]): string {
-  return cn(colors)
+  return cx(colors)
 }
 
 /**

@@ -54,7 +54,7 @@ export function Button(props: Readonly<ButtonProps>) {
   const sVariant = variant as Exclude<ButtonVariant, 'none'>
   const { border, background, text } = colors?.[sVariant]?.[color ?? defaultColor ?? ''] ?? {}
 
-  const className = cn([
+  const className = cx([
     // Core
     'loomora-btn select-none transition-all duration-200 ease-in-out whitespace-nowrap',
     { value: 'inline-flex', condition: !/^d-(flex|block|grid|inline)/.test(customClass) },

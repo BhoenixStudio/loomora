@@ -103,12 +103,12 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
     labelClass = lCN ?? ''
     restLabel = restOfLabel
   }
-  const labelClassName = cn(['flex-nowrap items-center px-3 py-1', labelClass])
+  const labelClassName = cx(['flex-nowrap items-center px-3 py-1', labelClass])
 
   if (condition === false) return null
   return (
     <fieldset
-      className={cn(['text-editor-field flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
+      className={cx(['text-editor-field flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
       style={{ ...((loading || initLoading) && { height }), ...fieldsetStyle }}
       {...fieldsetAttrs}
       {...restFieldset}

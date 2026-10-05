@@ -70,7 +70,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
   const { attributes: labelAttrs, ...restLabelRest } = restLabel ?? {}
   const { onClick, ...restAttributes } = labelAttrs ?? {}
 
-  const labelClassName = cn([
+  const labelClassName = cx([
     'flex-nowrap items-center',
     { value: 'cursor-not-allowed', fallback: 'cursor-pointer', condition: disabled || loading },
     labelClass,
@@ -80,7 +80,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
   const types: Record<CheckFieldType, ReactNode> = {
     checkbox: (
       <Comp
-        className={cn([
+        className={cx([
           'flex relative border items-center justify-center rounded',
           'w-(--checkbox-size) h-(--checkbox-size) shadow-[0_0_0_0_--theme(--color-primary/15)]',
           'after:content-[""] after:absolute after:top-[calc(var(--checkbox-size)/2)] after:left-[calc(var(--checkbox-size)/2)] after:w-[calc(var(--checkbox-size)/4)] after:h-[calc(var(--checkbox-size)/4)]',
@@ -107,7 +107,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
     ),
     radio: (
       <Comp
-        className={cn([
+        className={cx([
           'flex relative border items-center justify-center rounded-full',
           'w-(--checkbox-size) h-(--checkbox-size) shadow-[0_0_0_0_--theme(--color-primary/15)]',
           'after:content-[""] after:absolute after:top-[calc(var(--checkbox-size)/2)] after:left-[calc(var(--checkbox-size)/2)] after:w-[calc(var(--checkbox-size)/4)] after:h-[calc(var(--checkbox-size)/4)]',
@@ -134,14 +134,14 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
     ),
     switch: (
       <Comp
-        className={cn([
+        className={cx([
           'flex',
           { value: 'cursor-not-allowed', fallback: 'cursor-pointer', condition: disabled || loading },
         ])}
         onClick={() => fireInput()}
       >
         <span
-          className={cn([
+          className={cx([
             'border-2 rounded-full items-center h-(--switch-size) w-[calc(var(--switch-size)*2)] bg-second',
             'shadow-[inset_0_0_calc(var(--switch-size)/2)_0_rgba(0,0,0,0.25)] overflow-hidden transition-all duration-(--switch-speed) p-(--switch-padding)',
             'before:content-[""] before:block before:h-full before:aspect-square before:rounded-[inherit] before:shadow-[0_0_calc(var(--switch-size)/2)_calc(var(--switch-size)/10)_rgba(0,0,0,0.25)] before:transition-[width] before:duration-(--switch-speed) before:ease-linear',
@@ -213,7 +213,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
   if (condition === false) return null
   return (
     <fieldset
-      className={cn([
+      className={cx([
         'check-input inline-flex flex-nowrap relative',
         'transition-all duration-(--switch-speed) ease-in-out',
         { value: 'opacity-70', condition: disabled || loading },
@@ -226,7 +226,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
       <input
         ref={inputRef}
         type={type === 'switch' ? 'checkbox' : type}
-        className={cn(['absolute w-0 border-none online-none invisible overflow-hidden', className])}
+        className={cx(['absolute w-0 border-none online-none invisible overflow-hidden', className])}
         disabled={disabled || loading}
         {...{ checked, required, ...inputProps }}
       />

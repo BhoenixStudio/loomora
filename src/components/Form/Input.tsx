@@ -69,7 +69,7 @@ export function Inputs(props: Readonly<InputsWrapperProps>) {
 
   if (fInputs.length === 0) return empty
   return (
-    <div className={cn(['grid', ...size, className])} {...attributes} {...attrs}>
+    <div className={cx(['grid', ...size, className])} {...attributes} {...attrs}>
       {fInputs}
     </div>
   )

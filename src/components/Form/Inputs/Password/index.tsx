@@ -53,7 +53,7 @@ export function PasswordField(props: PasswordFieldProps) {
 
   const validationList: ReactNode = showValidationsList && (
     <ul
-      className={cn([
+      className={cx([
         'flex flex-col flex-nowrap overflow-hidden',
         'transition-all duration-300 ease-in-out',
         { value: 'max-h-[unset]', fallback: 'max-h-0', condition: valid },
@@ -63,7 +63,7 @@ export function PasswordField(props: PasswordFieldProps) {
       {items?.map(({ icon, message, valid: isValid }, i: number) => (
         <li
           key={i}
-          className={cn([
+          className={cx([
             'flex flex-nowrap text-sm font-medium items-center',
             { value: 'text-body-2/70', fallback: 'text-body-1', condition: isValid },
           ])}
@@ -79,7 +79,7 @@ export function PasswordField(props: PasswordFieldProps) {
       variant="text"
       color="second"
       size="tiny"
-      className={cn([{ value: 'self-end', condition: hasGenerate && !hasValidation }])}
+      className={cx([{ value: 'self-end', condition: hasGenerate && !hasValidation }])}
       onClick={HandleGenerate}
     >
       {generateText ?? t('password.generate')}
@@ -92,7 +92,7 @@ export function PasswordField(props: PasswordFieldProps) {
   if (hasGenerate && hasValidation)
     validation = (
       <div
-        className={cn([
+        className={cx([
           'flex flex-nowrap items-start mt-1',
           { value: 'justify-between', fallback: 'justify-end', condition: Boolean(validationList) },
         ])}
@@ -133,7 +133,7 @@ export function PasswordField(props: PasswordFieldProps) {
 
           {(asConfirm || (hasValidation && note)) && (
             <p
-              className={cn([
+              className={cx([
                 'text-sm text-uppercase font-medium',
                 {
                   value: { value: 'text-success', fallback: 'text-body-1', condition: confirmed },

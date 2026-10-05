@@ -245,7 +245,7 @@ export function Digit<T extends ElementType = 'span'>(props: Readonly<DigitProps
             {startUnit}
           </small>
         )}
-        <span className={cn(['flex flex-nowrap text-nowrap', vClass])} {...vAttrs} {...vRest}>
+        <span className={cx(['flex flex-nowrap text-nowrap', vClass])} {...vAttrs} {...vRest}>
           {main}
           {sub && (
             <small className={sClass} {...sAttrs} {...sRest}>
@@ -264,7 +264,7 @@ export function Digit<T extends ElementType = 'span'>(props: Readonly<DigitProps
 
   if (value === null) return fallback
   return (
-    <As className={cn(['inline-flex flex-nowrap items-end', className])} {...{ dir, ...attributes }} {...attrs}>
+    <As className={cx(['inline-flex flex-nowrap items-end', className])} {...{ dir, ...attributes }} {...attrs}>
       {content}
     </As>
   )

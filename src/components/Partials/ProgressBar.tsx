@@ -233,7 +233,7 @@ export function ProgressBar(props: Readonly<ProgressBarProps>) {
 
   const bar = (
     <div
-      className={cn([
+      className={cx([
         'overflow-hidden',
         { value: size, fallback: 'w-full', condition: showValueAsText },
         trackColor,
@@ -242,7 +242,7 @@ export function ProgressBar(props: Readonly<ProgressBarProps>) {
       style={{ height }}
     >
       <div
-        className={cn(['pointer-events-none h-full transition-all duration-300 ease-in-out', barColor, barClassName])}
+        className={cx(['pointer-events-none h-full transition-all duration-300 ease-in-out', barColor, barClassName])}
         style={{ width: `${percent}%` }}
       />
     </div>
@@ -250,7 +250,7 @@ export function ProgressBar(props: Readonly<ProgressBarProps>) {
 
   if (showValueAsText)
     return (
-      <div className={cn(['flex flex-col flex-nowrap', wrapperClassName])} {...wrapperRest}>
+      <div className={cx(['flex flex-col flex-nowrap', wrapperClassName])} {...wrapperRest}>
         <div className="flex flex-nowrap items-end justify-between w-full">
           {label && <span className={labelClassName}>{label}</span>}
           <span className={valueClassName}>{Math.round(percent)}%</span>

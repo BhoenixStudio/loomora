@@ -33,7 +33,7 @@ export function Breadcrumb(props: Readonly<BreadcrumbProps>) {
 
   // Configs
   const isLink = Boolean(href)
-  const classes = cn([
+  const classes = cx([
     'breadcrumb text-xs border-none',
     {
       value: 'text-primary p-1',
@@ -67,7 +67,7 @@ export function Breadcrumbs(props: Readonly<BreadcrumbsProps>) {
   items?.filter(({ condition }) => condition !== false)?.forEach((item) => dItems.push(item))
 
   return (
-    <section className={cn(['breadcrumbs items-center', className])} {...attrs}>
+    <section className={cx(['breadcrumbs items-center', className])} {...attrs}>
       {dItems.map((item, i: number) => (
         <Breadcrumb key={i} showSeparator={i !== dItems.length - 1} separator={dSeparator} {...item} />
       ))}

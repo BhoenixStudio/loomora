@@ -127,7 +127,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     labelClass = lCN ?? ''
     restLabel = restOfLabel
   }
-  const labelClassName = cn([
+  const labelClassName = cx([
     form?.label?.stateSharedClassName,
     {
       value: form?.label?.activeClassName,
@@ -160,7 +160,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
         type="button"
         onClick={toggleMenu}
         disabled={disabled}
-        className={cn([
+        className={cx([
           'flex items-center bg-transparent outline-none text-start cursor-pointer w-full disabled:cursor-not-allowed pe-3',
           { value: 'ps-2', fallback: 'ps-3', condition: Boolean(prefix) },
           { value: 'pt-3', fallback: 'py-3', condition: multiple && selected.length > 0 },
@@ -184,7 +184,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
         }}
         placeholder={searchPlaceholder}
         disabled={disabled}
-        className={cn([
+        className={cx([
           'bg-transparent outline-none w-full disabled:cursor-not-allowed pe-3',
           { value: 'ps-2', fallback: 'ps-3', condition: Boolean(prefix) || (multiple && selected.length > 0) },
           { value: 'pt-3', fallback: 'py-3', condition: multiple && selected.length > 0 },
@@ -318,12 +318,12 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
   return (
     <fieldset
       ref={fieldsetRef}
-      className={cn(['flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
+      className={cx(['flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
       {...fieldsetAttrs}
       {...restFieldset}
     >
       <div
-        className={cn([
+        className={cx([
           'flex flex-wrap items-center relative',
           {
             value: wrapperClass,
@@ -408,7 +408,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
           <ul
             ref={menuRef}
             role="listbox"
-            className={cn([
+            className={cx([
               'absolute z-300 inset-s-0 inset-e-0 max-h-60 overflow-y-auto list-none p-1',
               'border border-body-3/40 bg-main rounded-lg shadow-lg',
               {
@@ -437,7 +437,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
                     role="option"
                     tabIndex={0}
                     aria-selected={isSelected}
-                    className={cn([
+                    className={cx([
                       'px-3 py-2 text-sm cursor-pointer rounded transition-colors',
                       'hover:bg-second',
                       {

@@ -53,7 +53,7 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
     restLabel = restOfLabel
   }
 
-  const labelClassName = cn([form?.label?.stateSharedClassName, labelClass])
+  const labelClassName = cx([form?.label?.stateSharedClassName, labelClass])
 
   // Functions
   function handleChange(index: number, inputValue: string) {
@@ -88,7 +88,7 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
   if (condition === false) return null
   return (
     <fieldset
-      className={cn(['flex flex-col flex-nowrap', ...size, fieldsetClass])}
+      className={cx(['flex flex-col flex-nowrap', ...size, fieldsetClass])}
       {...fieldsetAttrs}
       {...restFieldset}
     >
@@ -103,7 +103,7 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
       </ConditionalWrapper>
 
       <div
-        className={cn(['flex flex-1 gap-3 w-full flex-wrap justify-center', wrapperClass])}
+        className={cx(['flex flex-1 gap-3 w-full flex-wrap justify-center', wrapperClass])}
         {...{ ...wrapperAttrs, dir: 'ltr', ...restWrapper }}
       >
         {otp.map((digit, i) => (
@@ -120,7 +120,7 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
             onPaste={handlePaste}
-            className={cn([
+            className={cx([
               { value: 'w-13 h-13', fallback: 'w-15 h-15', condition: length > 6 },
               'border bg-second outline-none transition-colors aspect-square',
               { value: 'cursor-not-allowed opacity-60', condition: disabled || loading },

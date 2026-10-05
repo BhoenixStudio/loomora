@@ -71,7 +71,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, re
     restLabel = restOfLabel
   }
 
-  const labelClassName = cn([
+  const labelClassName = cx([
     form?.label?.stateSharedClassName,
     {
       value: form?.label?.activeClassName,
@@ -86,14 +86,14 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, re
   if (condition === false) return null
   return (
     <fieldset
-      className={cn(['flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
+      className={cx(['flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
       {...fieldsetAttrs}
       {...restFieldset}
     >
       {fieldsetPrefix}
 
       <div
-        className={cn([
+        className={cx([
           'flex flex-nowrap items-center relative',
           {
             value: wrapperClass,
@@ -122,7 +122,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, re
         {prefix}
         <input
           ref={ref}
-          className={cn([
+          className={cx([
             'flex-1 bg-transparent outline-none disabled:cursor-not-allowed py-3',
             { value: 'ps-2', fallback: 'ps-3', condition: Boolean(prefix) },
             { value: 'pe-2', fallback: 'pe-3', condition: Boolean(suffix) },

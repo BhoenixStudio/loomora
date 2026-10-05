@@ -61,12 +61,12 @@ export function Form<T extends ElementType = 'form'>(props: Readonly<FormProps<T
 
   if (condition === false) return null
   return (
-    <As className={cn(['flex flex-col flex-nowrap', className])} {...{ encType, ...attributes, ...attrs }}>
+    <As className={cx(['flex flex-col flex-nowrap', className])} {...{ encType, ...attributes, ...attrs }}>
       {prefix}
       <Inputs {...{ inputs, inputsWrapper, empty }} />
       {suffix}
       {fActions.length > 0 && (
-        <div className={cn(['flex flex-wrap', AWClass])} {...AWAttributes} {...AWAttrs}>
+        <div className={cx(['flex flex-wrap', AWClass])} {...AWAttributes} {...AWAttrs}>
           {actionsPrefix}
           {fActions.map(({ color = 'second', loading: bLoading, ...rest }, i: number) => (
             <Button key={i} {...{ color, ...rest }} loading={bLoading ?? loading} />

@@ -68,7 +68,7 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
     restLabel = restOfLabel
   }
 
-  const labelClassName = cn([
+  const labelClassName = cx([
     form?.label?.stateSharedClassName,
     {
       value: form?.label?.activeClassName,
@@ -83,14 +83,14 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
   if (condition === false) return null
   return (
     <fieldset
-      className={cn(['flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
+      className={cx(['flex flex-col flex-nowrap relative', ...size, fieldsetClass])}
       {...fieldsetAttrs}
       {...restFieldset}
     >
       {fieldsetPrefix}
 
       <div
-        className={cn([
+        className={cx([
           'flex flex-nowrap items-center relative',
           {
             value: wrapperClass,
@@ -116,7 +116,7 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
 
         <textarea
           ref={ref}
-          className={cn([
+          className={cx([
             'flex-1 bg-transparent outline-none disabled:cursor-not-allowed py-3',
             'transition-all duration-300 ease-in-out',
             { value: 'placeholder:opacity-70', fallback: 'placeholder:opacity-0', condition: isActive || !label },

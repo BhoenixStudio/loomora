@@ -151,7 +151,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
     labelClass = lCN ?? ''
     restLabel = restOfLabel
   }
-  const labelClassName = cn([
+  const labelClassName = cx([
     form?.label?.stateSharedClassName,
     { value: labelActiveClass, fallback: labelInactiveClass, condition: hasFiles },
     labelClass,
@@ -319,7 +319,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
   if (condition === false) return null
   return (
     <fieldset
-      className={cn([
+      className={cx([
         'flex flex-col flex-nowrap items-center',
         ...size,
         'border bg-inherit rounded gap-2 p-1',

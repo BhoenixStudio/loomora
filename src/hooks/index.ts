@@ -1,5 +1,5 @@
 export * from './casify'
-export * from './ClassNames'
+export * from './cx'
 export * from './Colors'
 export * from './Consoles'
 export * from './DocumentAtts'
