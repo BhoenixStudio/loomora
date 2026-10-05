@@ -2,14 +2,14 @@
 
 import { createContext, type ReactNode, useContext, useMemo } from 'react'
 import { ResponsiveProvider, ThemeProvider } from '../utils'
-import { defaultConfig } from './defaults'
+import { loomoraDefaults } from './defaults'
 import { mergeConfig } from './helper'
 import { LoomoraConfig, LoomoraConfigP } from './types'
 import { TranslateFn } from './types/helper'
 
 import '../styles/index.css'
 
-const ConfigContext = createContext<Required<LoomoraConfig> & { t: TranslateFn }>({ ...defaultConfig, t: () => '' })
+const ConfigContext = createContext<Required<LoomoraConfig> & { t: TranslateFn }>({ ...loomoraDefaults, t: () => '' })
 
 export function LoomoraProvider({ children, config }: Readonly<{ children: ReactNode; config?: LoomoraConfigP }>) {
   const parentConfig = useContext(ConfigContext)

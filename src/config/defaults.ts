@@ -1,7 +1,7 @@
 import type { LoomoraConfig } from './types'
 
 /** Built-in values used when no provider or override is supplied. */
-const defaultConfig: LoomoraConfig = {
+export const loomoraDefaults: LoomoraConfig = {
   // Translations
   hasTranslationStrategy: false,
   translations: {
@@ -405,7 +405,7 @@ const defaultConfig: LoomoraConfig = {
       confirmMismatch: 'Mismatch',
       copyTooltip: 'Copy {password} to clipboard',
       get generate() {
-        return `Generate ${defaultConfig?.form?.password?.length}bit {password}`
+        return `Generate ${loomoraDefaults?.form?.password?.length}bit {password}`
       },
       hideTooltip: 'Hide {password}',
       label: '{password}',
@@ -418,42 +418,42 @@ const defaultConfig: LoomoraConfig = {
         strong: 'Strong',
         minLength: {
           get short() {
-            return `${defaultConfig?.form?.password?.length}+ letter(s) long`
+            return `${loomoraDefaults?.form?.password?.length}+ letter(s) long`
           },
           get long() {
-            return `At least ${defaultConfig?.form?.password?.maxLength}+ letter(s) long`
+            return `At least ${loomoraDefaults?.form?.password?.maxLength}+ letter(s) long`
           },
         },
         lowercase: {
           get short() {
-            return `${defaultConfig?.form?.password?.lowercaseLength}+ Lowercase letter(s) long`
+            return `${loomoraDefaults?.form?.password?.lowercaseLength}+ Lowercase letter(s) long`
           },
           get long() {
-            return `At least ${defaultConfig?.form?.password?.lowercaseLength}+ Lowercase letter(s) long`
+            return `At least ${loomoraDefaults?.form?.password?.lowercaseLength}+ Lowercase letter(s) long`
           },
         },
         uppercase: {
           get short() {
-            return `${defaultConfig?.form?.password?.uppercaseLength}+ Uppercase letter(s) long`
+            return `${loomoraDefaults?.form?.password?.uppercaseLength}+ Uppercase letter(s) long`
           },
           get long() {
-            return `At least ${defaultConfig?.form?.password?.uppercaseLength}+ Uppercase letter(s) long`
+            return `At least ${loomoraDefaults?.form?.password?.uppercaseLength}+ Uppercase letter(s) long`
           },
         },
         number: {
           get short() {
-            return `${defaultConfig?.form?.password?.numbersLength}+ Number(s) long`
+            return `${loomoraDefaults?.form?.password?.numbersLength}+ Number(s) long`
           },
           get long() {
-            return `At least ${defaultConfig?.form?.password?.numbersLength}+ Number(s) long`
+            return `At least ${loomoraDefaults?.form?.password?.numbersLength}+ Number(s) long`
           },
         },
         special: {
           get short() {
-            return `${defaultConfig?.form?.password?.specialCharsLength}+ special character(s) long`
+            return `${loomoraDefaults?.form?.password?.specialCharsLength}+ special character(s) long`
           },
           get long() {
-            return `At least ${defaultConfig?.form?.password?.specialCharsLength}+ special character(s) long`
+            return `At least ${loomoraDefaults?.form?.password?.specialCharsLength}+ special character(s) long`
           },
         },
       },
@@ -802,5 +802,3 @@ const defaultConfig: LoomoraConfig = {
   responsive: { xs: 0, sm: '40rem', md: '48rem', lg: '64rem', xl: '80rem', '2xl': '96rem', '3xl': '120rem' },
   settings: { isRtl: false, locale: 'en' },
 }
-
-export { defaultConfig }
