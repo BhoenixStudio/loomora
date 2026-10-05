@@ -2,67 +2,19 @@
 
 import { useLoomora } from '../config'
 
-/**
- * Localized country metadata and lookup helpers.
- *
- * The internal `Countries` function contains the static country-code catalog,
- * phone-prefix rules, phone-number start digits and lengths, currency data,
- * icon identifiers, and country names. `useCountries` exposes a
- * sorted list lookup and a single-country lookup while preserving optional
- * caller-provided fields through its generic `extra` option.
- *
- * Country names are stored directly in the catalog. The country code union is
- * derived from the catalog, and the `@data` barrel re-exports the public types
- * and hook.
- *
- * Minimal example:
- *
- * ```tsx
- * const { getCountry } = useCountries()
- * const oman = getCountry('OM')
- * ```
- *
- * `getCountries({ only: ['OM', 'SA'] })` is the observed filtered-list
- * shape used when a caller needs a smaller country selector. This module does
- * not validate user phone input or render flags; `PhoneInput` and its helper
- * consume the returned metadata for those concerns.
- */
+export type CurrencyInternational = Extract<ExtractedCountryCurrency, { international: string }>['international']
 
-/** Currency-code union derived from catalog entries that provide an international code. */
-export type CountryCurrencyInternationalType = Extract<
-  ExtractedCountryCurrency,
-  { international: string }
->['international']
+export type CurrencySymbol = Extract<ExtractedCountryCurrency, { symbol: string }>['symbol']
 
-/** Currency-symbol union derived from catalog entries that provide a symbol. */
-export type CountryCurrencySymbolType = Extract<ExtractedCountryCurrency, { symbol: string }>['symbol']
+export type CountryCurrency = { international: CurrencyInternational; symbol: CurrencySymbol; icon: string }
 
-/** Currency metadata returned for a country. */
-export type CountryCurrencyProps = {
-  international: CountryCurrencyInternationalType
-  symbol: CountryCurrencySymbolType
-  icon: string
-}
+export type PhoneCode = Extract<ExtractedCountryPhone, { code: number }>['code']
 
-/** International dialing-code union derived from the country catalog. */
-export type CountryPhoneCodeType = Extract<ExtractedCountryPhoneProps, { code: number }>['code']
+export type CountryPhone = { code: PhoneCode; start: number[]; length: { min: number; max: number } }
 
-/** Phone-prefix and local-number constraints returned for a country. */
-export type CountryPhoneProps = {
-  code: CountryPhoneCodeType
-  start: number[]
-  length: { min: number; max: number }
-}
+export type Country = { code: CountryType; name: string; phone: CountryPhone; currency: CountryCurrency }
 
-/** Complete country metadata returned by the lookup helpers. */
-export type CountryProps = {
-  code: CountryType
-  name: string
-  phone: CountryPhoneProps
-  currency: CountryCurrencyProps
-}
-
-function Countries() {
+function data() {
   return {
     AF: {
       phone: { code: 93, start: [7], length: { min: 9, max: 9 } },
@@ -1022,40 +974,23 @@ function Countries() {
     },
   } as const
 }
+type Countries = ReturnType<typeof data>
 
-type CountriesProps = ReturnType<typeof Countries>
+export type CountryType = keyof Countries
+type ExtractedCountryCurrency = Countries[CountryType]['currency']
+type ExtractedCountryPhone = Countries[CountryType]['phone']
 
-/** ISO-like country-code keys present in the static catalog. */
-export type CountryType = keyof CountriesProps
-type ExtractedCountryCurrency = CountriesProps[CountryType]['currency']
-type ExtractedCountryPhoneProps = CountriesProps[CountryType]['phone']
-
-/**
- * Filters and optional additions accepted by the country lookup helpers.
- *
- * `only` is applied before `except`; both filters use country-code values.
- * `extra` is shallow-merged into each returned country object.
- */
 export type GetCountries<T extends object = object> = {
   extra?: Partial<Record<CountryType, T>>
   only?: CountryType[]
   except?: CountryType[]
 }
 
-/**
- * Returns country lookup helpers.
- *
- * @returns `getCountries` and `getCountry`.
- * @remarks `getCountries` returns all catalog entries sorted by name unless
- * filtered. `getCountry` returns an empty cast object when its key is nullish
- * and otherwise returns the selected country plus optional extras. Both
- * helpers are synchronous.
- */
 export function useCountries() {
-  const countries = Countries()
+  const countries = data()
   const { translations } = useLoomora()
 
-  const getCountries = <T extends object = object>(props?: GetCountries<T>): (CountryProps & T)[] => {
+  const getCountries = <T extends object = object>(props?: GetCountries<T>): (Country & T)[] => {
     const { only = [], extra, except = [] } = props ?? {}
 
     let countriesList = Object.entries(countries).map(([code, country]) => ({
@@ -1063,7 +998,7 @@ export function useCountries() {
       ...country,
       ...translations?.countries?.[code as CountryType],
       ...extra?.[code as CountryType],
-    })) as (CountryProps & T)[]
+    })) as (Country & T)[]
 
     if (only.length > 0) countriesList = countriesList.filter(({ code }) => only.includes(code))
     if (except.length > 0) countriesList = countriesList.filter(({ code }) => !except.includes(code))
@@ -1074,25 +1009,15 @@ export function useCountries() {
   const getCountry = <T extends object = object>(
     key: CountryType | undefined | null,
     props?: Pick<GetCountries<T>, 'extra'>
-  ): CountryProps & T => {
-    if (!key) return {} as CountryProps & T
+  ): Country & T => {
+    if (!key) return {} as Country & T
     return {
       code: key,
       ...countries[key],
       ...translations?.countries?.[key],
       ...props?.extra?.[key],
-    } as CountryProps & T
+    } as Country & T
   }
 
   return { getCountries, getCountry }
 }
-
-/**
- * Documentation metadata:
- * - Last documentation update: 2026-09-18
- * - Documentation audience: Developers and AI agents
- * - Evidence basis: Attached file + verified project context
- * - Documentation coverage: Complete
- * - Validation: Passed `git diff --check`, targeted Prettier, targeted ESLint, and `pnpm type:check`.
- * - Known limitations: Some catalog entries omit `currency.icon` at runtime even though `CountryCurrencyProps` declares it; phone rules are static metadata rather than complete validation.
- */

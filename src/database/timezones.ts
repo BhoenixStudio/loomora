@@ -1,49 +1,29 @@
 'use client'
 
-import { useLoomora } from '../config/config-context'
-import { CountryProps, CountryType, useCountries } from './index'
+import { useLoomora } from '../config'
+import { Country, CountryType, useCountries } from './index'
 
-type TimezonesProps = ReturnType<typeof Timezones>
-type TimezoneKey = keyof TimezonesProps
-type TimezoneDefinition = TimezonesProps[TimezoneKey]
+type Timezones = ReturnType<typeof data>
+type TimezoneKey = keyof Timezones
+type TimezoneDefinition = Timezones[TimezoneKey]
 
-/** Keys available in the timezone catalog, plus `none` for optional form values. */
 export type TimezoneType = TimezoneKey | 'none'
 
-/** Region keys represented by the timezone catalog. */
-export type TimeZoneRegionType = TimezoneDefinition['regionKey']
+export type TimezoneRegion = TimezoneDefinition['regionKey']
 
-/** Alias using the conventional `Timezone` capitalization. */
-export type TimezoneRegionType = TimeZoneRegionType
-
-/** A timezone record enriched with its country and display labels. */
-export type TimezoneProps = {
+export type Timezone = {
   key: TimezoneType
   name: string
-  regionKey: TimeZoneRegionType
+  regionKey: TimezoneRegion
   region: string
   offset: number
-  country: CountryProps
+  country: Country
   fullName: string
   fullNameWithCountry: string
 }
 
-/** Timezones grouped by geographic region. */
-export type TimezoneGroupedProps = {
-  regionKey: TimeZoneRegionType
-  region: string
-  zones: TimezoneProps[]
-}
-
-/** Filters and optional shallow additions accepted by `getTimezones`. */
-export type GetTimezones<T extends object = object> = {
-  extra?: Partial<Record<TimezoneKey, T>>
-  only?: TimezoneType[]
-  except?: TimezoneType[]
-}
-
-/** Criteria accepted by the single-timezone lookup. */
-export type TimezoneLookupProps = {
+type TimezoneGroupedProps = { regionKey: TimezoneRegion; region: string; zones: Timezone[] }
+type TimezoneLookup = {
   key?: TimezoneType
   name?: string
   offset?: number
@@ -51,8 +31,13 @@ export type TimezoneLookupProps = {
   returnError?: boolean
 }
 
-/** Static timezone metadata. Display names and region labels come from Loomora configuration. */
-function Timezones() {
+export type GetTimezones<T extends object = object> = {
+  extra?: Partial<Record<TimezoneKey, T>>
+  only?: TimezoneType[]
+  except?: TimezoneType[]
+}
+
+function data() {
   return {
     // Africa
     'africa/cairo': { regionKey: 'africa', offset: 2, countryCode: 'EG' },
@@ -169,16 +154,15 @@ function Timezones() {
   } as const
 }
 
-/** Returns timezone list, lookup, grouping, and conversion helpers. */
 export function useTimezones() {
-  const timezones = Timezones()
+  const timezones = data()
   const { translations } = useLoomora()
 
   const { getCountry } = useCountries()
 
   const formatOffset = (offset: number) => `GMT${offset >= 0 ? '+' : ''}${offset}`
 
-  const filterTimezones = <T extends object = object>(props?: GetTimezones<T>): (TimezoneProps & T)[] => {
+  const filterTimezones = <T extends object = object>(props?: GetTimezones<T>): (Timezone & T)[] => {
     const { extra = {}, only = [], except = [] } = props ?? {}
 
     let list = Object.entries(timezones).map(([key, value]) => {
@@ -194,13 +178,13 @@ export function useTimezones() {
         ...timezone,
         fullName: `${timezone.region}/${timezone.name} ${formatOffset(timezone.offset)}`,
         fullNameWithCountry: `${timezone.country.name} (${timezone.region}/${timezone.name}) ${formatOffset(timezone.offset)}`,
-      } as unknown as TimezoneProps & T
+      } as unknown as Timezone & T
     })
 
     if (only.length > 0) list = list.filter(({ key }) => only.includes(key))
     if (except.length > 0) list = list.filter(({ key }) => !except.includes(key))
 
-    function sortList(items: (TimezoneProps & T)[]) {
+    function sortList(items: (Timezone & T)[]) {
       return items.sort((a, b) => {
         if (a.regionKey !== b.regionKey) return a.regionKey.localeCompare(b.regionKey)
         return a.offset - b.offset
@@ -210,8 +194,7 @@ export function useTimezones() {
     return sortList(list)
   }
 
-  const getTimezones = <T extends object = object>(props?: GetTimezones<T>): (TimezoneProps & T)[] =>
-    filterTimezones(props)
+  const getTimezones = <T extends object = object>(props?: GetTimezones<T>): (Timezone & T)[] => filterTimezones(props)
 
   const getTimezonesGrouped = (props?: GetTimezones): TimezoneGroupedProps[] => {
     const list = filterTimezones(props)
@@ -223,23 +206,22 @@ export function useTimezones() {
           acc[timezone.regionKey].push(timezone)
           return acc
         },
-        {} as Record<string, TimezoneProps[]>
+        {} as Record<string, Timezone[]>
       )
     ).map(([regionKey, items]) => ({
-      regionKey: regionKey as TimeZoneRegionType,
+      regionKey: regionKey as TimezoneRegion,
       region: items[0].region,
       zones: items,
     }))
   }
 
   const getTimezone = <T extends object = object>(
-    criteria?: TimezoneType | TimezoneLookupProps | null,
+    criteria?: TimezoneType | TimezoneLookup | null,
     props?: Pick<GetTimezones<T>, 'extra'>
-  ): TimezoneProps & T => {
+  ): Timezone & T => {
     const lookup = typeof criteria === 'string' ? { key: criteria } : (criteria ?? {})
 
-    if (!lookup.key && !lookup.name && lookup.offset === undefined && !lookup.countryCode)
-      return {} as TimezoneProps & T
+    if (!lookup.key && !lookup.name && lookup.offset === undefined && !lookup.countryCode) return {} as Timezone & T
 
     const timezone = getTimezones(props).find((item) => {
       if (lookup.key && item.key === lookup.key) return true
@@ -252,14 +234,10 @@ export function useTimezones() {
     if (!timezone && 'returnError' in lookup && lookup.returnError)
       throw new Error(`Timezone not found with provided criteria: ${JSON.stringify(criteria)}`)
 
-    return timezone ?? ({} as TimezoneProps & T)
+    return timezone ?? ({} as Timezone & T)
   }
 
-  const convertTime = (
-    timeToCalc: Date,
-    tz1Offset: TimezoneProps['offset'],
-    tz2Offset: TimezoneProps['offset']
-  ): Date => {
+  const convertTime = (timeToCalc: Date, tz1Offset: Timezone['offset'], tz2Offset: Timezone['offset']): Date => {
     if (!timeToCalc || tz1Offset === undefined || tz2Offset === undefined)
       return new Date(timeToCalc?.getTime?.() ?? NaN)
 
