@@ -10,6 +10,22 @@ export type { ConvertCase } from './casify'
 export { useHue } from './chroma'
 export type { HueFormat, HueOptions } from './chroma'
 
+// Chrono
+export { useChrono } from './chrono'
+export type {
+  CompareDate,
+  CompareDateType,
+  DateRange,
+  DateRangeResult,
+  DateRangeType,
+  DateType,
+  FormatDate,
+  FormatDateType,
+  GetMonths,
+  MonthItem,
+  MonthKey,
+} from './chrono'
+
 // CX
 export { cx } from './cx'
 export type { CXValue } from './cx'
@@ -27,5 +43,5 @@ export { cookie, local, session } from './storage'
 export type { CookieOptions, StoreOptions } from './storage'
 
 export * from './helpers'
-export * from './useDates'
+
 export * from './Validate'
