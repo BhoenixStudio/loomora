@@ -1,4 +1,4 @@
-export * from './Cases'
+export * from './casify'
 export * from './ClassNames'
 export * from './Colors'
 export * from './Consoles'
