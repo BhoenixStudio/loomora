@@ -1,3 +1,7 @@
+// Adapt
+export { useAdapt } from './adapt'
+export type { AdaptedResult, AdaptOptions, Variant } from './adapt'
+
 // Casify
 export { IsValidSlug, UseCase } from './casify'
 export type { ConvertCase } from './casify'
@@ -18,7 +22,6 @@ export type { FloatPos } from './dom'
 export { echo } from './echo'
 export type { EchoItem, EchoOptions } from './echo'
 
-export * from './ELValidate'
 export * from './helpers'
 export * from './LocalStorage'
 export * from './useDates'
