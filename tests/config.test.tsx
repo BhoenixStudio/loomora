@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react'
 import type { PropsWithChildren, ReactNode } from 'react'
 import { LoomoraProvider, useLoomoraConfig } from '../src/config/config-context'
-import { defaultConfig } from '../src/config/default-config'
-import { mergeConfig } from '../src/config/merge-config'
+import { defaultConfig } from '../src/config/defaults'
+import { mergeConfig } from '../src/config/helper'
 import { useSocials } from '../src/database/useSocialMedia'
 
 function TestLink({ href, children }: { href: string; children?: ReactNode }) {

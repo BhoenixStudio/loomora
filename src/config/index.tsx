@@ -1,23 +1,17 @@
 'use client'
 
 import { createContext, type ReactNode, useContext, useMemo } from 'react'
-import { NestedKeyOf, PartialRecord as PR } from '../types'
 import { ResponsiveProvider, ThemeProvider } from '../utils'
-import type { LoomoraConfig, LoomoraConfigInput } from './config-types'
-import { defaultConfig } from './default-config'
-import { mergeConfig } from './merge-config'
+import { defaultConfig } from './defaults'
+import { mergeConfig } from './helper'
+import { LoomoraConfig, LoomoraConfigP } from './types'
+import { TranslateFn } from './types/helper'
 
 import '../styles/index.css'
 
-export type TranslateFn = <K extends NestedKeyOf<LoomoraConfig['translations']>>(
-  key: K,
-  vars?: PR<string, string | number | undefined | null>
-) => string
-
 const ConfigContext = createContext<Required<LoomoraConfig> & { t: TranslateFn }>({ ...defaultConfig, t: () => '' })
 
-/** Provides optional project or section-level Loomora configuration overrides. */
-export function LoomoraProvider({ children, config }: Readonly<{ children: ReactNode; config?: LoomoraConfigInput }>) {
+export function LoomoraProvider({ children, config }: Readonly<{ children: ReactNode; config?: LoomoraConfigP }>) {
   const parentConfig = useContext(ConfigContext)
   const resolved = useMemo(() => mergeConfig(parentConfig, config), [parentConfig, config])
 
@@ -47,7 +41,10 @@ export function LoomoraProvider({ children, config }: Readonly<{ children: React
   )
 }
 
-/** Reads the fully resolved Loomora configuration, including built-in defaults. */
 export function useLoomoraConfig() {
   return useContext(ConfigContext)
 }
+
+export * from './defaults'
+export * from './helper'
+export * from './types'

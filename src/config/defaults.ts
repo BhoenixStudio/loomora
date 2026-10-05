@@ -1,7 +1,7 @@
-import type { LoomoraConfig } from './config-types'
+import type { LoomoraConfig } from './types'
 
 /** Built-in values used when no provider or override is supplied. */
-const defaultConfig: Required<LoomoraConfig> = {
+const defaultConfig: LoomoraConfig = {
   // Translations
   hasTranslationStrategy: false,
   translations: {
@@ -800,10 +800,7 @@ const defaultConfig: Required<LoomoraConfig> = {
     dynamicModeIcon: '◐',
   },
   responsive: { xs: 0, sm: '40rem', md: '48rem', lg: '64rem', xl: '80rem', '2xl': '96rem', '3xl': '120rem' },
-  settings: {
-    isRtl: false,
-    locale: 'en',
-  },
+  settings: { isRtl: false, locale: 'en' },
 }
 
 export { defaultConfig }

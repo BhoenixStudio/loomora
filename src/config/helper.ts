@@ -1,4 +1,4 @@
-import type { LoomoraConfig, LoomoraConfigInput } from './config-types'
+import type { LoomoraConfig, LoomoraConfigP } from './types'
 
 type PlainObject = Record<string, unknown>
 
@@ -24,7 +24,7 @@ function mergeValues(base: unknown, override: unknown): unknown {
 }
 
 /** Recursively merges provider values without mutating either input object. */
-export function mergeConfig(base: Required<LoomoraConfig>, override?: LoomoraConfigInput): Required<LoomoraConfig> {
+export function mergeConfig(base: Required<LoomoraConfig>, override?: LoomoraConfigP): Required<LoomoraConfig> {
   if (!override) return base
   return mergeValues(base, override) as Required<LoomoraConfig>
 }
