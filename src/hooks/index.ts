@@ -38,10 +38,12 @@ export type { FloatPos } from './dom'
 export { echo } from './echo'
 export type { EchoItem, EchoOptions } from './echo'
 
+export * from './helpers'
+
 // Storage
 export { cookie, local, session } from './storage'
 export type { CookieOptions, StoreOptions } from './storage'
 
-export * from './helpers'
-
-export * from './Validate'
+// Strict
+export { useStrict } from './strict'
+export type { UseStrictResult, UseStrictRules } from './strict'
