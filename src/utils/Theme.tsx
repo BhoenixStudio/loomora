@@ -4,7 +4,7 @@ import { createContext, MouseEvent, ReactNode, useContext, useMemo, useReducer }
 import { useContextFns, useContextSharedFns } from '.'
 import { InputProps } from '../components'
 import { useLoomora } from '../config'
-import { AddLocalStorage, UseLocalStorage } from '../hooks'
+import { localStorage } from '../hooks'
 
 export type ThemeType = 'LIGHT' | 'DARK' | 'SYSTEM' | 'DYNAMIC'
 
@@ -39,8 +39,8 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
 
   // Initial Data
   const initialState: Theme = {
-    theme: UseLocalStorage<Theme['theme']>(tKey, { defaultValue: dTheme }),
-    dynamicTime: UseLocalStorage<Theme['dynamicTime']>(tRKey, { defaultValue: { start: dStartTime, end: dEndTime } }),
+    theme: localStorage.get<Theme['theme']>(tKey, { fallback: dTheme }),
+    dynamicTime: localStorage.get<Theme['dynamicTime']>(tRKey, { fallback: { start: dStartTime, end: dEndTime } }),
   }
 
   // Context helpers
@@ -72,7 +72,7 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
   const getCurrentMinutes = () => new Date().getHours() * 60 + new Date().getMinutes()
   const updateTheme = (t: ThemeType) => {
     update({ theme: t })
-    AddLocalStorage(tKey, t)
+    localStorage.set(tKey, t)
   }
 
   // Functions
@@ -92,7 +92,7 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
 
   function setDynamicTime(start: string, end: string) {
     update({ dynamicTime: { start, end } })
-    AddLocalStorage(tRKey, { start, end })
+    localStorage.set(tRKey, { start, end })
   }
 
   function toggleTheme(e?: MouseEvent<HTMLButtonElement>) {

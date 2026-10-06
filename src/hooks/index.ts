@@ -39,11 +39,11 @@ export { echo } from './echo'
 export type { EchoItem, EchoOptions } from './echo'
 
 // Helpers
-export { Copy, digits, fade, hasProps, snip } from './helpers'
+export { copy, digits, fade, hasProps, snip } from './helpers'
 export type { CopyProps } from './helpers'
 
 // Storage
-export { cookie, local, session } from './storage'
+export { cookie, localStorage, sessionStorage } from './storage'
 export type { CookieOptions, StoreOptions } from './storage'
 
 // Strict

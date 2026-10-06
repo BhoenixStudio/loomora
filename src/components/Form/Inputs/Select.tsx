@@ -11,7 +11,7 @@ import {
   useState,
 } from 'react'
 import { useLoomora } from '../../../config'
-import { cn, isThisProps } from '../../../hooks'
+import { cx, hasProps } from '../../../hooks'
 import { GlobalElementEssentials } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 import { Button, ButtonBaseProps } from '../../UI'
@@ -74,7 +74,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
 
   let labelClass: string = '',
     restLabel: LabelProps = { children: '' }
-  if (isThisProps(label, 'children')) {
+  if (hasProps(label, 'children')) {
     const { className: lCN, ...restOfLabel } = label ?? {}
     labelClass = lCN ?? ''
     restLabel = restOfLabel
@@ -86,7 +86,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
     corner: 'small',
     variant: 'text',
   }
-  if (isThisProps(trigger, 'icon')) {
+  if (hasProps(trigger, 'icon')) {
     const {
       color: tColor = 'second',
       corner: tCorner = 'small',
@@ -136,7 +136,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
         {...restWrapper}
       >
         <ConditionalWrapper childrenCondition={Boolean(label)}>
-          {isThisProps(label, 'children') ? (
+          {hasProps(label, 'children') ? (
             <Label className={labelClassName} {...{ required, ...restLabel }} />
           ) : (
             <Label className={labelClassName} {...{ required }}>
@@ -196,7 +196,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
       {fieldsetSuffix}
 
       <ConditionalWrapper childrenCondition={Boolean(inputHelper)}>
-        {isThisProps(inputHelper, 'children') ? (
+        {hasProps(inputHelper, 'children') ? (
           <InputHelper {...inputHelper} />
         ) : (
           <InputHelper>{inputHelper}</InputHelper>
@@ -204,7 +204,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
       </ConditionalWrapper>
 
       <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {isThisProps(errorHelper, 'children') ? (
+        {hasProps(errorHelper, 'children') ? (
           <InputHelper {...errorHelper} asError />
         ) : (
           <InputHelper asError>{errorHelper}</InputHelper>

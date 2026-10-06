@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react'
 import { useLoomora } from '../../../config'
-import { cn } from '../../../hooks'
+import { cx } from '../../../hooks'
 import { CSSProps } from '../../../types'
 import { ButtonProps, ButtonVariant, LinkButtonProps, RegularButtonProps } from './helper'
 

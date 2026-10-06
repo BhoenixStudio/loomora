@@ -1,7 +1,7 @@
 'use client'
 
 import { useLoomora } from '../../config'
-import { useDates } from '../../hooks'
+import { useChrono } from '../../hooks'
 import { GlobalElementEssentials } from '../../types'
 
 export type CopyrightsProps = GlobalElementEssentials<'p'> & {
@@ -13,13 +13,13 @@ export type CopyrightsProps = GlobalElementEssentials<'p'> & {
 }
 
 export function Copyrights(props: Readonly<CopyrightsProps>) {
-  const { format } = useDates()
+  const { stamp } = useChrono()
 
   const { LinkType } = useLoomora()
 
   const {
     className = 'text-sm text-body-3',
-    currentYear = format(new Date(), { type: 'fullYear' }),
+    currentYear = stamp(new Date(), { type: 'fullYear' }),
     startYear = 2025,
     sponsor = '',
     attributes,

@@ -2,7 +2,7 @@
 
 import { DragEvent, InputHTMLAttributes, MouseEvent, ReactNode, useEffect, useId, useRef, useState } from 'react'
 import { useLoomora } from '../../../../config'
-import { cn, isThisProps } from '../../../../hooks'
+import { cx, hasProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
 import { InputHelper } from '../../Modules/Helper'
 import { Label, LabelProps } from '../../Modules/Label'
@@ -146,7 +146,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
 
   let labelClass: string = '',
     restLabel: LabelProps = { children: '' }
-  if (isThisProps(label, 'children')) {
+  if (hasProps(label, 'children')) {
     const { className: lCN, ...restOfLabel } = label ?? {}
     labelClass = lCN ?? ''
     restLabel = restOfLabel
@@ -159,7 +159,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
 
   const labelC: ReactNode = (
     <ConditionalWrapper childrenCondition={Boolean(label)}>
-      {isThisProps(label, 'children') ? (
+      {hasProps(label, 'children') ? (
         <Label className={labelClassName} {...{ required, ...restLabel }}>
           {restLabel?.children}
           {placeholder}
@@ -176,7 +176,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
   const errorC: ReactNode = (
     <>
       <ConditionalWrapper childrenCondition={Boolean(inputHelper)}>
-        {isThisProps(inputHelper, 'children') ? (
+        {hasProps(inputHelper, 'children') ? (
           <InputHelper {...inputHelper} />
         ) : (
           <InputHelper>{inputHelper}</InputHelper>
@@ -184,7 +184,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
       </ConditionalWrapper>
 
       <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {isThisProps(errorHelper, 'children') ? (
+        {hasProps(errorHelper, 'children') ? (
           <InputHelper {...errorHelper} asError />
         ) : (
           <InputHelper asError>{errorHelper}</InputHelper>

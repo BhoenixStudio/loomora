@@ -39,8 +39,8 @@ function createStore(type: 'local' | 'session') {
   }
 }
 
-export const local = createStore('local')
-export const session = createStore('session')
+export const localStorage = createStore('local')
+export const sessionStorage = createStore('session')
 
 export const cookie = {
   get: <T = string>(key: string, options: StoreOptions<T> = {}): T => {

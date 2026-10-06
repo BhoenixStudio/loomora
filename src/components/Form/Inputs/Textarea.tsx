@@ -2,7 +2,7 @@
 
 import { forwardRef, TextareaHTMLAttributes, useEffect, useState } from 'react'
 import { useLoomora } from '../../../config'
-import { cn, isThisProps } from '../../../hooks'
+import { cx, hasProps } from '../../../hooks'
 import { GlobalElementEssentials } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 import { InputBase, InputFieldset, InputFocus, InputHelperAndError, InputLabel } from '../helper'
@@ -62,7 +62,7 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
 
   let labelClass: string = '',
     restLabel: LabelProps = { children: '' }
-  if (isThisProps(label, 'children')) {
+  if (hasProps(label, 'children')) {
     const { className: lCN, ...restOfLabel } = label ?? {}
     labelClass = lCN ?? ''
     restLabel = restOfLabel
@@ -105,7 +105,7 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
         {...restWrapper}
       >
         <ConditionalWrapper childrenCondition={Boolean(label)}>
-          {isThisProps(label, 'children') ? (
+          {hasProps(label, 'children') ? (
             <Label className={labelClassName} {...{ required, ...restLabel }} />
           ) : (
             <Label className={labelClassName} {...{ required }}>
@@ -131,7 +131,7 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
       {fieldsetSuffix}
 
       <ConditionalWrapper childrenCondition={Boolean(inputHelper)}>
-        {isThisProps(inputHelper, 'children') ? (
+        {hasProps(inputHelper, 'children') ? (
           <InputHelper {...inputHelper} />
         ) : (
           <InputHelper>{inputHelper}</InputHelper>
@@ -139,7 +139,7 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
       </ConditionalWrapper>
 
       <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {isThisProps(errorHelper, 'children') ? (
+        {hasProps(errorHelper, 'children') ? (
           <InputHelper {...errorHelper} asError />
         ) : (
           <InputHelper asError>{errorHelper}</InputHelper>

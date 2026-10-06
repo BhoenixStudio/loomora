@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { cn } from '../../../hooks'
+import { cx } from '../../../hooks'
 import { GlobalElementEssentials } from '../../../types'
 
 export type InputHelperProps = GlobalElementEssentials<'span'> & {

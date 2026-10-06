@@ -1,5 +1,5 @@
 import { ElementType, FormHTMLAttributes } from 'react'
-import { cn } from '../../hooks'
+import { cx } from '../../hooks'
 import { Button, FormProps, Inputs } from '../index'
 
 export * from './helper'

@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react'
 import { useLoomora } from '../../config'
-import { cn } from '../../hooks'
+import { cx } from '../../hooks'
 import { Button, ButtonProps } from '../index'
 
 export type BreadcrumbProps = Pick<ButtonProps, 'title' | 'startIcon' | 'endIcon' | 'href' | 'className'> & {

@@ -1,11 +1,11 @@
 'use client'
 
 import { ElementType, ReactNode } from 'react'
-import { UseToggle } from '../../../hooks'
+import { useLoomora } from '../../../config'
+import { fade } from '../../../hooks'
 import { useResponsive } from '../../../utils'
 import { Button, Dialog, DialogProcess, DialogProps } from '../../UI'
 import { FormProps } from '../helper'
-import { useLoomora } from '../../../config'
 
 export type DialogFormProps<T extends ElementType = 'form'> = FormProps<T> &
   DialogProcess & { dialog?: DialogProps; title?: ReactNode }
@@ -37,7 +37,7 @@ export function DialogForm(props: DialogFormProps) {
           startIcon="zondicons:close-outline"
           attributes={{ 'aria-label': t('form.dialogCloseTitle') }}
           onClick={() => {
-            UseToggle('close', { open, setOpen, setShow })
+            fade('out', { open, setOpen, setShow })
             onClose?.()
           }}
         />

@@ -2,10 +2,10 @@
 
 import { DragEvent, ElementType, MouseEvent, ReactNode, useState } from 'react'
 import { useLoomora } from '../../../../config'
-import { cn, UseToggle } from '../../../../hooks'
+import { cx, fade } from '../../../../hooks'
+import { Loader } from '../../../Partials'
 import { Button, ButtonProps, Dialog, DialogProps } from '../../../UI'
 import { FileProps, UploaderFieldProperties, UploaderFieldProps, UploaderValidation, useUploaderHelper } from './helper'
-import { Loader } from '../../../Partials'
 
 type UBase<T extends string | number> = Pick<UploaderFieldProps<T>, 'wrapper' | 'prefix' | 'suffix' | 'loading'>
 type PropertiesBase<T extends string | number> = Pick<UploaderFieldProperties<T>, 'showProgress' | 'progressAttrs'>
@@ -282,7 +282,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
         <Button
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onClick={(e: any) => {
-            UseToggle('toggle', { open, setOpen, setShow })
+            fade('toggle', { open, setOpen, setShow })
             onClick?.(e)
           }}
           {...restButton}

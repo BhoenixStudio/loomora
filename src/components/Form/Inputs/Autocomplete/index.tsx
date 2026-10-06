@@ -3,7 +3,7 @@
 
 import { ChangeEvent, isValidElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLoomora } from '../../../../config'
-import { cn, isThisProps } from '../../../../hooks'
+import { cx, hasProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
 import { Button, ButtonBaseProps } from '../../../UI'
 import { InputHelper } from '../../Modules/Helper'
@@ -122,7 +122,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
 
   let labelClass: string = '',
     restLabel: LabelProps = { children: '' }
-  if (isThisProps(label, 'children')) {
+  if (hasProps(label, 'children')) {
     const { className: lCN, ...restOfLabel } = label ?? {}
     labelClass = lCN ?? ''
     restLabel = restOfLabel
@@ -143,7 +143,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     corner: 'small',
     variant: 'text',
   }
-  if (isThisProps(dTrigger, 'icon')) {
+  if (hasProps(dTrigger, 'icon')) {
     const {
       color: tColor = 'second',
       corner: tCorner = 'small',
@@ -340,7 +340,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
         {...restWrapper}
       >
         <ConditionalWrapper childrenCondition={Boolean(label)}>
-          {isThisProps(label, 'children') ? (
+          {hasProps(label, 'children') ? (
             <Label className={labelClassName} {...{ required, ...restLabel }} />
           ) : (
             <Label className={labelClassName} {...{ required }}>
@@ -466,7 +466,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
       </div>
 
       <ConditionalWrapper childrenCondition={Boolean(inputHelper)}>
-        {isThisProps(inputHelper, 'children') ? (
+        {hasProps(inputHelper, 'children') ? (
           <InputHelper {...inputHelper} />
         ) : (
           <InputHelper>{inputHelper}</InputHelper>
@@ -474,7 +474,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
       </ConditionalWrapper>
 
       <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {isThisProps(errorHelper, 'children') ? (
+        {hasProps(errorHelper, 'children') ? (
           <InputHelper {...errorHelper} asError />
         ) : (
           <InputHelper asError>{errorHelper}</InputHelper>

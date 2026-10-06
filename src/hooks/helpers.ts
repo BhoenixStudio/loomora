@@ -36,7 +36,7 @@ export function digits(value: string, allowTel?: boolean): string {
 }
 
 export type CopyProps = { disabled?: boolean; message?: string; onCopy?: (message: string) => void }
-export async function Copy(text: string, props?: CopyProps) {
+export async function copy(text: string, props?: CopyProps) {
   const { disabled, message, onCopy } = props ?? {}
   if (disabled) return
 

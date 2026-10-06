@@ -2,7 +2,7 @@
 
 import { ClipboardEvent, Dispatch, InputHTMLAttributes, KeyboardEvent, SetStateAction, useEffect, useRef } from 'react'
 import { useLoomora } from '../../../config'
-import { cn, isThisProps } from '../../../hooks'
+import { cx, hasProps } from '../../../hooks'
 import { GlobalElementEssentials } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
@@ -47,7 +47,7 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
 
   let labelClass: string = '',
     restLabel: LabelProps = { children: '' }
-  if (isThisProps(label, 'children')) {
+  if (hasProps(label, 'children')) {
     const { className: lCN, ...restOfLabel } = label ?? {}
     labelClass = lCN ?? ''
     restLabel = restOfLabel
@@ -93,7 +93,8 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
       {...restFieldset}
     >
       <ConditionalWrapper childrenCondition={Boolean(label)}>
-        {isThisProps(label, 'children') ? (
+        x{' '}
+        {hasProps(label, 'children') ? (
           <Label className={labelClassName} {...{ required, ...restLabel }} />
         ) : (
           <Label className={labelClassName} {...{ required }}>
@@ -133,7 +134,8 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
       </div>
 
       <ConditionalWrapper childrenCondition={Boolean(inputHelper)}>
-        {isThisProps(inputHelper, 'children') ? (
+        x{' '}
+        {hasProps(inputHelper, 'children') ? (
           <InputHelper {...inputHelper} />
         ) : (
           <InputHelper>{inputHelper}</InputHelper>
@@ -141,7 +143,8 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
       </ConditionalWrapper>
 
       <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {isThisProps(errorHelper, 'children') ? (
+        x{' '}
+        {hasProps(errorHelper, 'children') ? (
           <InputHelper {...errorHelper} asError />
         ) : (
           <InputHelper asError>{errorHelper}</InputHelper>

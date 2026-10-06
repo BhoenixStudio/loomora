@@ -1,13 +1,13 @@
 'use client'
 
 import { ElementType, InputHTMLAttributes, ReactNode, useRef } from 'react'
-import { cn, isThisProps } from '../../../hooks'
-import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
 import { useLoomora } from '../../../config'
-import { Label, LabelProps } from '../Modules/Label'
-import { ConditionalWrapper } from '../../Helper'
-import { InputHelper } from '../Modules/Helper'
+import { cx, hasProps } from '../../../hooks'
 import { TWColorSName } from '../../../types'
+import { ConditionalWrapper } from '../../Helper'
+import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
+import { InputHelper } from '../Modules/Helper'
+import { Label, LabelProps } from '../Modules/Label'
 
 export type CheckFieldType = 'checkbox' | 'radio' | 'switch'
 
@@ -62,7 +62,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
   // Configs
   let labelClass: string = '',
     restLabel: LabelProps = { children: '' }
-  if (isThisProps(label, 'children')) {
+  if (hasProps(label, 'children')) {
     const { className: lCN, ...restOfLabel } = label ?? {}
     labelClass = lCN ?? ''
     restLabel = restOfLabel
@@ -161,7 +161,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
 
   const labelComponent = (
     <ConditionalWrapper childrenCondition={Boolean(label)}>
-      {isThisProps(label, 'children') ? (
+      {hasProps(label, 'children') ? (
         <Label
           className={labelClassName}
           attributes={{
@@ -187,7 +187,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
       <div className="flex flex-col flex-nowrap">
         {labelComponent}
         <ConditionalWrapper childrenCondition={Boolean(inputHelper)}>
-          {isThisProps(inputHelper, 'children') ? (
+          {hasProps(inputHelper, 'children') ? (
             <InputHelper {...inputHelper} />
           ) : (
             <InputHelper>{inputHelper}</InputHelper>
@@ -195,7 +195,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
         </ConditionalWrapper>
 
         <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-          {isThisProps(errorHelper, 'children') ? (
+          {hasProps(errorHelper, 'children') ? (
             <InputHelper {...errorHelper} asError />
           ) : (
             <InputHelper asError>{errorHelper}</InputHelper>

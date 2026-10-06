@@ -1,11 +1,11 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { GlobalElementEssentials } from '../../../types'
-import { InputBase } from '../helper'
 import { useLoomora } from '../../../config'
-import { cn } from '../../../hooks'
+import { cx } from '../../../hooks'
+import { GlobalElementEssentials } from '../../../types'
 import { Loader } from '../../Partials'
+import { InputBase } from '../helper'
 
 export type LabelProps = Omit<GlobalElementEssentials<'label'>, 'assignDefaultClass' | 'clearDefaultClassName'> & {
   children: ReactNode

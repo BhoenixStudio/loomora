@@ -2,7 +2,7 @@
 
 import { forwardRef, InputHTMLAttributes, ReactNode, useMemo } from 'react'
 import { useLoomora } from '../../../config'
-import { cn, isThisProps } from '../../../hooks'
+import { cx, hasProps } from '../../../hooks'
 import { GlobalElementEssentials } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
@@ -97,7 +97,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
 
   let labelClass: string = '',
     restLabel: LabelProps = { children: '' }
-  if (isThisProps(label, 'children')) {
+  if (hasProps(label, 'children')) {
     const { className: lCN, ...restOfLabel } = label ?? {}
     labelClass = lCN ?? ''
     restLabel = restOfLabel
@@ -125,7 +125,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
       {fieldsetPrefix}
 
       <ConditionalWrapper childrenCondition={Boolean(label)}>
-        {isThisProps(label, 'children') ? (
+        {hasProps(label, 'children') ? (
           <Label className={labelClassName} {...{ required, ...restLabel }}>
             {label?.children}
             {labelValue}
@@ -231,7 +231,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
       {fieldsetSuffix}
 
       <ConditionalWrapper childrenCondition={Boolean(inputHelper)}>
-        {isThisProps(inputHelper, 'children') ? (
+        {hasProps(inputHelper, 'children') ? (
           <InputHelper {...inputHelper} />
         ) : (
           <InputHelper>{inputHelper}</InputHelper>
@@ -239,7 +239,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
       </ConditionalWrapper>
 
       <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {isThisProps(errorHelper, 'children') ? (
+        {hasProps(errorHelper, 'children') ? (
           <InputHelper {...errorHelper} asError />
         ) : (
           <InputHelper asError>{errorHelper}</InputHelper>

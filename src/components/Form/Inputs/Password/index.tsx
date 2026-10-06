@@ -3,7 +3,7 @@
 
 import { ReactNode, useEffect, useState } from 'react'
 import { useLoomora } from '../../../../config'
-import { cn, CopyToClipboard } from '../../../../hooks'
+import { copy, cx } from '../../../../hooks'
 import { ProgressBar } from '../../../Partials'
 import { Button } from '../../../UI'
 import { TextField } from '../TextField'
@@ -127,9 +127,7 @@ export function PasswordField(props: PasswordFieldProps) {
 
           {hasShow && (show ? form?.password?.hideIcon : form?.password?.showIcon)}
 
-          {hasCopy && Boolean(value) && (
-            <Button onClick={() => CopyToClipboard(String(value))}>{form?.password?.copyIcon}</Button>
-          )}
+          {hasCopy && Boolean(value) && <Button onClick={() => copy(String(value))}>{form?.password?.copyIcon}</Button>}
 
           {(asConfirm || (hasValidation && note)) && (
             <p

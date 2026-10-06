@@ -3,7 +3,7 @@
 import { Editor, IAllProps } from '@tinymce/tinymce-react'
 import { useId, useRef, useState } from 'react'
 import { useLoomora } from '../../../../config'
-import { cn, isThisProps } from '../../../../hooks'
+import { cx, hasProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
 import { Loader } from '../../../Partials'
 import { InputBase, InputFieldset, InputHelper, InputHelperAndError, InputLabel, Label, LabelProps } from '../../index'
@@ -98,7 +98,7 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
 
   let labelClass: string = '',
     restLabel: LabelProps = { children: '' }
-  if (isThisProps(label, 'children')) {
+  if (hasProps(label, 'children')) {
     const { className: lCN, ...restOfLabel } = label ?? {}
     labelClass = lCN ?? ''
     restLabel = restOfLabel
@@ -114,7 +114,7 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
       {...restFieldset}
     >
       <ConditionalWrapper childrenCondition={Boolean(label)}>
-        {isThisProps(label, 'children') ? (
+        {hasProps(label, 'children') ? (
           <Label className={labelClassName} {...{ required, ...restLabel }} />
         ) : (
           <Label className={labelClassName} {...{ required }}>
@@ -181,7 +181,7 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
       />
 
       <ConditionalWrapper childrenCondition={Boolean(inputHelper)}>
-        {isThisProps(inputHelper, 'children') ? (
+        {hasProps(inputHelper, 'children') ? (
           <InputHelper {...inputHelper} />
         ) : (
           <InputHelper>{inputHelper}</InputHelper>
@@ -189,7 +189,7 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
       </ConditionalWrapper>
 
       <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {isThisProps(errorHelper, 'children') ? (
+        {hasProps(errorHelper, 'children') ? (
           <InputHelper {...errorHelper} asError />
         ) : (
           <InputHelper asError>{errorHelper}</InputHelper>
