@@ -38,7 +38,9 @@ export type { FloatPos } from './dom'
 export { echo } from './echo'
 export type { EchoItem, EchoOptions } from './echo'
 
-export * from './helpers'
+// Helpers
+export { Copy, digits, fade, hasProps, snip } from './helpers'
+export type { CopyProps } from './helpers'
 
 // Storage
 export { cookie, local, session } from './storage'
