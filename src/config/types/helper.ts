@@ -2,7 +2,7 @@ import { Locale } from 'date-fns'
 import { ButtonHTMLAttributes, ElementType, ReactNode } from 'react'
 import { LoomoraConfig } from '.'
 import { ButtonCorner, ButtonSize, ButtonVariant, FileExtType, PhonePrefix } from '../../components'
-import { CountryProps, CountryType, SocialPlatform, SocialType, TimezoneProps, TimezoneType } from '../../database'
+import { Country, CountryType, Social, SocialType, Timezone, TimezoneType } from '../../database'
 import {
   CSSProps,
   MQ,
@@ -17,12 +17,16 @@ import {
 import { ScreenSize, ScreenSizeValue, ThemeType } from '../../utils'
 
 // Main
-export type LoomoraBase = { hasTranslationStrategy: boolean; LinkType: ElementType }
+export type LoomoraBase = {
+  hasTranslationStrategy: boolean
+  LinkType: ElementType
+  flagResource: `${string}{key}${string}`
+}
 
 // Data
-export type LoomoraSocialT = Record<SocialType, Pick<SocialPlatform, 'name' | 'placeholder'>>
-export type LoomoraCountriesT = Record<CountryType, Pick<CountryProps, 'name'>>
-export type LoomoraTimezonesT = Record<Exclude<TimezoneType, 'none'>, Pick<TimezoneProps, 'name' | 'region'>>
+export type LoomoraSocialT = Record<SocialType, Pick<Social, 'name' | 'placeholder'>>
+export type LoomoraCountriesT = Record<CountryType, Pick<Country, 'name'>>
+export type LoomoraTimezonesT = Record<Exclude<TimezoneType, 'none'>, Pick<Timezone, 'name' | 'region'>>
 
 // Components
 export type LoomoraButtonSize = {

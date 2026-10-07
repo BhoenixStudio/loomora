@@ -504,8 +504,8 @@ export const loomoraDefaults: LoomoraConfig = {
         'System Detection mode follows your device settings and auto-switches between Light and Dark',
     },
   },
-  // Hooks
   // Components
+  flagResource: 'https://flagcdn.com/{key}.svg',
   button: {
     defaultType: 'button',
     defaultColor: 'info',

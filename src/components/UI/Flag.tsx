@@ -3,6 +3,7 @@
 import { HTMLAttributes, ReactNode, useState } from 'react'
 import { CountryType } from '../../database'
 import { cx } from '../../hooks'
+import { useLoomora } from '../../config'
 
 export interface FlagProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
   country: CountryType
@@ -13,6 +14,8 @@ export interface FlagProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'childr
 }
 
 export function Flag(props: Readonly<FlagProps>) {
+  const { flagResource } = useLoomora()
+
   const { country, size = 20, ratio = '3x2', fallback: fb, className, style, setIsExist, ...attrs } = props
 
   // States
@@ -27,7 +30,7 @@ export function Flag(props: Readonly<FlagProps>) {
 
   const flag = (
     <img
-      src={`/flags/${flagKey}.svg`}
+      src={flagResource.replaceAll('{key}', flagKey.toLowerCase())}
       alt={flagKey}
       style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
       onLoad={() => setIsExist?.(true)}
