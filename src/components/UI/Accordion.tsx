@@ -22,8 +22,6 @@ export type AccordionProps = NativeElementProps<'section'> & {
     | { allTitleClickable: false; titleProps?: NativeElementProps<'div'> }
   )
 
-export type AccordionMiniProps = Pick<AccordionProps, 'title' | 'size' | 'className' | 'condition'>
-
 export function Accordion(props: Readonly<AccordionProps>) {
   const {
     size = [],

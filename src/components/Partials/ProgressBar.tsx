@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { cx } from '../../hooks'
 import { ChildSize, CSSProps, GlobalElement } from '../../types'
 
-export type ProgressBarWithLabelProps = {
+type ProgressBarWithLabelProps = {
   showValueAsText: true
   label?: ReactNode
   labelClassName?: string

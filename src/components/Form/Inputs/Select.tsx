@@ -14,7 +14,7 @@ import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
-import { Button, ButtonBaseProps } from '../../UI'
+import { Button, ButtonProps } from '../../UI'
 import { InputBase, InputFieldset, InputFocus, InputHelperAndError, InputLabel } from '../helper'
 import { InputHelper } from '../Modules/Helper'
 import { Label, LabelProps } from '../Modules/Label'
@@ -31,7 +31,7 @@ export interface SelectProps extends InputBase, InputFieldset, InputLabel, Input
   properties?: SelectHTMLAttributes<HTMLSelectElement>
   options: SelectOption[]
   showTrigger?: boolean
-  trigger?: ReactNode | (Pick<ButtonBaseProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode })
+  trigger?: ReactNode | (Pick<ButtonProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode })
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) => {
@@ -80,7 +80,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
     restLabel = restOfLabel
   }
 
-  let restTrigger: Pick<ButtonBaseProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode } = {
+  let restTrigger: Pick<ButtonProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode } = {
     icon: form?.select?.triggerIcon,
     color: 'second',
     corner: 'small',

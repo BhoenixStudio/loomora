@@ -30,7 +30,7 @@ export type DialogProps = GlobalElement<'dialog'> & {
   usePortal?: boolean
 }
 
-export type DialogPropsFull = DialogProps & { children: ReactNode } & DialogProcess
+type DialogPropsFull = DialogProps & { children: ReactNode } & DialogProcess
 
 export function Dialog(props: Readonly<DialogPropsFull>) {
   const {

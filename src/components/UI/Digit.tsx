@@ -3,8 +3,6 @@ import { Loader, LoaderProps } from '../../components'
 import { cx } from '../../hooks'
 import { GlobalElement } from '../../types'
 
-export type DigitCurrencySymbolType = 'code' | 'symbol' | 'icon'
-
 export type DigitProps<T extends ElementType = 'span'> = GlobalElement<T> & {
   as?: T
   value: number | null | undefined

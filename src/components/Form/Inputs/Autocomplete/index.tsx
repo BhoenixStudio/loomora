@@ -5,7 +5,7 @@ import { ChangeEvent, isValidElement, ReactNode, useCallback, useEffect, useMemo
 import { useLoomora } from '../../../../config'
 import { cx, hasProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
-import { Button, ButtonBaseProps } from '../../../UI'
+import { Button, ButtonProps } from '../../../UI'
 import { InputHelper } from '../../Modules/Helper'
 import { Label, LabelProps } from '../../Modules/Label'
 import {
@@ -137,7 +137,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     labelClass,
   ])
 
-  let restTrigger: Pick<ButtonBaseProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode } = {
+  let restTrigger: Pick<ButtonProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode } = {
     icon: form?.select?.triggerIcon,
     color: 'second',
     corner: 'small',
@@ -371,7 +371,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
             <Button
               type="button"
               {...restTrigger}
-              className="absolute top-1/2 end-3 -translate-y-1/2 pointer-events-none transition-all duration-150 ease-in-out peer-focus:rotate-180"
+              className="absolute top-1/2 inset-e-3 -translate-y-1/2 pointer-events-none transition-all duration-150 ease-in-out peer-focus:rotate-180"
             >
               {restTrigger?.icon}
             </Button>

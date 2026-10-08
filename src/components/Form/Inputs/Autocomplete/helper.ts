@@ -3,7 +3,7 @@
 
 import { ChangeEvent, HTMLAttributes, ReactNode } from 'react'
 import { GlobalElement } from '../../../../types'
-import { ButtonBaseProps } from '../../../UI'
+import { ButtonProps } from '../../../UI'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../../helper'
 
 export type AutocompleteValue = string | number | undefined
@@ -72,7 +72,7 @@ export interface AutocompleteProps<T = any>
   loadingState?: ReactNode
   emptyState?: ReactNode
   showTrigger?: boolean
-  trigger?: ReactNode | (Pick<ButtonBaseProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode })
+  trigger?: ReactNode | (Pick<ButtonProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode })
   onToggle?: (opened: boolean) => void
 }
 
