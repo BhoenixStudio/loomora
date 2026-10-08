@@ -3,11 +3,11 @@
 import { ReactNode } from 'react'
 import { useLoomora } from '../../../config'
 import { cx } from '../../../hooks'
-import { GlobalElementEssentials } from '../../../types'
+import { GlobalElement } from '../../../types'
 import { Loader } from '../../Partials'
 import { InputBase } from '../helper'
 
-export type LabelProps = Omit<GlobalElementEssentials<'label'>, 'assignDefaultClass' | 'clearDefaultClassName'> & {
+export type LabelProps = Omit<GlobalElement<'label'>, 'assignDefaultClass' | 'clearDefaultClassName'> & {
   children: ReactNode
   required?: boolean
   showRequiredIndicator?: boolean

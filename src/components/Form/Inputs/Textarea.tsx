@@ -3,7 +3,7 @@
 import { forwardRef, TextareaHTMLAttributes, useEffect, useState } from 'react'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
-import { GlobalElementEssentials } from '../../../types'
+import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 import { InputBase, InputFieldset, InputFocus, InputHelperAndError, InputLabel } from '../helper'
 import { InputHelper } from '../Modules/Helper'
@@ -12,7 +12,7 @@ import { Label, LabelProps } from '../Modules/Label'
 type InputProps = TextareaHTMLAttributes<HTMLTextAreaElement>
 
 export interface TextareaProps extends InputBase, InputFieldset, InputLabel, InputHelperAndError {
-  wrapper?: GlobalElementEssentials<'div'>
+  wrapper?: GlobalElement<'div'>
   active?: boolean
   properties?: InputProps
 }

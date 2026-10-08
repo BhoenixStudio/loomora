@@ -2,9 +2,9 @@
 
 import { useLoomora } from '../../config'
 import { useChrono } from '../../hooks'
-import { GlobalElementEssentials } from '../../types'
+import { GlobalElement } from '../../types'
 
-export type CopyrightsProps = GlobalElementEssentials<'p'> & {
+export type CopyrightsProps = GlobalElement<'p'> & {
   startYear?: number
   currentYear?: number
   sponsor?: string

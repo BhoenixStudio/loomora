@@ -3,7 +3,7 @@
 import { Dispatch, KeyboardEvent, ReactNode, SetStateAction } from 'react'
 import { createPortal } from 'react-dom'
 import { cx, fade } from '../../hooks'
-import { CSSProps, GlobalElementEssentials } from '../../types'
+import { CSSProps, GlobalElement } from '../../types'
 
 export type DialogPosition = 'center' | 'top' | 'bottom' | 'left' | 'right' | 'start' | 'end'
 
@@ -14,7 +14,7 @@ export type DialogProcess = {
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export type DialogProps = GlobalElementEssentials<'dialog'> & {
+export type DialogProps = GlobalElement<'dialog'> & {
   position?: DialogPosition
   width?: CSSProps['width']
   minWidth?: CSSProps['minWidth']

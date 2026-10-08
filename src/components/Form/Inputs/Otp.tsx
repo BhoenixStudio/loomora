@@ -3,14 +3,14 @@
 import { ClipboardEvent, Dispatch, InputHTMLAttributes, KeyboardEvent, SetStateAction, useEffect, useRef } from 'react'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
-import { GlobalElementEssentials } from '../../../types'
+import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
 import { InputHelper } from '../Modules/Helper'
 import { Label, LabelProps } from '../Modules/Label'
 
 export interface OtpFieldProps extends InputBase, Pick<InputFieldset, 'fieldset'>, InputLabel, InputHelperAndError {
-  wrapper?: GlobalElementEssentials<'div'>
+  wrapper?: GlobalElement<'div'>
   length?: number
   properties?: Pick<
     InputHTMLAttributes<HTMLInputElement>,

@@ -12,7 +12,7 @@ import {
 } from 'react'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
-import { GlobalElementEssentials } from '../../../types'
+import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 import { Button, ButtonBaseProps } from '../../UI'
 import { InputBase, InputFieldset, InputFocus, InputHelperAndError, InputLabel } from '../helper'
@@ -24,7 +24,7 @@ export type OptionGroupItem = { isGroup: true } & OptgroupHTMLAttributes<HTMLOpt
 export type SelectOption = { label?: ReactNode } & (OptionItem | OptionGroupItem)
 
 export interface SelectProps extends InputBase, InputFieldset, InputLabel, InputHelperAndError {
-  wrapper?: GlobalElementEssentials<'div'>
+  wrapper?: GlobalElement<'div'>
   prefix?: ReactNode
   suffix?: ReactNode
   active?: boolean

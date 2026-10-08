@@ -2,7 +2,7 @@
 
 import { ComponentPropsWithoutRef, ElementType, ReactNode, useEffect, useRef, useState } from 'react'
 import { cx } from '../../hooks'
-import { ChildSize, CSSProps, GlobalElementEssentials as DEE } from '../../types'
+import { ChildSize, CSSProps, GlobalElement as DEE } from '../../types'
 
 type NativeElementProps<T extends ElementType> = DEE<T> &
   Omit<ComponentPropsWithoutRef<T>, 'className' | 'style' | 'ref' | 'id' | 'children'>

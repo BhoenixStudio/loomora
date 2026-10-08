@@ -14,7 +14,7 @@ import {
   useState,
 } from 'react'
 import { useLoomora } from '../../../../config'
-import { GlobalElementEssentials, TWColorSName } from '../../../../types'
+import { GlobalElement, TWColorSName } from '../../../../types'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../../helper'
 
 export const EXT_CATEGORIES = {
@@ -154,7 +154,7 @@ export type UploaderFieldProperties<T extends string | number = number> = Pick<
 
 export interface UploaderFieldProps<T extends string | number = number>
   extends InputBase, Pick<InputFieldset, 'fieldset'>, InputLabel, InputHelperAndError {
-  wrapper?: Omit<GlobalElementEssentials<'div'>, 'attributes'>
+  wrapper?: Omit<GlobalElement<'div'>, 'attributes'>
   prefix?: ReactNode | ReactNode[]
   suffix?: ReactNode | ReactNode[]
   properties?: UploaderFieldProperties<T>

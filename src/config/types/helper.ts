@@ -7,7 +7,7 @@ import {
   CSSProps,
   MQ,
   NestedKeyOf,
-  PartialRecord as PR,
+  PartialRecord,
   TWColorName,
   TWColorSName,
   TWGap,
@@ -245,5 +245,5 @@ export type DeepPartial<T> = {
 
 export type TranslateFn = <K extends NestedKeyOf<LoomoraConfig['translations']>>(
   key: K,
-  vars?: PR<string, string | number | undefined | null>
+  vars?: PartialRecord<string, string | number | undefined | null>
 ) => string

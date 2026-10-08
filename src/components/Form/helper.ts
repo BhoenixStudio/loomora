@@ -1,5 +1,5 @@
 import { Dispatch, ElementType, FocusEvent, ReactNode, SetStateAction } from 'react'
-import { ChildSize, GlobalElementEssentials, WrapperSize } from '../../types'
+import { ChildSize, GlobalElement, WrapperSize } from '../../types'
 import {
   AutocompleteProps,
   ButtonProps,
@@ -38,7 +38,7 @@ export type InputProps = InputBase &
   )
 
 export type InputFieldset = {
-  fieldset?: GlobalElementEssentials<'fieldset'>
+  fieldset?: GlobalElement<'fieldset'>
   fieldsetPrefix?: ReactNode
   fieldsetSuffix?: ReactNode
 }
@@ -53,11 +53,11 @@ export type InputHelperAndError = {
 
 export type InputsWrapperProps = {
   inputs?: InputProps[]
-  wrapper?: GlobalElementEssentials<'div'> & { size?: WrapperSize[] }
+  wrapper?: GlobalElement<'div'> & { size?: WrapperSize[] }
   empty?: ReactNode
 }
 
-export type FormProps<T extends ElementType = 'form'> = Omit<GlobalElementEssentials<T>, 'clearDefaultClassName'> & {
+export type FormProps<T extends ElementType = 'form'> = Omit<GlobalElement<T>, 'clearDefaultClassName'> & {
   as?: T
   inputs?: InputsWrapperProps['inputs']
   inputsWrapper?: InputsWrapperProps['wrapper']
@@ -66,7 +66,7 @@ export type FormProps<T extends ElementType = 'form'> = Omit<GlobalElementEssent
   actionsPrefix?: ReactNode
   actionsSuffix?: ReactNode
   actions?: ButtonProps[]
-  actionWrapper?: GlobalElementEssentials<'div'>
+  actionWrapper?: GlobalElement<'div'>
   empty?: InputsWrapperProps['empty']
   loading?: boolean
   condition?: boolean

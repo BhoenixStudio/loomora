@@ -3,7 +3,7 @@
 import { forwardRef, InputHTMLAttributes, ReactNode, useMemo } from 'react'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
-import { GlobalElementEssentials } from '../../../types'
+import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
 import { InputHelper } from '../Modules/Helper'
@@ -29,7 +29,7 @@ type InputProps = Omit<
 }
 
 export interface RangeFieldProps extends InputBase, InputFieldset, InputLabel, InputHelperAndError {
-  wrapper?: GlobalElementEssentials<'div'>
+  wrapper?: GlobalElement<'div'>
   prefix?: ReactNode | ReactNode[]
   suffix?: ReactNode | ReactNode[]
   properties?: InputProps

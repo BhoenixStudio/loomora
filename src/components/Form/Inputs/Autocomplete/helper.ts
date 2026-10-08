@@ -2,7 +2,7 @@
 'use client'
 
 import { ChangeEvent, HTMLAttributes, ReactNode } from 'react'
-import { GlobalElementEssentials } from '../../../../types'
+import { GlobalElement } from '../../../../types'
 import { ButtonBaseProps } from '../../../UI'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../../helper'
 
@@ -62,13 +62,13 @@ type InputProps<T = any> = AutocompleteSingleProperties<T> | AutocompleteMultipl
 
 export interface AutocompleteProps<T = any>
   extends InputBase, Pick<InputFieldset, 'fieldset'>, InputLabel, InputHelperAndError {
-  wrapper?: GlobalElementEssentials<'div'>
+  wrapper?: GlobalElement<'div'>
   prefix?: ReactNode
   suffix?: ReactNode
   active?: boolean
   properties?: InputProps<T>
   options: AutocompleteOption<T>[]
-  optionsMenu?: GlobalElementEssentials<'ul'>
+  optionsMenu?: GlobalElement<'ul'>
   loadingState?: ReactNode
   emptyState?: ReactNode
   showTrigger?: boolean

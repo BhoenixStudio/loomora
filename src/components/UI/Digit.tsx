@@ -1,20 +1,20 @@
 import { ElementType, ReactNode } from 'react'
 import { Loader, LoaderProps } from '../../components'
 import { cx } from '../../hooks'
-import { GlobalElementEssentials } from '../../types'
+import { GlobalElement } from '../../types'
 
 export type DigitCurrencySymbolType = 'code' | 'symbol' | 'icon'
 
-export type DigitProps<T extends ElementType = 'span'> = GlobalElementEssentials<T> & {
+export type DigitProps<T extends ElementType = 'span'> = GlobalElement<T> & {
   as?: T
   value: number | null | undefined
-  valueProps?: GlobalElementEssentials<'span'>
-  subProps?: GlobalElementEssentials<'small'>
+  valueProps?: GlobalElement<'span'>
+  subProps?: GlobalElement<'small'>
   fallback?: ReactNode
   startUnit?: ReactNode
-  startUnitProps?: GlobalElementEssentials<'small'>
+  startUnitProps?: GlobalElement<'small'>
   endUnit?: ReactNode
-  endUnitProps?: GlobalElementEssentials<'small'>
+  endUnitProps?: GlobalElement<'small'>
   decimalsMin?: number
   decimalsMax?: number
   thousandSeparator?: string
