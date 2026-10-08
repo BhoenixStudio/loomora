@@ -1,6 +1,7 @@
 'use client'
 
 import { useLoomora } from '../config'
+import { LoomoraTimezonesT } from '../config/types/helper'
 import { Country, CountryType, useCountries } from './index'
 
 type Timezones = ReturnType<typeof data>
@@ -169,7 +170,8 @@ export function useTimezones() {
       const timezone = {
         key: key as TimezoneKey,
         ...value,
-        ...translations?.timezones?.[key as TimezoneKey],
+        name: translations?.timezones?.[key as Exclude<TimezoneType, 'none'>],
+        region: translations?.timezones?.regions?.[String(key.split('/')?.[0]) as keyof LoomoraTimezonesT['regions']],
         country: getCountry(value.countryCode),
         ...extra[key as TimezoneKey],
       }
