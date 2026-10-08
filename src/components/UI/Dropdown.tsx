@@ -3,13 +3,13 @@
 import { AnimationEvent, MouseEvent, ReactNode, useRef, useState } from 'react'
 import { cx, useOverlay } from '../../hooks'
 import { GlobalElement } from '../../types'
-import { Button, ButtonBaseProps, RegularButtonProps } from '../index'
+import { Button, ButtonProps } from '../index'
 
 export type DropdownProps = {
   trigger: ReactNode
   children: (close: () => void) => ReactNode
   wrapperProps?: Omit<GlobalElement<'div'>, 'children'>
-  triggerProps?: ButtonBaseProps & Omit<RegularButtonProps, 'children' | 'title' | 'icon' | 'href'>
+  triggerProps?: Omit<Extract<ButtonProps, { href?: never }>, 'children' | 'title' | 'icon' | 'href'>
   menuClassName?: string
   onToggle?: (opened: boolean) => void
   staticPosition?: boolean
