@@ -7,6 +7,10 @@ import { CSSProps } from '../../../types'
 import { ButtonProps, ButtonVariant, LinkButtonProps, RegularButtonProps } from './helper'
 
 export function Button(props: Readonly<ButtonProps>) {
+  const { LinkType, button } = useLoomora()
+
+  const { defaultType, defaultColor, defaultLoadingTitle, sizes, colors, corners } = button ?? {}
+
   const {
     variant = 'fill',
     size = 'default',
@@ -23,7 +27,6 @@ export function Button(props: Readonly<ButtonProps>) {
     loaderTitle,
     loaderStartIcon,
     loaderEndIcon,
-
     children,
     condition,
   } = props
@@ -41,18 +44,15 @@ export function Button(props: Readonly<ButtonProps>) {
   const {
     ref: buttonRef,
     onClick: buttonClick,
-    type = 'button',
+    type = defaultType,
     attributes: buttonAttrs,
     disabled = false,
   } = props as RegularButtonProps
 
-  const { LinkType, button } = useLoomora()
-
-  const { defaultType, defaultColor, defaultLoadingTitle, sizes, colors, corners } = button ?? {}
-
   // Configs
   const sVariant = variant as Exclude<ButtonVariant, 'none'>
   const { border, background, text } = colors?.[sVariant]?.[color ?? defaultColor ?? ''] ?? {}
+  const sizeConfig = size === 'none' ? undefined : sizes?.[size]
 
   const className = cx([
     // Core
@@ -65,28 +65,28 @@ export function Button(props: Readonly<ButtonProps>) {
     // Sizes
     {
       value: [
-        ...sanitizeItem(sizes?.[size]?.fill?.textSize),
-        ...sanitizeItem(sizes?.[size]?.fill?.textWeight),
-        ...sanitizeItem(sizes?.[size]?.fill?.gap),
-        ...sanitizeItem(sizes?.[size]?.fill?.padding),
+        ...sanitizeItem(sizeConfig?.fill?.textSize),
+        ...sanitizeItem(sizeConfig?.fill?.textWeight),
+        ...sanitizeItem(sizeConfig?.fill?.gap),
+        ...sanitizeItem(sizeConfig?.fill?.padding),
       ],
       condition: ['fill'].includes(variant),
     },
     {
       value: [
-        ...sanitizeItem(sizes?.[size]?.outline?.textSize),
-        ...sanitizeItem(sizes?.[size]?.outline?.textWeight),
-        ...sanitizeItem(sizes?.[size]?.outline?.gap),
-        ...sanitizeItem(sizes?.[size]?.outline?.padding),
+        ...sanitizeItem(sizeConfig?.outline?.textSize),
+        ...sanitizeItem(sizeConfig?.outline?.textWeight),
+        ...sanitizeItem(sizeConfig?.outline?.gap),
+        ...sanitizeItem(sizeConfig?.outline?.padding),
       ],
       condition: ['outline'].includes(variant),
     },
     {
       value: [
-        ...sanitizeItem(sizes?.[size]?.text?.textSize),
-        ...sanitizeItem(sizes?.[size]?.text?.textWeight),
-        ...sanitizeItem(sizes?.[size]?.text?.gap),
-        ...sanitizeItem(sizes?.[size]?.text?.padding),
+        ...sanitizeItem(sizeConfig?.text?.textSize),
+        ...sanitizeItem(sizeConfig?.text?.textWeight),
+        ...sanitizeItem(sizeConfig?.text?.gap),
+        ...sanitizeItem(sizeConfig?.text?.padding),
       ],
       condition: ['text'].includes(variant),
     },
@@ -141,12 +141,7 @@ export function Button(props: Readonly<ButtonProps>) {
     )
 
   let wrapper: ReactNode = (
-    <button
-      ref={buttonRef}
-      onClick={buttonClick}
-      type={type ?? defaultType}
-      {...{ className, disabled, style, ...buttonAttrs }}
-    >
+    <button ref={buttonRef} onClick={buttonClick} type={type} {...{ className, disabled, style, ...buttonAttrs }}>
       {content}
     </button>
   )
