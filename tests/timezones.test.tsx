@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import type { PropsWithChildren } from 'react'
-import { useTimezones } from '../src/database/useTimezones'
-import { LoomoraProvider } from '../src/config/config-context'
+import { LoomoraProvider } from '../src/config'
+import { useTimezones } from '../src/database/timezones'
 
 describe('useTimezones', () => {
   it('returns enriched timezone records with country metadata', () => {
@@ -44,7 +44,9 @@ describe('useTimezones', () => {
     const wrapper = ({ children }: PropsWithChildren) => (
       <LoomoraProvider
         config={{
-          timezones: { 'asia/tokyo': { name: 'Tokyo translated', region: 'Asia translated' } },
+          translations: {
+            timezones: { 'asia/tokyo': 'Tokyo translated', regions: { asia: 'Asia translated' } },
+          },
         }}
       >
         {children}

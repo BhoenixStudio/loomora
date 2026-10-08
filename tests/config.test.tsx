@@ -1,9 +1,8 @@
 import { renderHook } from '@testing-library/react'
 import type { PropsWithChildren, ReactNode } from 'react'
-import { LoomoraProvider, useLoomora } from '../src/config/config-context'
-import { defaultConfig } from '../src/config/defaults'
+import { LoomoraProvider, loomoraDefaults, useLoomora } from '../src/config'
 import { mergeConfig } from '../src/config/helper'
-import { useSocials } from '../src/database/useSocialMedia'
+import { useSocials } from '../src/database/socials'
 
 function TestLink({ href, children }: { href: string; children?: ReactNode }) {
   return <a href={href}>{children}</a>
@@ -13,22 +12,24 @@ describe('Loomora configuration', () => {
   it('returns built-in defaults without a provider', () => {
     const { result } = renderHook(() => useLoomora())
 
-    expect(result.current.socials.github).toEqual({ name: 'GitHub', placeholder: 'ex: username' })
-    expect(result.current.linkType).toBe('a')
+    expect(result.current.translations.socials.github).toEqual({ name: 'GitHub', placeholder: 'ex: username' })
+    expect(result.current.LinkType).toBe('a')
   })
 
   it('accepts a consumer-provided link component', () => {
     const wrapper = ({ children }: PropsWithChildren) => (
-      <LoomoraProvider config={{ linkType: TestLink }}>{children}</LoomoraProvider>
+      <LoomoraProvider config={{ LinkType: TestLink }}>{children}</LoomoraProvider>
     )
     const { result } = renderHook(() => useLoomora(), { wrapper })
 
-    expect(result.current.linkType).toBe(TestLink)
+    expect(result.current.LinkType).toBe(TestLink)
   })
 
   it('applies partial overrides without resetting sibling values', () => {
     const wrapper = ({ children }: PropsWithChildren) => (
-      <LoomoraProvider config={{ socials: { github: { name: 'Git traduit' } } }}>{children}</LoomoraProvider>
+      <LoomoraProvider config={{ translations: { socials: { github: { name: 'Git traduit' } } } }}>
+        {children}
+      </LoomoraProvider>
     )
     const { result } = renderHook(() => useSocials(), { wrapper })
 
@@ -42,8 +43,10 @@ describe('Loomora configuration', () => {
 
   it('inherits parent values in nested providers', () => {
     const wrapper = ({ children }: PropsWithChildren) => (
-      <LoomoraProvider config={{ socials: { github: { name: 'Git parent' } } }}>
-        <LoomoraProvider config={{ socials: { github: { placeholder: 'identifiant' } } }}>{children}</LoomoraProvider>
+      <LoomoraProvider config={{ translations: { socials: { github: { name: 'Git parent' } } } }}>
+        <LoomoraProvider config={{ translations: { socials: { github: { placeholder: 'identifiant' } } } }}>
+          {children}
+        </LoomoraProvider>
       </LoomoraProvider>
     )
     const { result } = renderHook(() => useSocials(), { wrapper })
@@ -55,11 +58,11 @@ describe('Loomora configuration', () => {
   })
 
   it('does not mutate the base or override objects while merging', () => {
-    const override = { socials: { github: { name: 'Git traduit' } } } as const
-    const merged = mergeConfig(defaultConfig, override)
+    const override = { translations: { socials: { github: { name: 'Git traduit' } } } } as const
+    const merged = mergeConfig(loomoraDefaults, override)
 
-    expect(merged.socials.github).toEqual({ name: 'Git traduit', placeholder: 'ex: username' })
-    expect(defaultConfig.socials.github).toEqual({ name: 'GitHub', placeholder: 'ex: username' })
-    expect(override).toEqual({ socials: { github: { name: 'Git traduit' } } })
+    expect(merged.translations.socials.github).toEqual({ name: 'Git traduit', placeholder: 'ex: username' })
+    expect(loomoraDefaults.translations.socials.github).toEqual({ name: 'GitHub', placeholder: 'ex: username' })
+    expect(override).toEqual({ translations: { socials: { github: { name: 'Git traduit' } } } })
   })
 })

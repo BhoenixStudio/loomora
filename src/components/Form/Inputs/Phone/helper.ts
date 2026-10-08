@@ -10,10 +10,11 @@ import {
   ReactNode,
   SetStateAction,
 } from 'react'
-import { CountryPhoneCodeType, CountryProps, CountryType } from '../../../../database'
+import { loomoraDefaults } from '../../../../config/defaults'
+import { Country, CountryType, PhoneCode } from '../../../../database'
 import { TextFieldProps } from '../TextField'
 
-export type PhonePrefix = '+' | '00' | null | undefined
+export type PhonePrefix = '+' | '00' | '' | null | undefined
 
 type InputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -50,7 +51,7 @@ export interface PhoneInputProps extends Omit<TextFieldProps, 'properties'> {
 }
 
 type GetPhoneTitleProps = {
-  country?: CountryProps
+  country?: Country
   showCountriesFlags: boolean
   codePrefix: PhonePrefix
   worldwide?: boolean
@@ -59,7 +60,7 @@ type GetPhoneTitleProps = {
 }
 
 type AssignPhoneProps = {
-  country?: CountryProps
+  country?: Country
   codePrefix: PhonePrefix
   setValue?: (props: PhoneValue) => void
   setValueError: (error: ReactNode) => void
@@ -79,19 +80,19 @@ type PastePhoneProps = {
 
 export type PhoneValue = {
   codePrefix: PhonePrefix
-  code: CountryPhoneCodeType | undefined
+  code: PhoneCode | undefined
   value: string
   final: string
 }
 export const phoneFallBackValue: PhoneValue = {
-  codePrefix: null,
+  codePrefix: loomoraDefaults.form.phone.codePrefix,
   code: undefined,
   value: '',
   final: '',
 }
 
 export function usePhoneHelper() {
-  const CleanPhone = (phone: string, code: CountryPhoneCodeType): string => {
+  const CleanPhone = (phone: string, code: PhoneCode): string => {
     if (!phone || !code) return ''
 
     const codeStr = String(code)
