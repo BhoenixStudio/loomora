@@ -4,7 +4,14 @@ export type { AccordionProps } from './Accordion'
 
 // Button
 export { Button } from './Button'
-export type { ButtonCorner, ButtonProps, ButtonSize, ButtonVariant } from './Button/helper'
+export type {
+  ButtonCorner,
+  ButtonProps,
+  ButtonSize,
+  ButtonVariant,
+  LinkButtonProps,
+  RegularButtonProps,
+} from './Button/helper'
 
 // Dialog
 export { Dialog } from './Dialog'

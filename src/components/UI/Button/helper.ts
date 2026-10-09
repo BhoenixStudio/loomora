@@ -31,14 +31,14 @@ export type ButtonBaseProps = {
   condition?: boolean
 }
 
-export type LinkButtonProps = {
+export type LinkButtonProps = ButtonBaseProps & {
   ref?: Ref<HTMLAnchorElement>
   href: AnchorHTMLAttributes<HTMLAnchorElement>['href'] | undefined
   attributes?: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'id' | 'href' | 'style' | 'className' | 'target'>
 } & Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'id' | 'target' | 'referrerPolicy' | 'onClick' | 'download'> &
   Partial<Record<'disabled' | 'type', never>>
 
-export type RegularButtonProps = {
+export type RegularButtonProps = ButtonBaseProps & {
   ref?: Ref<HTMLButtonElement>
   href?: never
   attributes?: Omit<
@@ -48,4 +48,4 @@ export type RegularButtonProps = {
 } & Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'id' | 'disabled' | 'onClick' | 'type'> &
   Partial<Record<'target' | 'referrerPolicy' | 'locale', never>>
 
-export type ButtonProps = ButtonBaseProps & (RegularButtonProps | LinkButtonProps)
+export type ButtonProps = RegularButtonProps | LinkButtonProps
