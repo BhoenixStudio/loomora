@@ -119,6 +119,47 @@ export const componentCatalog: ComponentDoc[] = [
     ],
   },
   {
+    slug: 'context-menu',
+    name: 'useContextMenu',
+    group: 'UI',
+    summary: 'Right-click menu hook that opens at the cursor and stays inside the viewport.',
+    description:
+      'A hook that returns trigger props for the target element and a portaled menu element. Open state is internal by default and can be controlled from outside.',
+    importName: 'useContextMenu',
+    demo: 'context-menu',
+    code: `const { triggerProps, menu } = useContextMenu({\n  children: (close) => <button onClick={close}>Copy</button>,\n})\n\n<div {...triggerProps}>Right-click here</div>\n{menu}`,
+    props: [
+      {
+        name: 'children',
+        type: 'ReactNode | (close: () => void) => ReactNode',
+        defaultValue: 'required',
+        description: 'Menu content. A function receives a close callback.',
+      },
+      {
+        name: 'open',
+        type: 'boolean',
+        defaultValue: 'internal state',
+        description: 'Controls the open state from outside the hook.',
+      },
+      {
+        name: 'setOpen',
+        type: '(open: boolean) => void',
+        defaultValue: '–',
+        description: 'Notified whenever the menu opens or closes, including outside click and Escape.',
+      },
+      {
+        name: 'menuClassName',
+        type: 'string',
+        defaultValue: 'min-w-44 rounded-2xl border …',
+        description: 'Classes applied to the menu surface.',
+      },
+    ],
+    notes: [
+      'Outside mousedown, Escape, window resize, and scroll close the menu. Item clicks do not close it unless you call close.',
+      'Spread triggerProps onto the element that should open the menu, and render menu once in your JSX.',
+    ],
+  },
+  {
     slug: 'dialog',
     name: 'Dialog',
     group: 'UI',

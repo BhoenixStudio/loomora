@@ -30,6 +30,7 @@ import {
   TextEditor,
   TextField,
   TextareaField,
+  useContextMenu,
 } from 'loomora'
 import type { FileProps } from 'loomora'
 import { UseToggle } from 'loomora'
@@ -41,6 +42,90 @@ const options = [
   { value: 'accordion', label: 'Accordion' },
   { value: 'dialog', label: 'Dialog' },
 ]
+
+function ContextMenuDemo() {
+  const [controlledOpen, setControlledOpen] = useState(false)
+  const [lastAction, setLastAction] = useState('none')
+
+  const uncontrolled = useContextMenu({
+    children: (close) => (
+      <div className="grid min-w-44 gap-1">
+        <button
+          className="rounded-lg px-3 py-2 text-start text-sm hover:bg-second"
+          onClick={() => {
+            setLastAction('Copied (uncontrolled)')
+            close()
+          }}
+        >
+          Copy text
+        </button>
+        <button
+          className="rounded-lg px-3 py-2 text-start text-sm hover:bg-second"
+          onClick={() => {
+            setLastAction('Renamed (uncontrolled)')
+            close()
+          }}
+        >
+          Rename
+        </button>
+      </div>
+    ),
+  })
+
+  const controlled = useContextMenu({
+    open: controlledOpen,
+    setOpen: setControlledOpen,
+    children: (
+      <div className="grid min-w-44 gap-1">
+        <button
+          className="rounded-lg px-3 py-2 text-start text-sm hover:bg-second"
+          onClick={() => {
+            setLastAction('Deleted (controlled)')
+            setControlledOpen(false)
+          }}
+        >
+          Delete item
+        </button>
+      </div>
+    ),
+  })
+
+  return (
+    <div className="max-w-xl space-y-6">
+      <div
+        {...uncontrolled.triggerProps}
+        className="flex h-28 items-center justify-center rounded-xl border border-dashed border-third text-sm text-body-2 select-none"
+      >
+        Right-click this area
+      </div>
+      {uncontrolled.menu}
+
+      <div className="space-y-3">
+        <Button
+          variant="outline"
+          color="info"
+          onClick={(event: MouseEvent<HTMLButtonElement>) => {
+            const rect = event.currentTarget.getBoundingClientRect()
+            controlled.openAt(rect.left, rect.bottom)
+          }}
+        >
+          Open controlled menu
+        </Button>
+        <div
+          {...controlled.triggerProps}
+          className="flex h-16 items-center justify-center rounded-xl border border-third text-sm text-body-2 select-none"
+        >
+          Right-click or use the button above
+        </div>
+        {controlled.menu}
+      </div>
+
+      <p aria-live="polite" className="text-xs text-body-2">
+        Last action: {lastAction}. Controlled menu open: {controlledOpen ? 'yes' : 'no'}.
+      </p>
+    </div>
+  )
+}
 
 export function ComponentDemo({ demo }: { demo: string }) {
   return (
@@ -462,6 +547,7 @@ function DemoContent({ demo }: { demo: string }) {
         />
       </div>
     ),
+    'context-menu': <ContextMenuDemo />,
     content: (
       <Content
         data={['Button', 'Input', 'Accordion']}
