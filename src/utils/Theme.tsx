@@ -4,7 +4,7 @@ import { createContext, MouseEvent, ReactNode, useContext, useMemo, useReducer }
 import { useContextFns, useContextSharedFns } from '.'
 import { InputProps } from '../components'
 import { useLoomora } from '../config'
-import { localStorage } from '../hooks'
+import { localStore } from '../hooks'
 
 export type ThemeType = 'LIGHT' | 'DARK' | 'SYSTEM' | 'DYNAMIC'
 
@@ -39,8 +39,8 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
 
   // Initial Data
   const initialState: Theme = {
-    theme: localStorage.get<Theme['theme']>(tKey, { fallback: dTheme }),
-    dynamicTime: localStorage.get<Theme['dynamicTime']>(tRKey, { fallback: { start: dStartTime, end: dEndTime } }),
+    theme: localStore.get<Theme['theme']>(tKey, { fallback: dTheme }),
+    dynamicTime: localStore.get<Theme['dynamicTime']>(tRKey, { fallback: { start: dStartTime, end: dEndTime } }),
   }
 
   // Context helpers
