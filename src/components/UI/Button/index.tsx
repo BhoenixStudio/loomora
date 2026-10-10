@@ -1,17 +1,18 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ForwardedRef, forwardRef, MouseEvent, ReactNode } from 'react'
 import { useLoomora } from '../../../config'
 import { cx } from '../../../hooks'
 import { CSSProps } from '../../../types'
 import { ButtonProps, ButtonVariant, LinkButtonProps, RegularButtonProps } from './helper'
 
-export function Button(props: Readonly<ButtonProps>) {
+function ButtonInner(props: Readonly<ButtonProps>, forwardedRef: ForwardedRef<HTMLButtonElement | HTMLAnchorElement>) {
   const { LinkType, button } = useLoomora()
 
   const { defaultType, defaultColor, defaultLoadingTitle, sizes, colors, corners } = button ?? {}
 
   const {
+    id,
     variant = 'fill',
     size = 'default',
     color,
@@ -32,7 +33,6 @@ export function Button(props: Readonly<ButtonProps>) {
   } = props
 
   const {
-    ref: linkRef,
     href,
     referrerPolicy,
     target,
@@ -42,7 +42,6 @@ export function Button(props: Readonly<ButtonProps>) {
   } = props as LinkButtonProps
 
   const {
-    ref: buttonRef,
     onClick: buttonClick,
     type = defaultType,
     attributes: buttonAttrs,
@@ -140,18 +139,31 @@ export function Button(props: Readonly<ButtonProps>) {
       </>
     )
 
+  const isBlocked = loading === true
+  const stateAttrs = { 'aria-busy': loading ? true : undefined, 'aria-disabled': isBlocked || undefined }
+
   let wrapper: ReactNode = (
-    <button ref={buttonRef} onClick={buttonClick} type={type} {...{ className, disabled, style, ...buttonAttrs }}>
+    <button
+      ref={forwardedRef as ForwardedRef<HTMLButtonElement>}
+      id={id}
+      onClick={buttonClick}
+      type={type}
+      {...{ className, disabled: disabled || loading, style, ...stateAttrs, ...buttonAttrs }}
+    >
       {content}
     </button>
   )
   if (href)
     wrapper = (
       <LinkType
-        ref={linkRef}
+        ref={forwardedRef}
+        id={id}
         href={String(href)}
-        onClick={linkClick}
-        {...{ className, target, referrerPolicy, download, style, ...linkAttrs }}
+        onClick={(e: MouseEvent<HTMLAnchorElement>) => {
+          if (isBlocked) return e.preventDefault()
+          linkClick?.(e)
+        }}
+        {...{ className, target, referrerPolicy, download, style, ...stateAttrs, ...linkAttrs }}
       >
         {content}
       </LinkType>
@@ -167,3 +179,6 @@ export function Button(props: Readonly<ButtonProps>) {
   if (condition === false) return null
   return <>{wrapper}</>
 }
+
+export const Button = forwardRef(ButtonInner)
+Button.displayName = 'Button'
