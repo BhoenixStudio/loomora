@@ -9,21 +9,24 @@ export function useHue<T extends string = ''>() {
   const [tick, setTick] = useState(0)
 
   // Functions
-  const hex2rgb = (hex: string): [number, number, number] => {
+  const hex2rgb = (hex: string): [number, number, number] | null => {
     let c = hex.replace('#', '').trim()
-    if (c.length === 3)
+    if (c.length === 3 || c.length === 4)
       c = c
         .split('')
         .map((char) => char + char)
         .join('')
-    if (c.length !== 6) return [0, 0, 0]
+    if (c.length !== 6 && c.length !== 8) return null
+    if (!/^[0-9a-f]+$/i.test(c)) return null
     return [parseInt(c.slice(0, 2), 16), parseInt(c.slice(2, 4), 16), parseInt(c.slice(4, 6), 16)]
   }
   const rgb2hex = (r: number, g: number, b: number): string => {
-    const toHex = (c: number) =>
-      Math.round(Math.max(0, Math.min(255, c)))
+    const toHex = (c: number) => {
+      const safe = Number.isFinite(c) ? c : 0
+      return Math.round(Math.max(0, Math.min(255, safe)))
         .toString(16)
         .padStart(2, '0')
+    }
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`
   }
   const rgb2hsl = (r: number, g: number, b: number): [number, number, number] => {
@@ -44,26 +47,30 @@ export function useHue<T extends string = ''>() {
       else h = ((r - g) / d + 4) / 6
     }
 
-    return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)]
+    return [Math.round(h * 360) % 360, Math.round(s * 100), Math.round(l * 100)]
   }
   const hsl2rgb = (h: number, s: number, l: number): [number, number, number] => {
+    const hue = ((h % 360) + 360) % 360
     s /= 100
     l /= 100
-    const k = (n: number) => (n + h / 30) % 12
+    const k = (n: number) => (n + hue / 30) % 12
     const a = s * Math.min(l, 1 - l)
     const f = (n: number) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))
     return [Math.round(255 * f(0)), Math.round(255 * f(8)), Math.round(255 * f(4))]
   }
-  const hex2hsl = (hex: string): [number, number, number] => {
-    const [r, g, b] = hex2rgb(hex)
-    return rgb2hsl(r, g, b)
+  const hex2hsl = (hex: string): [number, number, number] | null => {
+    const rgb = hex2rgb(hex)
+    if (!rgb) return null
+    return rgb2hsl(...rgb)
   }
   const hsl2hex = (h: number, s: number, l: number): string => {
     const [r, g, b] = hsl2rgb(h, s, l)
     return rgb2hex(r, g, b)
   }
   const isDark = (hex: string): boolean => {
-    const [r, g, b] = hex2rgb(hex)
+    const rgb = hex2rgb(hex)
+    if (!rgb) return false
+    const [r, g, b] = rgb
     return (r * 299 + g * 587 + b * 114) / 1000 < 128
   }
 
@@ -72,13 +79,16 @@ export function useHue<T extends string = ''>() {
       if (typeof window === 'undefined') return ''
 
       const { format = 'HEX', opacity = 100 } = options
-      if (opacity < 0 || opacity > 100) throw new Error('Opacity must be 0-100')
+      const safeOpacity = Math.min(100, Math.max(0, opacity))
+      if (safeOpacity !== opacity) console.warn(`Opacity ${opacity} is outside 0-100 and was clamped.`)
 
       const raw = getComputedStyle(document.documentElement).getPropertyValue(`--color-${color}`).trim()
       if (!raw) return ''
 
-      const [r, g, b] = hex2rgb(raw)
-      const alpha = opacity / 100
+      const rgb = hex2rgb(raw)
+      if (!rgb) return ''
+      const [r, g, b] = rgb
+      const alpha = safeOpacity / 100
 
       if (format === 'RGB') return alpha < 1 ? `rgba(${r}, ${g}, ${b}, ${alpha})` : `rgb(${r}, ${g}, ${b})`
 
