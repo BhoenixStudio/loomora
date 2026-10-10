@@ -31,7 +31,7 @@ export { cx } from './cx'
 export type { CXValue } from './cx'
 
 // Dom
-export { useOverlay } from './dom'
+export { useClickAway, useFloatPos, useOverlay } from './dom'
 export type { FloatPos } from './dom'
 
 // Echo
@@ -43,8 +43,8 @@ export { copy, digits, fade, hasProps, snip } from './helpers'
 export type { CopyProps } from './helpers'
 
 // Storage
-export { cookie, localStorage, sessionStorage } from './storage'
-export type { CookieOptions, StoreOptions } from './storage'
+export { cookie, localStore, sessionStore, useStorageState } from './storage'
+export type { CookieOptions, StorageStateOptions, StorageType, StoreOptions } from './storage'
 
 // Strict
 export { useStrict } from './strict'
