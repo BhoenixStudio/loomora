@@ -1,9 +1,9 @@
 'use client'
 
 import { ReactNode } from 'react'
+import { Button, ButtonProps } from '../'
 import { useLoomora } from '../../config'
 import { cx } from '../../hooks'
-import { Button, ButtonProps } from '../index'
 
 export type BreadcrumbProps = Pick<ButtonProps, 'title' | 'startIcon' | 'endIcon' | 'href' | 'className'> & {
   separator?: ReactNode
@@ -28,7 +28,7 @@ export function Breadcrumb(props: Readonly<BreadcrumbProps>) {
     showSeparator,
     active = false,
     condition,
-    className = 'align-self:stretch',
+    className = 'self-stretch',
   } = props
 
   // Configs
@@ -69,7 +69,12 @@ export function Breadcrumbs(props: Readonly<BreadcrumbsProps>) {
   return (
     <section className={cx(['breadcrumbs items-center', className])} {...attrs}>
       {dItems.map((item, i: number) => (
-        <Breadcrumb key={i} showSeparator={i !== dItems.length - 1} separator={dSeparator} {...item} />
+        <Breadcrumb
+          key={i}
+          {...item}
+          showSeparator={i !== dItems.length - 1}
+          separator={item.separator ?? dSeparator}
+        />
       ))}
     </section>
   )
