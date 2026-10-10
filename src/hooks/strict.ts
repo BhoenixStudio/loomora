@@ -1,38 +1,6 @@
 type V<T> = T | null | undefined
 type ArrayElement<T> = T extends (infer U)[] ? U : T
 
-const ARRAY_TYPES: Types[] = ['numbers', 'strings', 'booleans', 'enums', 'files']
-
-function isNumberValue(value: unknown, isEmptyValid: boolean): boolean {
-  if (typeof value !== 'number' || Number.isNaN(value)) return false
-  return isEmptyValid ? value >= 0 : value > 0
-}
-
-function isStringValue(value: unknown, isEmptyValid: boolean): boolean {
-  if (typeof value !== 'string') return false
-  return isEmptyValid || value.length > 0
-}
-
-function scalarValid(
-  type: Types,
-  value: unknown,
-  { isEmptyValid, allowedValues }: { isEmptyValid: boolean; allowedValues: Enum[] }
-): boolean {
-  const checks: Partial<Record<Types, () => boolean>> = {
-    number: () => isNumberValue(value, isEmptyValid),
-    numbers: () => isNumberValue(value, isEmptyValid),
-    string: () => isStringValue(value, isEmptyValid),
-    strings: () => isStringValue(value, isEmptyValid),
-    boolean: () => typeof value === 'boolean',
-    booleans: () => typeof value === 'boolean',
-    enum: () => allowedValues.includes(value as Enum),
-    enums: () => allowedValues.includes(value as Enum),
-    file: () => typeof File !== 'undefined' && value instanceof File,
-    files: () => typeof File !== 'undefined' && value instanceof File,
-  }
-  return checks[type]?.() ?? false
-}
-
 // Types
 type VNum = { type: 'number'; value: V<number>; fallback?: V<number>; isEmptyValid?: boolean }
 type VNums = { type: 'numbers'; value: V<number[]>; fallback?: V<number[]>; isEmptyValid?: boolean }
@@ -82,6 +50,38 @@ export type UseStrictRules<T extends object = Record<string, unknown>> = {
     | VObj<T[K] & Record<string, unknown>>
     | VObjs<ArrayElement<T[K]> & Record<string, unknown>>
   )
+}
+
+const ARRAY_TYPES: Types[] = ['numbers', 'strings', 'booleans', 'enums', 'files']
+
+function isNumberValue(value: unknown, isEmptyValid: boolean): boolean {
+  if (typeof value !== 'number' || Number.isNaN(value)) return false
+  return isEmptyValid ? value >= 0 : value > 0
+}
+
+function isStringValue(value: unknown, isEmptyValid: boolean): boolean {
+  if (typeof value !== 'string') return false
+  return isEmptyValid || value.length > 0
+}
+
+function scalarValid(
+  type: Types,
+  value: unknown,
+  { isEmptyValid, allowedValues }: { isEmptyValid: boolean; allowedValues: Enum[] }
+): boolean {
+  const checks: Partial<Record<Types, () => boolean>> = {
+    number: () => isNumberValue(value, isEmptyValid),
+    numbers: () => isNumberValue(value, isEmptyValid),
+    string: () => isStringValue(value, isEmptyValid),
+    strings: () => isStringValue(value, isEmptyValid),
+    boolean: () => typeof value === 'boolean',
+    booleans: () => typeof value === 'boolean',
+    enum: () => allowedValues.includes(value as Enum),
+    enums: () => allowedValues.includes(value as Enum),
+    file: () => typeof File !== 'undefined' && value instanceof File,
+    files: () => typeof File !== 'undefined' && value instanceof File,
+  }
+  return checks[type]?.() ?? false
 }
 
 export type UseStrictResult<T = Record<string, unknown>> = {
