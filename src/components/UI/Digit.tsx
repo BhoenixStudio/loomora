@@ -27,9 +27,12 @@ function extractPrice(
   const { value, decimalsMin, decimalsMax, thousandSeparator } = props
   if (value === null || value === undefined) return ['', '']
 
+  const clamp = (n: number) => Math.min(100, Math.max(0, Math.trunc(n)))
+  const maxDigits = clamp(decimalsMax ?? 3)
+  const minDigits = Math.min(clamp(decimalsMin ?? 0), maxDigits)
   const formatted = value.toLocaleString('en-US', {
-    maximumFractionDigits: decimalsMax,
-    minimumFractionDigits: decimalsMin,
+    maximumFractionDigits: maxDigits,
+    minimumFractionDigits: minDigits,
   })
   const [main, sub] = formatted.split('.')
   const number = main.split(',').join(thousandSeparator)
@@ -95,7 +98,7 @@ export function Digit<T extends ElementType = 'span'>(props: Readonly<DigitProps
       </>
     )
 
-  if (value === null) return fallback
+  if (!loading && (value === null || value === undefined)) return fallback
   return (
     <As className={cx(['inline-flex flex-nowrap items-end', className])} {...{ dir, ...attributes }} {...attrs}>
       {content}
@@ -129,6 +132,6 @@ export function UseDigit(value: DigitProps['value'], props: UseDigitProps = {}):
   parts.push(formattedNumber)
   if (endUnit) parts.push(endUnit)
 
-  if (!value) return fallback
+  if (value === null || value === undefined) return fallback
   return subSeparator ? parts.join(' ') : parts.join('')
 }
