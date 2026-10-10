@@ -93,7 +93,6 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
       {...restFieldset}
     >
       <ConditionalWrapper childrenCondition={Boolean(label)}>
-        x{' '}
         {hasProps(label, 'children') ? (
           <Label className={labelClassName} {...{ required, ...restLabel }} />
         ) : (
@@ -134,7 +133,6 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
       </div>
 
       <ConditionalWrapper childrenCondition={Boolean(inputHelper)}>
-        x{' '}
         {hasProps(inputHelper, 'children') ? (
           <InputHelper {...inputHelper} />
         ) : (
@@ -143,7 +141,6 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
       </ConditionalWrapper>
 
       <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        x{' '}
         {hasProps(errorHelper, 'children') ? (
           <InputHelper {...errorHelper} asError />
         ) : (
