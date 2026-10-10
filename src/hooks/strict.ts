@@ -1,6 +1,38 @@
 type V<T> = T | null | undefined
 type ArrayElement<T> = T extends (infer U)[] ? U : T
 
+const ARRAY_TYPES: Types[] = ['numbers', 'strings', 'booleans', 'enums', 'files']
+
+function isNumberValue(value: unknown, isEmptyValid: boolean): boolean {
+  if (typeof value !== 'number' || Number.isNaN(value)) return false
+  return isEmptyValid ? value >= 0 : value > 0
+}
+
+function isStringValue(value: unknown, isEmptyValid: boolean): boolean {
+  if (typeof value !== 'string') return false
+  return isEmptyValid || value.length > 0
+}
+
+function scalarValid(
+  type: Types,
+  value: unknown,
+  { isEmptyValid, allowedValues }: { isEmptyValid: boolean; allowedValues: Enum[] }
+): boolean {
+  const checks: Partial<Record<Types, () => boolean>> = {
+    number: () => isNumberValue(value, isEmptyValid),
+    numbers: () => isNumberValue(value, isEmptyValid),
+    string: () => isStringValue(value, isEmptyValid),
+    strings: () => isStringValue(value, isEmptyValid),
+    boolean: () => typeof value === 'boolean',
+    booleans: () => typeof value === 'boolean',
+    enum: () => allowedValues.includes(value as Enum),
+    enums: () => allowedValues.includes(value as Enum),
+    file: () => typeof File !== 'undefined' && value instanceof File,
+    files: () => typeof File !== 'undefined' && value instanceof File,
+  }
+  return checks[type]?.() ?? false
+}
+
 // Types
 type VNum = { type: 'number'; value: V<number>; fallback?: V<number>; isEmptyValid?: boolean }
 type VNums = { type: 'numbers'; value: V<number[]>; fallback?: V<number[]>; isEmptyValid?: boolean }
@@ -167,26 +199,19 @@ export function useStrict() {
         return
       }
 
-      const types: Record<Types, boolean> = {
-        number: num(Number(v), isEmptyValid),
-        numbers: Array.isArray(v) && v.filter((v) => num(Number(v), isEmptyValid))?.length > 0,
-        string: str(String(v), isEmptyValid),
-        strings: Array.isArray(v) && v.filter((v) => str(String(v), isEmptyValid))?.length > 0,
-        boolean: bool(v as boolean),
-        booleans: Array.isArray(v) && v.filter((v) => bool(v as boolean))?.length > 0,
-        enum: enumVal(String(v), allowedValues),
-        enums: Array.isArray(v) && v.filter((v) => enumVal(String(v), allowedValues))?.length > 0,
-        file: file(v as File),
-        files: Array.isArray(v) && v.filter((v) => file(v as File))?.length > 0,
-        object: false,
-        objects: false,
-      }
+      if (condition === false) return
 
-      const isValid = condition !== false && types[type] && (Boolean(v) || v === false || (type === 'enum' && v === 0))
-      if (isValid) variables[key] = v as T[keyof T]
+      const keepItem = (item: unknown) => scalarValid(type, item, { isEmptyValid, allowedValues })
+      const isArrayType = ARRAY_TYPES.includes(type)
+      const storedValue = isArrayType && Array.isArray(v) ? v.filter(keepItem) : v
+      const isValid = isArrayType
+        ? Array.isArray(storedValue) && storedValue.length > 0
+        : keepItem(v) && (Boolean(v) || v === false || isEmptyValid)
+
+      if (isValid) variables[key] = storedValue as T[keyof T]
       else if (errorMessage) errors.push(errorMessage)
 
-      if (condition !== false && required && !isValid) isRequiredValid = false
+      if (required && !isValid) isRequiredValid = false
     })
 
     const isValid = Object.keys(variables).length > 0
