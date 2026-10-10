@@ -42,7 +42,8 @@ export function ProgressBar(props: Readonly<ProgressBarProps>) {
   const { className: wrapperClassName = 'gap-2', ...wrapperRest } = wrapper ?? {}
 
   // Configs
-  const percent = Math.min(Math.max((value / outOf) * 100, 0), 100)
+  const ratio = outOf > 0 && Number.isFinite(value) ? (value / outOf) * 100 : 0
+  const percent = Math.min(Math.max(Number.isFinite(ratio) ? ratio : 0, 0), 100)
 
   const bar = (
     <div
