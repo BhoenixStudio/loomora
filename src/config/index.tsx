@@ -16,28 +16,31 @@ export function LoomoraProvider({ children, config }: Readonly<{ children: React
   const resolved = useMemo(() => mergeConfig(parentConfig, config), [parentConfig, config])
 
   // Functions
-  const t: TranslateFn = (key, vars) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let template: any = resolved.translations
-    for (const k of (key as string).split('.')) {
-      template = template?.[k]
-    }
-    if (typeof template === 'function') template = template()
+  const t = useMemo<TranslateFn>(
+    () => (key, vars) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let template: any = resolved.translations
+      for (const k of (key as string).split('.')) {
+        template = template?.[k]
+      }
+      if (typeof template === 'function') template = template()
 
-    const strTemplate = template !== undefined ? String(template) : (key as string)
-    if (resolved.hasTranslationStrategy || !vars) return strTemplate
+      const strTemplate = template !== undefined ? String(template) : (key as string)
+      if (resolved.hasTranslationStrategy || !vars) return strTemplate
 
-    return strTemplate.replace(/\{([^}]+)\}/g, (match, varName) =>
-      varName in vars && vars[varName] !== undefined && vars[varName] !== null ? String(vars[varName]) : match
-    )
-  }
+      return strTemplate.replace(/\{([^}]+)\}/g, (match, varName) =>
+        varName in vars && vars[varName] !== undefined && vars[varName] !== null ? String(vars[varName]) : match
+      )
+    },
+    [resolved]
+  )
 
   return (
-    <ResponsiveProvider>
-      <ThemeProvider>
-        <ConfigContext.Provider value={{ ...resolved, t }}>{children}</ConfigContext.Provider>
-      </ThemeProvider>
-    </ResponsiveProvider>
+    <ConfigContext.Provider value={{ ...resolved, t }}>
+      <ResponsiveProvider>
+        <ThemeProvider>{children}</ThemeProvider>
+      </ResponsiveProvider>
+    </ConfigContext.Provider>
   )
 }
 
