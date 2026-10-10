@@ -1,15 +1,22 @@
 export type ConvertCase = 'NORMAL' | 'SMALL' | 'CAMEL' | 'SNAKE' | 'SCREAM' | 'PASCAL' | 'SLUG' | 'KEBAB'
 
+const asciiFormats: ConvertCase[] = ['SLUG', 'KEBAB']
+
+function toAscii(text: string): string {
+  return text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+}
+
 export function UseCase(input: string, format: ConvertCase = 'NORMAL'): string {
-  const words = input
-    .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase to spaces
-    .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2') // XMLData to XML Data
-    .replace(/([a-zA-Z])(\d)/g, '$1 $2') // text1 to text 1
-    .replace(/[^a-zA-Z0-9_-]/g, ' ') // Replace punctuation/special chars with spaces
+  const source = asciiFormats.includes(format) ? toAscii(input) : input
+  const words = source
+    .replace(/(\p{Ll})(\p{Lu})/gu, '$1 $2') // camelCase to spaces
+    .replace(/(\p{Lu})(\p{Lu}\p{Ll})/gu, '$1 $2') // XMLData to XML Data
+    .replace(/(\p{L})(\p{N})/gu, '$1 $2') // text1 to text 1
+    .replace(/[^\p{L}\p{N}_-]/gu, ' ') // Replace punctuation/special chars with spaces
     .trim()
     .split(/[\s_-]+/)
     .filter(Boolean)
-    .map((w) => w.toLowerCase())
+    .map((w) => w.toLocaleLowerCase())
 
   // Functions
   function cap(str: string) {
