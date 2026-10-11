@@ -1,11 +1,10 @@
 'use client'
 
 import { DragEvent, InputHTMLAttributes, MouseEvent, ReactNode, useEffect, useId, useRef, useState } from 'react'
+import { hasError, InputErrorMessage, InputHelper, Label, LabelProps, useUploaderModules } from '../../../'
 import { useLoomora } from '../../../../config'
 import { cx, hasProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
-import { InputHelper } from '../../Modules/Helper'
-import { Label, LabelProps } from '../../Modules/Label'
 import {
   FileProps,
   UploaderFieldMultipleProps,
@@ -14,7 +13,6 @@ import {
   UploaderFieldViewType,
   useUploaderHelper,
 } from './helper'
-import { useUploaderModules } from './Modules'
 
 export function UploaderField<T extends string | number = number>(props: Readonly<UploaderFieldProps<T>>) {
   const { t, form } = useLoomora()
@@ -28,11 +26,12 @@ export function UploaderField<T extends string | number = number>(props: Readonl
     prefix,
     suffix,
     inputHelper,
-    error,
-    errorHelper,
+    errors: inputErrors,
     loading,
     condition,
   } = props
+
+  const error = hasError(inputErrors)
 
   const { className: fieldsetClass = 'self-stretch', attributes: fieldsetAttrs, ...restFieldsetAttrs } = fieldset ?? {}
   const {
@@ -183,13 +182,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
         )}
       </ConditionalWrapper>
 
-      <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {hasProps(errorHelper, 'children') ? (
-          <InputHelper {...errorHelper} asError />
-        ) : (
-          <InputHelper asError>{errorHelper}</InputHelper>
-        )}
-      </ConditionalWrapper>
+      <InputErrorMessage {...{ errors: inputErrors }} />
     </>
   )
 
@@ -228,8 +221,8 @@ export function UploaderField<T extends string | number = number>(props: Readonl
   }
 
   // Functions
-  function handleChange(files: FileList | null) {
-    upload<T>(files, {
+  async function handleChange(files: FileList | null) {
+    await upload<T>(files, {
       validation: { accept: extensions, maxSize, minSize, maxFiles, minFiles, multiple },
       setErrors,
       setValue,
@@ -260,7 +253,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
 
     if (!disabled && !loading && !loadingFiles && allowDragAndDrop) setIsDragging(false)
   }
-  function onDrop(e: DragEvent<HTMLDivElement>) {
+  async function onDrop(e: DragEvent<HTMLDivElement>) {
     e.preventDefault()
     e.stopPropagation()
 
@@ -269,7 +262,7 @@ export function UploaderField<T extends string | number = number>(props: Readonl
 
     if (disabled || loading || loadingFiles || !allowDragAndDrop) return
     setIsDragging(false)
-    handleChange(e.dataTransfer?.files)
+    await handleChange(e.dataTransfer?.files)
   }
   function onMouseEnter(e: MouseEvent<HTMLDivElement>) {
     onMouseEnterEvent?.(e)
@@ -280,13 +273,13 @@ export function UploaderField<T extends string | number = number>(props: Readonl
     if (allowPaste) setIsHovered(false)
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  function onPaste(e: ClipboardEvent) {
+  async function onPaste(e: ClipboardEvent) {
     e.preventDefault()
 
     if (multiple) onPasteMultiple?.(previews, Array.from(e.clipboardData?.files ?? []), true)
     else if (preview) onPasteSingle?.(preview, Array.from(e.clipboardData?.files ?? [])?.[0], true)
 
-    if (!disabled && !loading && e?.clipboardData?.files?.length) handleChange(e.clipboardData.files)
+    if (!disabled && !loading && e?.clipboardData?.files?.length) await handleChange(e.clipboardData.files)
   }
 
   useEffect(() => {
@@ -334,9 +327,9 @@ export function UploaderField<T extends string | number = number>(props: Readonl
         type="file"
         name={name ?? generatedName}
         className="hidden"
-        onChange={(e) => {
+        onChange={async (e) => {
           setValue(e.target.value)
-          handleChange(e.target.files)
+          await handleChange(e.target.files)
         }}
         disabled={disabled || loading || loadingFiles}
         {...{ id, value, accept, multiple }}

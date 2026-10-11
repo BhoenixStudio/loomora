@@ -1,13 +1,20 @@
 'use client'
 
 import { forwardRef, InputHTMLAttributes, ReactNode, useMemo } from 'react'
+import {
+  InputBase,
+  InputErrorMessage,
+  InputFieldset,
+  InputHelper,
+  InputHelperAndError,
+  InputLabel,
+  Label,
+  LabelProps,
+} from '../../'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
-import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
-import { InputHelper } from '../Modules/Helper'
-import { Label, LabelProps } from '../Modules/Label'
 
 export type RangeMark = number | { value: number; label?: string }
 type InputProps = Omit<
@@ -49,8 +56,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
     prefix,
     suffix,
     inputHelper,
-    error = false,
-    errorHelper,
+    errors,
     loading = false,
     condition,
   } = props
@@ -238,13 +244,7 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
         )}
       </ConditionalWrapper>
 
-      <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {hasProps(errorHelper, 'children') ? (
-          <InputHelper {...errorHelper} asError />
-        ) : (
-          <InputHelper asError>{errorHelper}</InputHelper>
-        )}
-      </ConditionalWrapper>
+      <InputErrorMessage {...{ errors }} />
     </fieldset>
   )
 })

@@ -1,13 +1,20 @@
 'use client'
 
 import { ElementType, InputHTMLAttributes, ReactNode, useRef } from 'react'
+import {
+  InputBase,
+  InputErrorMessage,
+  InputFieldset,
+  InputHelper,
+  InputHelperAndError,
+  InputLabel,
+  Label,
+  LabelProps,
+} from '../../'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { TWColorSName } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
-import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
-import { InputHelper } from '../Modules/Helper'
-import { Label, LabelProps } from '../Modules/Label'
 
 export type CheckFieldType = 'checkbox' | 'radio' | 'switch'
 
@@ -46,8 +53,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
     fieldset,
     label,
     inputHelper,
-    error = false,
-    errorHelper,
+    errors,
     color = form?.check?.color,
     activeColor = form?.check?.activeColor,
     loading = false,
@@ -182,7 +188,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
   )
 
   let content: ReactNode = labelComponent
-  if ((inputHelper || errorHelper) && label)
+  if ((inputHelper || errors?.length) && label)
     content = (
       <div className="flex flex-col flex-nowrap">
         {labelComponent}
@@ -194,13 +200,7 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
           )}
         </ConditionalWrapper>
 
-        <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-          {hasProps(errorHelper, 'children') ? (
-            <InputHelper {...errorHelper} asError />
-          ) : (
-            <InputHelper asError>{errorHelper}</InputHelper>
-          )}
-        </ConditionalWrapper>
+        <InputErrorMessage {...{ errors }} />
       </div>
     )
 

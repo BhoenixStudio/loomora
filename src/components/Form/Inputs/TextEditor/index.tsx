@@ -2,11 +2,20 @@
 
 import { Editor, IAllProps } from '@tinymce/tinymce-react'
 import { useId, useRef, useState } from 'react'
+import {
+  InputBase,
+  InputErrorMessage,
+  InputFieldset,
+  InputHelper,
+  InputHelperAndError,
+  InputLabel,
+  Label,
+  LabelProps,
+  Loader,
+} from '../../../'
 import { useLoomora } from '../../../../config'
 import { cx, hasProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
-import { Loader } from '../../../Partials'
-import { InputBase, InputFieldset, InputHelper, InputHelperAndError, InputLabel, Label, LabelProps } from '../../index'
 
 type TinyMCEEditor = Parameters<NonNullable<IAllProps['onInit']>>[1]
 type InitOptions = NonNullable<IAllProps['init']>
@@ -32,17 +41,7 @@ export interface TextEditorProps
 }
 
 export function TextEditor(props: Readonly<TextEditorProps>) {
-  const {
-    size = [],
-    properties,
-    fieldset,
-    label,
-    inputHelper,
-    error = false,
-    errorHelper,
-    loading = false,
-    condition,
-  } = props
+  const { size = [], properties, fieldset, label, inputHelper, errors, loading = false, condition } = props
 
   const editorRef = useRef<TinyMCEEditor | null>(null)
   const editorId = `loomora-editor-${useId().replaceAll(':', '')}`
@@ -188,13 +187,7 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
         )}
       </ConditionalWrapper>
 
-      <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {hasProps(errorHelper, 'children') ? (
-          <InputHelper {...errorHelper} asError />
-        ) : (
-          <InputHelper asError>{errorHelper}</InputHelper>
-        )}
-      </ConditionalWrapper>
+      <InputErrorMessage {...{ errors }} />
     </fieldset>
   )
 }

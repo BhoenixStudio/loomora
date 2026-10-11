@@ -1,13 +1,22 @@
 'use client'
 
 import { forwardRef, TextareaHTMLAttributes, useEffect, useState } from 'react'
+import {
+  hasError,
+  InputBase,
+  InputErrorMessage,
+  InputFieldset,
+  InputFocus,
+  InputHelper,
+  InputHelperAndError,
+  InputLabel,
+  Label,
+  LabelProps,
+} from '../../'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
-import { InputBase, InputFieldset, InputFocus, InputHelperAndError, InputLabel } from '../helper'
-import { InputHelper } from '../Modules/Helper'
-import { Label, LabelProps } from '../Modules/Label'
 
 type InputProps = TextareaHTMLAttributes<HTMLTextAreaElement>
 
@@ -27,12 +36,13 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
     wrapper,
     label = '',
     inputHelper,
-    error = false,
-    errorHelper,
+    errors,
     active: forceActive = false,
     loading = false,
     condition,
   } = props
+
+  const error = hasError(errors)
 
   const { form } = useLoomora()
 
@@ -138,13 +148,7 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
         )}
       </ConditionalWrapper>
 
-      <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {hasProps(errorHelper, 'children') ? (
-          <InputHelper {...errorHelper} asError />
-        ) : (
-          <InputHelper asError>{errorHelper}</InputHelper>
-        )}
-      </ConditionalWrapper>
+      <InputErrorMessage {...{ errors }} />
     </fieldset>
   )
 })

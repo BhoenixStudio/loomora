@@ -10,14 +10,23 @@ import {
   useEffect,
   useState,
 } from 'react'
+import {
+  hasError,
+  InputBase,
+  InputErrorMessage,
+  InputFieldset,
+  InputFocus,
+  InputHelper,
+  InputHelperAndError,
+  InputLabel,
+  Label,
+  LabelProps,
+} from '../../'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 import { Button, ButtonProps } from '../../UI'
-import { InputBase, InputFieldset, InputFocus, InputHelperAndError, InputLabel } from '../helper'
-import { InputHelper } from '../Modules/Helper'
-import { Label, LabelProps } from '../Modules/Label'
 
 export type OptionItem = { isGroup?: false } & OptionHTMLAttributes<HTMLOptionElement>
 export type OptionGroupItem = { isGroup: true } & OptgroupHTMLAttributes<HTMLOptGroupElement>
@@ -48,8 +57,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
     prefix,
     suffix,
     inputHelper,
-    error = false,
-    errorHelper,
+    errors,
     active: forceActive = false,
     options = [],
     showTrigger = true,
@@ -57,6 +65,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
     loading = false,
     condition,
   } = props
+
+  const error = hasError(errors)
 
   const {
     className: fieldsetClass = form?.fieldset?.className,
@@ -203,13 +213,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
         )}
       </ConditionalWrapper>
 
-      <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {hasProps(errorHelper, 'children') ? (
-          <InputHelper {...errorHelper} asError />
-        ) : (
-          <InputHelper asError>{errorHelper}</InputHelper>
-        )}
-      </ConditionalWrapper>
+      <InputErrorMessage {...{ errors }} />
     </fieldset>
   )
 })

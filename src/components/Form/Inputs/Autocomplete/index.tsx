@@ -2,12 +2,11 @@
 'use client'
 
 import { ChangeEvent, isValidElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { hasError, InputErrorMessage, InputHelper, Label, LabelProps } from '../../../'
 import { useLoomora } from '../../../../config'
 import { cx, hasProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
 import { Button, ButtonProps } from '../../../UI'
-import { InputHelper } from '../../Modules/Helper'
-import { Label, LabelProps } from '../../Modules/Label'
 import {
   AutocompleteMultiple,
   AutocompleteMultipleProps,
@@ -32,8 +31,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     prefix,
     suffix,
     inputHelper,
-    error = false,
-    errorHelper,
+    errors,
     active: forceActive = false,
     condition,
     loading = false,
@@ -45,6 +43,8 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     trigger: dTrigger,
     onToggle,
   } = props
+
+  const error = hasError(errors)
 
   const {
     className: fieldsetClass = form?.fieldset?.className,
@@ -473,13 +473,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
         )}
       </ConditionalWrapper>
 
-      <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {hasProps(errorHelper, 'children') ? (
-          <InputHelper {...errorHelper} asError />
-        ) : (
-          <InputHelper asError>{errorHelper}</InputHelper>
-        )}
-      </ConditionalWrapper>
+      <InputErrorMessage {...{ errors }} />
     </fieldset>
   )
 }

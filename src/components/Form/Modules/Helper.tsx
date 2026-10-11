@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { cx } from '../../../hooks'
+import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
 
 export type InputHelperProps = GlobalElement<'span'> & {
@@ -32,4 +32,27 @@ export function InputHelper(props: Readonly<InputHelperProps>) {
       {children}
     </span>
   )
+}
+
+export type InputError = { condition: boolean; helper: ReactNode | Omit<InputHelperProps, 'asError'> }
+export type InputErrorMessageProps = { errors?: InputError[] }
+
+export function hasError(errors?: InputError[]): boolean {
+  return Array.isArray(errors) && errors.some((item) => item?.condition === true)
+}
+
+export function resolveErrorHelper(errors?: InputError[]): InputError['helper'] | undefined {
+  if (!Array.isArray(errors)) return undefined
+  const match = errors.find((item) => item?.condition === true)
+  if (match?.helper === undefined || match.helper === null || match.helper === false) return undefined
+  return match.helper
+}
+
+export function InputErrorMessage(props: Readonly<InputErrorMessageProps>) {
+  const { errors } = props
+  const helper = resolveErrorHelper(errors)
+
+  if (helper === undefined) return null
+  if (hasProps(helper, 'children')) return <InputHelper {...helper} asError />
+  return <InputHelper asError>{helper}</InputHelper>
 }

@@ -1,13 +1,21 @@
 'use client'
 
 import { ClipboardEvent, Dispatch, InputHTMLAttributes, KeyboardEvent, SetStateAction, useEffect, useRef } from 'react'
+import {
+  hasError,
+  InputBase,
+  InputErrorMessage,
+  InputFieldset,
+  InputHelper,
+  InputHelperAndError,
+  InputLabel,
+  Label,
+  LabelProps,
+} from '../../'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
-import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../helper'
-import { InputHelper } from '../Modules/Helper'
-import { Label, LabelProps } from '../Modules/Label'
 
 export interface OtpFieldProps extends InputBase, Pick<InputFieldset, 'fieldset'>, InputLabel, InputHelperAndError {
   wrapper?: GlobalElement<'div'>
@@ -29,11 +37,12 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
     wrapper,
     label,
     inputHelper,
-    error = false,
-    errorHelper,
+    errors,
     loading = false,
     length = form?.otp?.length ?? 6,
   } = props
+
+  const error = hasError(errors)
 
   const { className: fieldsetClass, attributes: fieldsetAttrs, ...restFieldset } = fieldset ?? {}
   const { className: wrapperClass, attributes: wrapperAttrs, ...restWrapper } = wrapper ?? {}
@@ -140,13 +149,7 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
         )}
       </ConditionalWrapper>
 
-      <ConditionalWrapper childrenCondition={Boolean(errorHelper) && error}>
-        {hasProps(errorHelper, 'children') ? (
-          <InputHelper {...errorHelper} asError />
-        ) : (
-          <InputHelper asError>{errorHelper}</InputHelper>
-        )}
-      </ConditionalWrapper>
+      <InputErrorMessage {...{ errors }} />
     </fieldset>
   )
 }
