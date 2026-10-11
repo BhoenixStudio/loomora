@@ -18,6 +18,7 @@ import {
   LoomoraPhoneField,
   LoomoraPhoneT,
   LoomoraRangeField,
+  LoomoraRatingField,
   LoomoraResponsive,
   LoomoraSearchField,
   LoomoraSearchT,
@@ -67,6 +68,7 @@ export interface LoomoraConfig extends LoomoraBase {
     autoCompleteField: LoomoraAutocompleteField
     uploaderField: LoomoraUploaderField
     numberField: LoomoraNumberField
+    ratingField: LoomoraRatingField
   }
   theme: LoomoraTheme
   responsive: LoomoraResponsive

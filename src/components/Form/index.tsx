@@ -51,6 +51,9 @@ export type { PhoneFieldProps, PhonePrefix, PhoneValue } from './Inputs/PhoneFie
 export { RangeField } from './Inputs/RangeField'
 export type { RangeFieldProps, RangeMark } from './Inputs/RangeField'
 
+export { RatingField } from './Inputs/RatingField'
+export type { RatingFieldProps } from './Inputs/RatingField'
+
 export { SearchField } from './Inputs/SearchField'
 export type { SearchFieldProps } from './Inputs/SearchField'
 

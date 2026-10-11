@@ -12,6 +12,7 @@ import {
   PhoneFieldProps,
   PinFieldProps,
   RangeFieldProps,
+  RatingFieldProps,
   SearchFieldProps,
   SelectProps,
   TextareaFieldProps,
@@ -37,6 +38,7 @@ export type InputProps = InputBase &
     | ({ type: 'check' } & CheckFieldProps)
     | ({ type: 'otp' } & PinFieldProps)
     | ({ type: 'range' } & RangeFieldProps)
+    | ({ type: 'rating' } & RatingFieldProps)
     | ({ type: 'color' } & ColorFieldProps)
     | ({ type: 'number' } & NumberFieldProps)
     | ({ type: 'custom'; element: ReactNode } & Pick<InputBase, 'condition'>)

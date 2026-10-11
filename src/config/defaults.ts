@@ -828,6 +828,14 @@ export const loomoraDefaults: LoomoraConfig = {
       decimalsMin: 0,
       thousandSeparator: ',',
     },
+    ratingField: {
+      max: 5,
+      step: 1,
+      allowClear: true,
+      className: 'text-body-3',
+      activeClassName: 'text-amber-400',
+      iconSize: 24,
+    },
   },
   // Others
   LinkType: 'a',

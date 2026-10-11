@@ -125,6 +125,17 @@ export type LoomoraRangeField = {
   className: string
 }
 
+export type LoomoraRatingField = {
+  max: number
+  step: 1 | 0.5
+  allowClear: boolean
+  className: string
+  activeClassName: string
+  iconSize: number
+  icon?: ReactNode
+  emptyIcon?: ReactNode
+}
+
 export type LoomoraColorField = { presets: Set<string>; alpha?: boolean; allowEmpty?: boolean }
 
 export type LoomoraPhoneT = Record<'startPlaceholder' | 'startPlaceholderOne' | 'defaultTitle' | 'startError', string>
