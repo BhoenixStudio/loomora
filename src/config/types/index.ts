@@ -6,6 +6,7 @@ import {
   LoomoraBreadCrumb,
   LoomoraButton,
   LoomoraCheckField,
+  LoomoraColorField,
   LoomoraCountriesT,
   LoomoraFormBase,
   LoomoraFormT,
@@ -61,6 +62,7 @@ export interface LoomoraConfig extends LoomoraBase {
     passwordField: LoomoraPasswordField
     pinField: LoomoraOtpField
     rangeField: LoomoraRangeField
+    colorField: LoomoraColorField
     phoneField: LoomoraPhoneField
     autoCompleteField: LoomoraAutocompleteField
     uploaderField: LoomoraUploaderField

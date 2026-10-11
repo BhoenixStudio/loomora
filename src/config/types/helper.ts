@@ -125,6 +125,8 @@ export type LoomoraRangeField = {
   className: string
 }
 
+export type LoomoraColorField = { presets: Set<string>; alpha?: boolean; allowEmpty?: boolean }
+
 export type LoomoraPhoneT = Record<'startPlaceholder' | 'startPlaceholderOne' | 'defaultTitle' | 'startError', string>
 export type LoomoraPhoneField = {
   worldwide: boolean
@@ -248,7 +250,11 @@ export type LoomoraSettings = { isRtl: boolean; locale: string }
 
 // Helpers
 export type DeepPartial<T> = {
-  [K in keyof T]?: T[K] extends readonly unknown[] ? T[K] : T[K] extends object ? DeepPartial<T[K]> : T[K]
+  [K in keyof T]?: T[K] extends readonly unknown[] | ReadonlySet<unknown>
+    ? T[K]
+    : T[K] extends object
+      ? DeepPartial<T[K]>
+      : T[K]
 }
 
 export type TranslateFn = <K extends NestedKeyOf<LoomoraConfig['translations']>>(
