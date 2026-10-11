@@ -8,7 +8,7 @@ export type { ConvertCase } from './casify'
 
 // Chroma
 export { useHue } from './chroma'
-export type { HueFormat, HueOptions } from './chroma'
+export type { Hsva, HueFormat, HueOptions } from './chroma'
 
 // Chrono
 export { useChrono } from './chrono'

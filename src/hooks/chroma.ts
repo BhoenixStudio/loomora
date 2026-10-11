@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 export type HueFormat = 'HEX' | 'RGB' | 'HSL'
 export type HueOptions = { format?: HueFormat; opacity?: number }
+export type Hsva = { h: number; s: number; v: number; a: number }
 
 export function useHue<T extends string = ''>() {
   const [tick, setTick] = useState(0)
@@ -18,7 +19,7 @@ export function useHue<T extends string = ''>() {
         .join('')
     if (c.length !== 6 && c.length !== 8) return null
     if (!/^[0-9a-f]+$/i.test(c)) return null
-    return [parseInt(c.slice(0, 2), 16), parseInt(c.slice(2, 4), 16), parseInt(c.slice(4, 6), 16)]
+    return [Number.parseInt(c.slice(0, 2), 16), Number.parseInt(c.slice(2, 4), 16), Number.parseInt(c.slice(4, 6), 16)]
   }
   const rgb2hex = (r: number, g: number, b: number): string => {
     const toHex = (c: number) => {
@@ -74,6 +75,48 @@ export function useHue<T extends string = ''>() {
     return (r * 299 + g * 587 + b * 114) / 1000 < 128
   }
 
+  const normalizeHex = useCallback((input: string, alpha = false): string | null => {
+    let hex = input.trim().replace(/^#/, '').toLowerCase()
+    if (!/^[0-9a-f]+$/.test(hex)) return null
+    if (hex.length === 3 || hex.length === 4) hex = [...hex].map((c) => c + c).join('')
+    if (hex.length !== 6 && hex.length !== 8) return null
+    if (hex.length === 8 && !alpha) hex = hex.slice(0, 6)
+    if (hex.length === 8 && hex.endsWith('ff')) hex = hex.slice(0, 6)
+    return `#${hex}`
+  }, [])
+  const hex2hsva = useCallback(
+    (hex: string): Hsva => {
+      const n = normalizeHex(hex, true) ?? '#000000'
+      const r = Number.parseInt(n.slice(1, 3), 16) / 255
+      const g = Number.parseInt(n.slice(3, 5), 16) / 255
+      const b = Number.parseInt(n.slice(5, 7), 16) / 255
+      const a = n.length === 9 ? Number.parseInt(n.slice(7, 9), 16) / 255 : 1
+      const max = Math.max(r, g, b)
+      const d = max - Math.min(r, g, b)
+      let h = 0
+      if (d !== 0) {
+        if (max === r) h = ((g - b) / d) % 6
+        else if (max === g) h = (b - r) / d + 2
+        else h = (r - g) / d + 4
+        h = (h * 60 + 360) % 360
+      }
+      return { h, s: max === 0 ? 0 : d / max, v: max, a }
+    },
+    [normalizeHex]
+  )
+  const hsva2hex = useCallback(({ h, s, v, a }: Hsva, alpha = false): string => {
+    const f = (n: number) => {
+      const k = (n + h / 60) % 6
+      return v - v * s * Math.max(0, Math.min(k, 4 - k, 1))
+    }
+    const part = (x: number) =>
+      Math.round(x * 255)
+        .toString(16)
+        .padStart(2, '0')
+    const base = `#${part(f(5))}${part(f(3))}${part(f(1))}`
+    return alpha && a < 1 ? `${base}${part(a)}` : base
+  }, [])
+
   const getHue = useCallback(
     (color: T, options: HueOptions = {}): string => {
       if (typeof window === 'undefined') return ''
@@ -122,5 +165,5 @@ export function useHue<T extends string = ''>() {
     return () => observer.disconnect()
   }, [])
 
-  return { getHue, hex2rgb, rgb2hex, rgb2hsl, hsl2rgb, hex2hsl, hsl2hex, isDark }
+  return { getHue, hex2rgb, rgb2hex, rgb2hsl, hsl2rgb, hex2hsl, hsl2hex, isDark, normalizeHex, hex2hsva, hsva2hex }
 }
