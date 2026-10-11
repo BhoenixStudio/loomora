@@ -864,6 +864,34 @@ export const componentCatalog: ComponentDoc[] = [
     ],
   },
   {
+    slug: 'color-field',
+    name: 'ColorField',
+    group: 'Form fields',
+    summary: 'Modern custom color picker with hex input, presets, and optional opacity.',
+    description:
+      'A color input that renders its own picker popover (saturation, hue, opacity, presets) instead of the native browser color dialog.',
+    importName: 'ColorField',
+    demo: 'color-field',
+    code: `<ColorField label="Brand color" alpha allowEmpty properties={{ value, setValue, name: 'brand' }} />`,
+    props: [
+      { name: 'properties.value', type: 'string', defaultValue: '—', description: 'Hex color (#rrggbb or #rrggbbaa).' },
+      {
+        name: 'properties.setValue',
+        type: '(value: string) => void',
+        defaultValue: '—',
+        description: 'Called with the normalized hex value.',
+      },
+      { name: 'properties.name', type: 'string', defaultValue: '—', description: 'Submits the value via a hidden input.' },
+      { name: 'presets', type: 'string[]', defaultValue: 'curated palette', description: 'Preset swatches.' },
+      { name: 'alpha', type: 'boolean', defaultValue: 'false', description: 'Enables the opacity slider.' },
+      { name: 'allowEmpty', type: 'boolean', defaultValue: 'false', description: 'Shows a clear button.' },
+    ],
+    notes: [
+      'Invalid hex text never overwrites the value; it reverts on blur.',
+      'Shorthand like #abc is normalized to #aabbcc.',
+    ],
+  },
+  {
     slug: 'autocomplete',
     name: 'Autocomplete',
     group: 'Form fields',

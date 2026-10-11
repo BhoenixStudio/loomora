@@ -6,6 +6,7 @@ import {
   Breadcrumbs,
   Button,
   CheckField,
+  ColorField,
   ConditionalWrapper,
   Content,
   Copyrights,
@@ -143,6 +144,8 @@ function DemoContent({ demo }: { demo: string }) {
   const [multiSelected, setMultiSelected] = useState<string[]>([])
   const [checked, setChecked] = useState(false)
   const [range, setRange] = useState(65)
+  const [color, setColor] = useState('#6366f1')
+  const [colorAlpha, setColorAlpha] = useState('#ec489980')
   const [otp, setOtp] = useState<string[]>([])
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
@@ -413,6 +416,20 @@ function DemoContent({ demo }: { demo: string }) {
           }}
         />
         <p className="mt-3 text-xs text-body-2">Parent value: {range}</p>
+      </div>
+    ),
+    'color-field': (
+      <div className="grid max-w-md gap-5">
+        <ColorField label="Brand color" properties={{ value: color, setValue: setColor, name: 'brand' }} />
+        <ColorField
+          label="Overlay (with opacity, clearable)"
+          alpha
+          allowEmpty
+          properties={{ value: colorAlpha, setValue: setColorAlpha }}
+        />
+        <p className="text-xs text-body-2">
+          Values: {color || '(empty)'} / {colorAlpha || '(empty)'}
+        </p>
       </div>
     ),
     autocomplete: (
