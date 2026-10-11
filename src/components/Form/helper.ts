@@ -1,9 +1,9 @@
 import { Dispatch, ElementType, FocusEvent, ReactNode, SetStateAction } from 'react'
-import { ChildSize, GlobalElement, WrapperSize } from '../../types'
 import {
   AutocompleteProps,
   ButtonProps,
   CheckFieldProps,
+  InputError,
   InputHelperProps,
   LabelProps,
   OtpFieldProps,
@@ -16,7 +16,8 @@ import {
   TextEditorProps,
   TextFieldProps,
   UploaderFieldProps,
-} from '../index'
+} from '../'
+import { ChildSize, GlobalElement, WrapperSize } from '../../types'
 
 export type InputBase = { size?: ChildSize[]; condition?: boolean; loading?: boolean }
 export type InputProps = InputBase &
@@ -45,11 +46,7 @@ export type InputFieldset = {
 
 export type InputLabel = { label?: ReactNode | Omit<LabelProps, 'required'> }
 
-export type InputHelperAndError = {
-  inputHelper?: ReactNode | Omit<InputHelperProps, 'asError'>
-  error?: boolean
-  errorHelper?: ReactNode | Omit<InputHelperProps, 'asError'>
-}
+export type InputHelperAndError = { inputHelper?: ReactNode | Omit<InputHelperProps, 'asError'>; errors?: InputError[] }
 
 export type InputsWrapperProps = {
   inputs?: InputProps[]

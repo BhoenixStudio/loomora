@@ -17,8 +17,8 @@ export type {
 export { Input, Inputs } from './Input'
 
 // Modules
-export { InputHelper } from './Modules/Helper'
-export type { InputHelperProps } from './Modules/Helper'
+export { hasError, InputErrorMessage, InputHelper, resolveErrorHelper } from './Modules/Helper'
+export type { InputError, InputErrorMessageProps, InputHelperProps } from './Modules/Helper'
 
 export { Label } from './Modules/Label'
 export type { LabelProps } from './Modules/Label'
