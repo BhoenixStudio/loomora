@@ -1,9 +1,8 @@
 'use client'
 
 import { KeyboardEvent, MouseEvent, useRef, useState } from 'react'
+import { Button, ButtonProps, TextField, TextFieldProps } from '../../'
 import { useLoomora } from '../../../config'
-import { Button, ButtonProps } from '../../UI'
-import { TextField, TextFieldProps } from './TextField'
 
 export interface SearchFieldProps extends Omit<TextFieldProps, 'properties'> {
   properties?: TextFieldProps['properties'] & {
@@ -17,7 +16,7 @@ export interface SearchFieldProps extends Omit<TextFieldProps, 'properties'> {
   clearIconProps?: Pick<ButtonProps, 'variant' | 'color' | 'corner'>
 }
 
-export function SearchField(props: SearchFieldProps) {
+export function SearchField(props: Readonly<SearchFieldProps>) {
   const {
     showSearchIcon = true,
     searchIconProps,
