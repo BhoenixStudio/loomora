@@ -41,7 +41,7 @@ type InputProps = Omit<
   onCountryChange?: (country: CountryType | undefined) => void
 }
 
-export interface PhoneInputProps extends Omit<TextFieldProps, 'properties'> {
+export interface PhoneFieldProps extends Omit<TextFieldProps, 'properties'> {
   worldwide?: boolean
   selectedCountriesOnly?: CountryType[]
   showCountriesFlags?: boolean

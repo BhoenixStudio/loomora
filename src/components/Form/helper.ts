@@ -1,19 +1,19 @@
 import { Dispatch, ElementType, FocusEvent, ReactNode, SetStateAction } from 'react'
 import {
-  AutocompleteProps,
+  AutocompleteFieldProps,
   ButtonProps,
   CheckFieldProps,
   InputError,
   InputHelperProps,
   LabelProps,
-  OtpFieldProps,
   PasswordFieldProps,
-  PhoneInputProps,
+  PhoneFieldProps,
+  PinFieldProps,
   RangeFieldProps,
   SearchFieldProps,
   SelectProps,
-  TextareaProps,
-  TextEditorProps,
+  TextareaFieldProps,
+  TextEditorFieldProps,
   TextFieldProps,
   UploaderFieldProps,
 } from '../'
@@ -23,17 +23,17 @@ export type InputBase = { size?: ChildSize[]; condition?: boolean; loading?: boo
 export type InputProps = InputBase &
   (
     | ({ type?: 'text' } & TextFieldProps)
-    | ({ type: 'textarea' } & TextareaProps)
-    | ({ type: 'textEditor' } & TextEditorProps)
+    | ({ type: 'textarea' } & TextareaFieldProps)
+    | ({ type: 'textEditor' } & TextEditorFieldProps)
     | ({ type: 'label' } & LabelProps)
     | ({ type: 'search' } & SearchFieldProps)
-    | ({ type: 'phone' } & PhoneInputProps)
+    | ({ type: 'phone' } & PhoneFieldProps)
     | ({ type: 'password' } & PasswordFieldProps)
     | ({ type: 'select' } & SelectProps)
-    | ({ type: 'autocomplete' } & AutocompleteProps)
+    | ({ type: 'autocomplete' } & AutocompleteFieldProps)
     | ({ type: 'file' } & UploaderFieldProps)
     | ({ type: 'check' } & CheckFieldProps)
-    | ({ type: 'otp' } & OtpFieldProps)
+    | ({ type: 'otp' } & PinFieldProps)
     | ({ type: 'range' } & RangeFieldProps)
     | ({ type: 'custom'; element: ReactNode } & Pick<InputBase, 'condition'>)
   )

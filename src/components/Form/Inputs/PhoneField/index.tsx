@@ -1,11 +1,11 @@
 'use client'
 
 import { ReactNode, useEffect, useMemo, useState } from 'react'
-import { Autocomplete, AutocompleteOption, Flag, PhoneInputProps, TextField, usePhoneHelper } from '../../../'
+import { AutocompleteField, AutocompleteFieldOption, Flag, PhoneFieldProps, TextField, usePhoneHelper } from '../../../'
 import { useLoomora } from '../../../../config'
 import { CountryType, useCountries } from '../../../../database'
 
-export function PhoneInput(props: Readonly<PhoneInputProps>) {
+export function PhoneInput(props: Readonly<PhoneFieldProps>) {
   const { t, form } = useLoomora()
 
   const {
@@ -81,7 +81,7 @@ export function PhoneInput(props: Readonly<PhoneInputProps>) {
       (c) => c.name?.toLowerCase().includes(q) || c.code?.toLowerCase().includes(q) || String(c.phone?.code).includes(q)
     )
   }, [countries, searchQuery])
-  const countryOptions = useMemo<AutocompleteOption[]>(() => {
+  const countryOptions = useMemo<AutocompleteFieldOption[]>(() => {
     if (!worldwide) return []
     return filteredCountries.map((c) => ({
       value: c.code,
@@ -104,7 +104,7 @@ export function PhoneInput(props: Readonly<PhoneInputProps>) {
         <></>
       ) : (
         <>
-          <Autocomplete
+          <AutocompleteField
             options={countryOptions}
             wrapper={{ className: 'border-[unset]' }}
             properties={{

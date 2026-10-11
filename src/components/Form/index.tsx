@@ -43,7 +43,7 @@ export type { PasswordFieldProps, PasswordValidationProps } from './Inputs/Passw
 
 export { PhoneInput } from './Inputs/PhoneField'
 export { phoneFallBackValue, usePhoneHelper } from './Inputs/PhoneField/helper'
-export type { PhoneInputProps, PhonePrefix, PhoneValue } from './Inputs/PhoneField/helper'
+export type { PhoneFieldProps, PhonePrefix, PhoneValue } from './Inputs/PhoneField/helper'
 
 export { RangeField } from './Inputs/RangeField'
 export type { RangeFieldProps, RangeMark } from './Inputs/RangeField'
