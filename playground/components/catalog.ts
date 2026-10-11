@@ -505,10 +505,10 @@ export const componentCatalog: ComponentDoc[] = [
       },
       { name: 'inputHelper', type: 'ReactNode', defaultValue: '—', description: 'Supporting field description.' },
       {
-        name: 'error / errorHelper',
-        type: 'boolean / { condition: boolean; helper: ReactNode }[]',
-        defaultValue: 'false / —',
-        description: 'Enables the error border; shows the helper of the first entry whose condition is true.',
+        name: 'errors',
+        type: '{ condition: boolean; helper: ReactNode }[]',
+        defaultValue: '—',
+        description: 'Error state is true when any condition is true; shows the helper of the first true entry.',
       },
       {
         name: 'prefix / suffix',
@@ -590,10 +590,10 @@ export const componentCatalog: ComponentDoc[] = [
       { name: 'properties.rows', type: 'number', defaultValue: 'config default', description: 'Visible line count.' },
       { name: 'inputHelper', type: 'ReactNode', defaultValue: '—', description: 'Supporting field description.' },
       {
-        name: 'error / errorHelper',
-        type: 'boolean / { condition: boolean; helper: ReactNode }[]',
-        defaultValue: 'false / —',
-        description: 'Error state; shows the helper of the first entry whose condition is true.',
+        name: 'errors',
+        type: '{ condition: boolean; helper: ReactNode }[]',
+        defaultValue: '—',
+        description: 'Error state is true when any condition is true; shows the helper of the first true entry.',
       },
     ],
     notes: ['Set rows to match expected content length.', 'Native textarea attributes belong in properties.'],
@@ -896,7 +896,7 @@ export const componentCatalog: ComponentDoc[] = [
       {
         name: 'properties.searchable / onSearch',
         type: 'boolean / callback',
-        defaultValue: 'false / —',
+        defaultValue: '—',
         description: 'Enables option filtering and search updates.',
       },
       {
