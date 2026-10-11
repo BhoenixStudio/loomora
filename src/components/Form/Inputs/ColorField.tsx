@@ -136,7 +136,13 @@ export const ColorField = forwardRef<HTMLInputElement, ColorFieldProps>((props, 
   const checker = 'repeating-conic-gradient(rgba(128,128,128,.35) 0% 25%, transparent 0% 50%) 50% / 10px 10px'
 
   // Functions
-  const commit = useCallback((hex: string) => controlled && setValue?.(hex), [controlled, setValue])
+  const commit = useCallback(
+    (hex: string) => {
+      if (!controlled) setInner(hex)
+      setValue?.(hex)
+    },
+    [controlled, setValue]
+  )
   const update = (patch: Partial<Hsva>) => {
     const next = { ...hsva, ...patch }
     setHsva(next)
