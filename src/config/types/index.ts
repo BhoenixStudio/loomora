@@ -10,6 +10,7 @@ import {
   LoomoraFormBase,
   LoomoraFormT,
   LoomoraLabel,
+  LoomoraNumberField,
   LoomoraOtpField,
   LoomoraPasswordField,
   LoomoraPasswordT,
@@ -63,6 +64,7 @@ export interface LoomoraConfig extends LoomoraBase {
     phoneField: LoomoraPhoneField
     autoCompleteField: LoomoraAutocompleteField
     uploaderField: LoomoraUploaderField
+    numberField: LoomoraNumberField
   }
   theme: LoomoraTheme
   responsive: LoomoraResponsive

@@ -794,6 +794,13 @@ export const loomoraDefaults: LoomoraConfig = {
       executableIcon: '■',
       executablesIcon: '■',
     },
+    numberField: {
+      allowTelSymbols: false,
+      decimalSeparator: '.',
+      decimalsMax: 3,
+      decimalsMin: 0,
+      thousandSeparator: ',',
+    },
   },
   // Others
   LinkType: 'a',

@@ -202,6 +202,14 @@ export type LoomoraUploaderField = LoomoraUploaderIcon & {
   allowDragAndDrop: boolean
 }
 
+export type LoomoraNumberField = {
+  allowTelSymbols: boolean
+  decimalSeparator: string
+  decimalsMax: number
+  decimalsMin: number
+  thousandSeparator: string
+}
+
 // Hooks
 export type LoomoraUseDateT = {
   locales: Record<string, Locale>
