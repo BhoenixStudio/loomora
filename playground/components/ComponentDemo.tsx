@@ -1,8 +1,9 @@
 'use client'
 
+import type { FileProps } from 'loomora'
 import {
   Accordion,
-  Autocomplete,
+  AutocompleteField,
   Breadcrumbs,
   Button,
   CheckField,
@@ -21,20 +22,21 @@ import {
   Label,
   Loader,
   LoomoraProvider,
-  OtpField,
+  NumberField,
   PasswordField,
   PhoneInput,
+  PinField,
   ProgressBar,
   RangeField,
+  RatingField,
   SearchField,
-  Select,
-  TextEditor,
+  SelectField,
+  TextEditorField,
   TextField,
   TextareaField,
+  fade,
   useContextMenu,
 } from 'loomora'
-import type { FileProps } from 'loomora'
-import { UseToggle } from 'loomora'
 import { useState, type MouseEvent } from 'react'
 
 const options = [
@@ -144,6 +146,8 @@ function DemoContent({ demo }: { demo: string }) {
   const [multiSelected, setMultiSelected] = useState<string[]>([])
   const [checked, setChecked] = useState(false)
   const [range, setRange] = useState(65)
+  const [rating, setRating] = useState(3.5)
+  const [amount, setAmount] = useState<number | undefined>(1234.5)
   const [color, setColor] = useState('#6366f1')
   const [colorAlpha, setColorAlpha] = useState('#ec489980')
   const [otp, setOtp] = useState<string[]>([])
@@ -185,7 +189,10 @@ function DemoContent({ demo }: { demo: string }) {
     ),
     dialog: (
       <div>
-        <Button color="info" onClick={() => UseToggle('open', { setOpen: setDialogOpen, setShow: setDialogShow })}>
+        <Button
+          color="info"
+          onClick={() => fade('in', { open: dialogOpen, setOpen: setDialogOpen, setShow: setDialogShow })}
+        >
           Open dialog
         </Button>
         <Dialog open={dialogOpen} setOpen={setDialogOpen} show={dialogShow} setShow={setDialogShow} usePortal={false}>
@@ -198,7 +205,7 @@ function DemoContent({ demo }: { demo: string }) {
               className="mt-5"
               variant="outline"
               color="info"
-              onClick={() => UseToggle('close', { open: dialogOpen, setOpen: setDialogOpen, setShow: setDialogShow })}
+              onClick={() => fade('out', { open: dialogOpen, setOpen: setDialogOpen, setShow: setDialogShow })}
             >
               Close
             </Button>
@@ -340,7 +347,7 @@ function DemoContent({ demo }: { demo: string }) {
     ),
     select: (
       <div className="max-w-sm">
-        <Select
+        <SelectField
           label="Component"
           options={options}
           properties={{ value: selected, onChange: (event) => setSelected(event.target.value) }}
@@ -366,7 +373,7 @@ function DemoContent({ demo }: { demo: string }) {
     ),
     'otp-field': (
       <div>
-        <OtpField label="Verification code" length={6} properties={{ value: otp, onChange: setOtp }} />
+        <PinField label="Verification code" length={6} properties={{ value: otp, onChange: setOtp }} />
         <p className="mt-3 text-xs text-body-2">Code: {otp.join('') || 'Enter six digits; paste also works.'}</p>
       </div>
     ),
@@ -418,6 +425,33 @@ function DemoContent({ demo }: { demo: string }) {
         <p className="mt-3 text-xs text-body-2">Parent value: {range}</p>
       </div>
     ),
+    'rating-field': (
+      <div className="grid max-w-xl gap-5">
+        <RatingField
+          label="Quality (half steps)"
+          properties={{
+            value: rating,
+            setValue: setRating,
+            max: 5,
+            step: 0.5,
+            name: 'quality',
+            labels: ['Poor', 'Fair', 'Good', 'Great', 'Excellent'],
+          }}
+        />
+        <RatingField label="Read only" properties={{ value: 4, readOnly: true }} />
+        <p className="text-xs text-body-2">Parent value: {rating}</p>
+      </div>
+    ),
+    'number-field': (
+      <div className="max-w-md">
+        <NumberField
+          label="Amount"
+          decimalsMax={2}
+          properties={{ value: amount, onChange: (event) => setAmount(event.target.value) }}
+        />
+        <p className="mt-3 text-xs text-body-2">Parent value: {amount ?? '(empty)'}</p>
+      </div>
+    ),
     'color-field': (
       <div className="grid max-w-md gap-5">
         <ColorField label="Brand color" properties={{ value: color, setValue: setColor, name: 'brand' }} />
@@ -434,12 +468,12 @@ function DemoContent({ demo }: { demo: string }) {
     ),
     autocomplete: (
       <div className="grid max-w-lg gap-4">
-        <Autocomplete
+        <AutocompleteField
           label="Choose a component"
           options={options}
           properties={{ value: selected, onChange: (value) => setSelected(String(value ?? '')) }}
         />
-        <Autocomplete
+        <AutocompleteField
           label="Choose multiple"
           options={options}
           properties={{
@@ -474,7 +508,7 @@ function DemoContent({ demo }: { demo: string }) {
     ),
     'text-editor': (
       <div className="max-w-3xl">
-        <TextEditor label="Article body" properties={{ value: editor, onChange: setEditor, height: 300 }} />
+        <TextEditorField label="Article body" properties={{ value: editor, onChange: setEditor, height: 300 }} />
         <p className="mt-3 text-xs text-body-2">Editor content length: {editor.length} characters.</p>
       </div>
     ),
