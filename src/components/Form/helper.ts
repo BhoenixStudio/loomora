@@ -3,9 +3,11 @@ import {
   AutocompleteFieldProps,
   ButtonProps,
   CheckFieldProps,
+  ColorFieldProps,
   InputError,
   InputHelperProps,
   LabelProps,
+  NumberFieldProps,
   PasswordFieldProps,
   PhoneFieldProps,
   PinFieldProps,
@@ -35,6 +37,8 @@ export type InputProps = InputBase &
     | ({ type: 'check' } & CheckFieldProps)
     | ({ type: 'otp' } & PinFieldProps)
     | ({ type: 'range' } & RangeFieldProps)
+    | ({ type: 'color' } & ColorFieldProps)
+    | ({ type: 'number' } & NumberFieldProps)
     | ({ type: 'custom'; element: ReactNode } & Pick<InputBase, 'condition'>)
   )
 

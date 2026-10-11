@@ -34,6 +34,9 @@ export type {
 export { CheckField } from './Inputs/CheckField'
 export type { CheckFieldProps, CheckFieldType } from './Inputs/CheckField'
 
+export { ColorField } from './Inputs/ColorField'
+export type { ColorFieldProps } from './Inputs/ColorField'
+
 export { PinField } from './Inputs/PinField'
 export type { PinFieldProps } from './Inputs/PinField'
 
@@ -65,6 +68,9 @@ export type { TextEditorDataReturn, UseTextEditorDataProps } from './Inputs/Text
 
 export { TextField } from './Inputs/TextField'
 export type { TextFieldProps } from './Inputs/TextField'
+
+export { NumberField } from './Inputs/NumberField'
+export type { NumberFieldProps } from './Inputs/NumberField'
 
 export { UploaderField } from './Inputs/UploaderField'
 export { EXT_CATEGORIES, useUploaderHelper } from './Inputs/UploaderField/helper'
