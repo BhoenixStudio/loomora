@@ -12,7 +12,7 @@ import {
   InputLabel,
   Label,
   LabelProps,
-} from '../../'
+} from '../..'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
@@ -20,13 +20,13 @@ import { ConditionalWrapper } from '../../Helper'
 
 type InputProps = TextareaHTMLAttributes<HTMLTextAreaElement>
 
-export interface TextareaProps extends InputBase, InputFieldset, InputLabel, InputHelperAndError {
+export interface TextareaFieldProps extends InputBase, InputFieldset, InputLabel, InputHelperAndError {
   wrapper?: GlobalElement<'div'>
   active?: boolean
   properties?: InputProps
 }
 
-export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((props, ref) => {
+export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaFieldProps>((props, ref) => {
   const {
     size = [],
     properties,
@@ -57,10 +57,10 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>((pro
     value = '',
     onFocus,
     onBlur,
-    className = form?.textarea?.className,
+    className = form?.textareaField?.className,
     required,
     disabled,
-    rows = form?.textarea?.defaultRows,
+    rows = form?.textareaField?.defaultRows,
     ...restProperties
   } = properties ?? {}
 

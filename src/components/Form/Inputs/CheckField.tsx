@@ -10,7 +10,7 @@ import {
   InputLabel,
   Label,
   LabelProps,
-} from '../../'
+} from '../..'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { TWColorSName } from '../../../types'
@@ -26,6 +26,9 @@ export interface CheckFieldProps
 }
 
 function CheckIcon() {
+  const { form } = useLoomora()
+
+  if (form?.checkField?.checkIcon) return form.checkField.checkIcon
   return (
     <svg
       width="0.85em"
@@ -54,8 +57,8 @@ export function CheckField(props: Readonly<CheckFieldProps>) {
     label,
     inputHelper,
     errors,
-    color = form?.check?.color,
-    activeColor = form?.check?.activeColor,
+    color = form?.checkField?.color,
+    activeColor = form?.checkField?.activeColor,
     loading = false,
     condition,
   } = props

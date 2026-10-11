@@ -69,7 +69,7 @@ export type LoomoraTextEditorT = Record<'menusEdit' | 'menusView' | 'menusInsert
 export type LoomoraSearchT = Record<'searchButtonTitle' | 'clearSearchTitle', string>
 export type LoomoraSearchField = { searchIcon: ReactNode; clearIcon: ReactNode }
 export type LoomoraSelectField = { triggerIcon: ReactNode; optionClassName: string; optionGroupClassName: string }
-export type LoomoraCheckField = { color: TWColorSName<'text'>; activeColor: TWColorSName<'text'> }
+export type LoomoraCheckField = { checkIcon: ReactNode; color: TWColorSName<'text'>; activeColor: TWColorSName<'text'> }
 
 export type LoomoraPasswordT = Record<
   | 'placeholder'

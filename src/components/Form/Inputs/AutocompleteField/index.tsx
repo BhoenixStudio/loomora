@@ -2,24 +2,23 @@
 'use client'
 
 import { ChangeEvent, isValidElement, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { hasError, InputErrorMessage, InputHelper, Label, LabelProps } from '../../../'
+import { hasError, InputErrorMessage, InputHelper, Label, LabelProps } from '../../..'
+import { Button, ButtonProps, ConditionalWrapper } from '../../../'
 import { useLoomora } from '../../../../config'
 import { cx, hasProps } from '../../../../hooks'
-import { ConditionalWrapper } from '../../../Helper'
-import { Button, ButtonProps } from '../../../UI'
 import {
-  AutocompleteMultiple,
-  AutocompleteMultipleProps,
-  AutocompleteOption,
-  AutocompleteProps,
-  AutocompleteSingle,
-  AutocompleteSingleProps,
+  AutocompleteFieldMultiple,
+  AutocompleteFieldMultipleProps,
+  AutocompleteFieldOption,
+  AutocompleteFieldProps,
+  AutocompleteFieldSingle,
+  AutocompleteFieldSingleProps,
 } from './helper'
 
-export function Autocomplete<T = any>(props: Readonly<AutocompleteMultipleProps<T>>): ReactNode
-export function Autocomplete<T = any>(props: Readonly<AutocompleteSingleProps<T>>): ReactNode
-export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>): ReactNode
-export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
+export function AutocompleteField<T = any>(props: Readonly<AutocompleteFieldMultipleProps<T>>): ReactNode
+export function AutocompleteField<T = any>(props: Readonly<AutocompleteFieldSingleProps<T>>): ReactNode
+export function AutocompleteField<T = any>(props: Readonly<AutocompleteFieldProps<T>>): ReactNode
+export function AutocompleteField<T = any>(props: Readonly<AutocompleteFieldProps<T>>) {
   const { t, form } = useLoomora()
 
   const {
@@ -37,8 +36,8 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     loading = false,
     options = [],
     optionsMenu,
-    emptyState = t('autoComplete.emptyState'),
-    loadingState = t('autoComplete.loadingState'),
+    emptyState = t('autoCompleteField.emptyState'),
+    loadingState = t('autoCompleteField.loadingState'),
     showTrigger,
     trigger: dTrigger,
     onToggle,
@@ -55,14 +54,14 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
 
   const {
     onClear,
-    multiple = form?.autoComplete?.multiple ?? false,
+    multiple = form?.autoCompleteField?.multiple ?? false,
     required,
     disabled,
-    searchable = form?.autoComplete?.searchable ?? true,
+    searchable = form?.autoCompleteField?.searchable ?? true,
     onSearch,
-    searchPlaceholder = t('autoComplete.searchPlaceholder'),
-    searchViaLabel = form?.autoComplete?.searchViaLabel ?? true,
-    showClearSearch = form?.autoComplete?.showClearSearch ?? true,
+    searchPlaceholder = t('autoCompleteField.searchPlaceholder'),
+    searchViaLabel = form?.autoCompleteField?.searchViaLabel ?? true,
+    showClearSearch = form?.autoCompleteField?.showClearSearch ?? true,
   } = properties ?? {}
 
   const {
@@ -70,7 +69,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     onChange: singleChange,
     renderValue: singleRenderValue,
     renderOption: singleRenderOption,
-  } = (properties ?? {}) as AutocompleteSingle<T>
+  } = (properties ?? {}) as AutocompleteFieldSingle<T>
 
   const {
     value: multiValue = [],
@@ -80,7 +79,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     renderTag,
     min,
     max,
-  } = (properties ?? {}) as AutocompleteMultiple<T>
+  } = (properties ?? {}) as AutocompleteFieldMultiple<T>
 
   // Refs
   const fieldsetRef = useRef<HTMLFieldSetElement>(null)
@@ -91,7 +90,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [active, setActive] = useState(false)
-  const [selected, setSelected] = useState<AutocompleteOption<T>[]>([])
+  const [selected, setSelected] = useState<AutocompleteFieldOption<T>[]>([])
   const [menuPosition, setMenuPosition] = useState<'bottom' | 'top'>('bottom')
 
   // Configs
@@ -112,7 +111,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
   const triggerContent = useMemo(() => {
     if (multiple) {
       if (selected.length === 0) return null
-      return multiRenderValue?.(selected) ?? t('autoComplete.selectedCount', { count: selected.length })
+      return multiRenderValue?.(selected) ?? t('autoCompleteField.selectedCount', { count: selected.length })
     }
     const current = selected[0]
     if (!current) return null
@@ -138,7 +137,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
   ])
 
   let restTrigger: Pick<ButtonProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode } = {
-    icon: form?.select?.triggerIcon,
+    icon: form?.selectField?.triggerIcon,
     color: 'second',
     corner: 'small',
     variant: 'text',
@@ -164,7 +163,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
           'flex items-center bg-transparent outline-none text-start cursor-pointer w-full disabled:cursor-not-allowed pe-3',
           { value: 'ps-2', fallback: 'ps-3', condition: Boolean(prefix) },
           { value: 'pt-3', fallback: 'py-3', condition: multiple && selected.length > 0 },
-          form?.autoComplete?.triggerWrapperClassName,
+          form?.autoCompleteField?.triggerWrapperClassName,
         ])}
       >
         {triggerContent}
@@ -188,7 +187,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
           'bg-transparent outline-none w-full disabled:cursor-not-allowed pe-3',
           { value: 'ps-2', fallback: 'ps-3', condition: Boolean(prefix) || (multiple && selected.length > 0) },
           { value: 'pt-3', fallback: 'py-3', condition: multiple && selected.length > 0 },
-          form?.autoComplete?.triggerWrapperClassName,
+          form?.autoCompleteField?.triggerWrapperClassName,
         ])}
       />
     )
@@ -214,12 +213,12 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     setOpen(true)
     onToggle?.(true)
   }
-  function handleSelect(option: AutocompleteOption<T>) {
+  function handleSelect(option: AutocompleteFieldOption<T>) {
     if (option.disabled) return
 
     if (multiple) {
       const isAlreadySelected = selected.some((s) => s.value === option.value)
-      let next: AutocompleteOption<T>[]
+      let next: AutocompleteFieldOption<T>[]
 
       if (isAlreadySelected) {
         next = selected.filter((s) => s.value !== option.value)
@@ -241,7 +240,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
       setSearch('')
     }
   }
-  function handleRemoveTag(option: AutocompleteOption<T>) {
+  function handleRemoveTag(option: AutocompleteFieldOption<T>) {
     const next = selected.filter((s) => s.value !== option.value)
     setSelected(next)
     multiChange?.(
@@ -253,7 +252,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     setSelected([])
     setSearch('')
     if (multiple) multiChange?.([], [])
-    else singleChange?.(undefined, {} as AutocompleteOption<T>)
+    else singleChange?.(undefined, {} as AutocompleteFieldOption<T>)
     onClear?.()
   }
   function calculateMenuPosition() {
@@ -263,7 +262,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
     const spaceAbove = rect.top
     setMenuPosition(spaceBelow < 240 && spaceAbove > spaceBelow ? 'top' : 'bottom')
   }
-  function renderOptionLabel(option: AutocompleteOption<T>) {
+  function renderOptionLabel(option: AutocompleteFieldOption<T>) {
     if (multiple && multiRenderOption) return multiRenderOption(option)
     if (!multiple && singleRenderOption) return singleRenderOption(option)
     return option.label
@@ -363,7 +362,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
               className="text-body-2 hover:text-error transition-colors cursor-pointer pe-1"
               aria-label="Clear"
             >
-              {form?.autoComplete?.ClearSearchIcon}
+              {form?.autoCompleteField?.ClearSearchIcon}
             </button>
           )}
 
@@ -397,7 +396,7 @@ export function Autocomplete<T = any>(props: Readonly<AutocompleteProps<T>>) {
                   className="text-body-2 hover:text-error transition-colors cursor-pointer"
                   aria-label="Remove"
                 >
-                  {form?.autoComplete?.multipleTagsCloseIcon}
+                  {form?.autoCompleteField?.multipleTagsCloseIcon}
                 </button>
               </span>
             ))}

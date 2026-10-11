@@ -1,7 +1,7 @@
 'use client'
 
 import { DragEvent, InputHTMLAttributes, MouseEvent, ReactNode, useEffect, useId, useRef, useState } from 'react'
-import { hasError, InputErrorMessage, InputHelper, Label, LabelProps, useUploaderModules } from '../../../'
+import { hasError, InputErrorMessage, InputHelper, Label, LabelProps, useUploaderModules } from '../../..'
 import { useLoomora } from '../../../../config'
 import { cx, hasProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
@@ -42,20 +42,20 @@ export function UploaderField<T extends string | number = number>(props: Readonl
     onMouseEnter: onMouseEnterEvent,
     onMouseLeave: onMouseLeaveEvent,
     onRemove,
-    accept: extensions = form?.uploader?.defaultFileCategory ?? ['all'],
-    minFiles = form?.uploader?.minFiles,
-    maxFiles = form?.uploader?.maxFiles,
-    minSize = form?.uploader?.minSize,
-    maxSize = form?.uploader?.maxSize,
-    minFilesSize = form?.uploader?.minFilesSize,
-    maxFilesSize = form?.uploader?.maxFilesSize,
+    accept: extensions = form?.uploaderField?.defaultFileCategory ?? ['all'],
+    minFiles = form?.uploaderField?.minFiles,
+    maxFiles = form?.uploaderField?.maxFiles,
+    minSize = form?.uploaderField?.minSize,
+    maxSize = form?.uploaderField?.maxSize,
+    minFilesSize = form?.uploaderField?.minFilesSize,
+    maxFilesSize = form?.uploaderField?.maxFilesSize,
     required,
     disabled,
     multiple = false,
-    showProgress = form?.uploader?.showProgress ?? true,
+    showProgress = form?.uploaderField?.showProgress ?? true,
     progressAttrs,
-    allowPaste = form?.uploader?.allowPaste ?? true,
-    allowDragAndDrop = form?.uploader?.allowDragAndDrop ?? true,
+    allowPaste = form?.uploaderField?.allowPaste ?? true,
+    allowDragAndDrop = form?.uploaderField?.allowDragAndDrop ?? true,
   } = properties ?? {}
 
   const {
@@ -101,36 +101,36 @@ export function UploaderField<T extends string | number = number>(props: Readonl
   const aRules: string[] = [
     ...(rules?.map((r) => ({ rule: r, condition: !extensions.includes('all') })) ?? []),
     {
-      rule: t('uploader.minSizeRule', { min: calcFileSize(Number(minSize), 'MB') }),
+      rule: t('uploaderField.minSizeRule', { min: calcFileSize(Number(minSize), 'MB') }),
       condition: Boolean(Number(minSize) > 0),
     },
     {
-      rule: t('uploader.maxSizeRule', { max: calcFileSize(Number(maxSize), 'MB') }),
+      rule: t('uploaderField.maxSizeRule', { max: calcFileSize(Number(maxSize), 'MB') }),
       condition: Boolean(Number(maxSize) > 0),
     },
     {
-      rule: t('uploader.minFilesSizeRule', { min: calcFileSize(Number(minFilesSize), 'MB') }),
+      rule: t('uploaderField.minFilesSizeRule', { min: calcFileSize(Number(minFilesSize), 'MB') }),
       condition: Boolean(Number(minFilesSize) > 0) && multiple,
     },
     {
-      rule: t('uploader.maxFilesSizeRule', { max: calcFileSize(Number(maxFilesSize), 'MB') }),
+      rule: t('uploaderField.maxFilesSizeRule', { max: calcFileSize(Number(maxFilesSize), 'MB') }),
       condition: Boolean(Number(maxFilesSize) > 0) && multiple,
     },
     {
-      rule: t('uploader.minFilesRule', { min: Number(minFiles) }),
+      rule: t('uploaderField.minFilesRule', { min: Number(minFiles) }),
       condition: Boolean(Number(minFiles) > 0) && multiple,
     },
     {
-      rule: t('uploader.maxFilesRule', { max: Number(maxFiles) }),
+      rule: t('uploaderField.maxFilesRule', { max: Number(maxFiles) }),
       condition: Boolean(Number(maxFiles) > 0) && multiple,
     },
   ]
     .filter(({ condition }) => condition !== false)
     .map(({ rule }) => rule)
   const allowance: string[] = [
-    { sentence: t('uploader.pasteAndDragAndDropSupportRule'), condition: allowPaste && allowDragAndDrop },
-    { sentence: t('uploader.pasteSupportRule'), condition: allowPaste && !allowDragAndDrop },
-    { sentence: t('uploader.dragAndDropSupportRule'), condition: allowDragAndDrop && !allowPaste },
+    { sentence: t('uploaderField.pasteAndDragAndDropSupportRule'), condition: allowPaste && allowDragAndDrop },
+    { sentence: t('uploaderField.pasteSupportRule'), condition: allowPaste && !allowDragAndDrop },
+    { sentence: t('uploaderField.dragAndDropSupportRule'), condition: allowDragAndDrop && !allowPaste },
   ]
     .filter(({ condition }) => condition !== false)
     .map(({ sentence }) => sentence)
@@ -285,17 +285,17 @@ export function UploaderField<T extends string | number = number>(props: Readonl
   useEffect(() => {
     if (errors.length === 0) return
     const errorTranslated = {
-      duplicateFileRule: t('uploader.duplicateFileRule'),
-      minFilesRule: t('uploader.minFilesRule', { min: Number(minFiles) }),
-      maxFilesRule: t('uploader.maxFilesRule', { max: Number(maxFiles) }),
-      acceptRule: t('uploader.acceptRule', { rules: rules.join(', ') }),
-      minSizeRule: t('uploader.minSizeRule', { min: Number(minSize) }),
-      maxSizeRule: t('uploader.maxSizeRule', { max: Number(maxSize) }),
-      minFilesSizeRule: t('uploader.minFilesSizeRule', { min: Number(minFilesSize) }),
-      maxFilesSizeRule: t('uploader.maxFilesSizeRule', { max: Number(maxFilesSize) }),
-      uploadError: t('uploader.uploadError'),
+      duplicateFileRule: t('uploaderField.duplicateFileRule'),
+      minFilesRule: t('uploaderField.minFilesRule', { min: Number(minFiles) }),
+      maxFilesRule: t('uploaderField.maxFilesRule', { max: Number(maxFiles) }),
+      acceptRule: t('uploaderField.acceptRule', { rules: rules.join(', ') }),
+      minSizeRule: t('uploaderField.minSizeRule', { min: Number(minSize) }),
+      maxSizeRule: t('uploaderField.maxSizeRule', { max: Number(maxSize) }),
+      minFilesSizeRule: t('uploaderField.minFilesSizeRule', { min: Number(minFilesSize) }),
+      maxFilesSizeRule: t('uploaderField.maxFilesSizeRule', { max: Number(maxFilesSize) }),
+      uploadError: t('uploaderField.uploadError'),
     }
-    form?.uploader?.onDetectErrors?.(
+    form?.uploaderField?.onDetectErrors?.(
       Object.entries(errorTranslated)
         .filter(([key]) => errors.includes(key))
         .map(([, value]) => value)

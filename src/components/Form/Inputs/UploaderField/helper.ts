@@ -164,7 +164,7 @@ export function useUploaderHelper() {
   const { t, form } = useLoomora()
 
   // Functions
-  const acceptRules = (exts: FileExtType[] = form?.uploader?.defaultFileCategory ?? ['all']) => {
+  const acceptRules = (exts: FileExtType[] = form?.uploaderField?.defaultFileCategory ?? ['all']) => {
     if (exts.includes('all')) return { accept: '*/*', rules: [] }
 
     const isCategory = (val: string): val is FileCategoryType => Object.keys(EXT_CATEGORIES).includes(val)
@@ -175,10 +175,10 @@ export function useUploaderHelper() {
     if (categories.length === 1 && extensions.length === 0) {
       const cat = categories[0]
       if (cat === 'image' || cat === 'video' || cat === 'audio')
-        return { accept: `${cat}/*`, rules: [t('uploader.allCatAccepted', { cat })] }
+        return { accept: `${cat}/*`, rules: [t('uploaderField.allCatAccepted', { cat })] }
       else {
         const catExts = EXT_CATEGORIES[cat].filter((e) => e.startsWith('.'))
-        return { accept: catExts.join(','), rules: [t('uploader.allCatAccepted', { cat })] }
+        return { accept: catExts.join(','), rules: [t('uploaderField.allCatAccepted', { cat })] }
       }
     }
 
@@ -187,12 +187,12 @@ export function useUploaderHelper() {
 
     categories.forEach((cat) => {
       acceptArr.push(...EXT_CATEGORIES[cat].filter((e) => e.startsWith('.')))
-      rulesArr.push(t('uploader.allCatAccepted', { cat }))
+      rulesArr.push(t('uploaderField.allCatAccepted', { cat }))
     })
 
     if (extensions.length > 0) {
       acceptArr.push(...extensions)
-      rulesArr.push(t('uploader.extsAccepted', { exts: extensions.join(', ') }))
+      rulesArr.push(t('uploaderField.extsAccepted', { exts: extensions.join(', ') }))
     }
 
     acceptArr = Array.from(new Set(acceptArr))
@@ -272,14 +272,14 @@ export function useUploaderHelper() {
     const category = getCategory(extensions)
 
     const icons: Record<FileCategoryType, ReactNode> = {
-      all: length > 1 ? form?.uploader?.filesIcon : form?.uploader?.fileIcon,
-      image: length > 1 ? form?.uploader?.imagesIcon : form?.uploader?.imageIcon,
-      video: length > 1 ? form?.uploader?.videosIcon : form?.uploader?.videoIcon,
-      audio: length > 1 ? form?.uploader?.audiosIcon : form?.uploader?.audioIcon,
-      text: length > 1 ? form?.uploader?.textsIcon : form?.uploader?.textIcon,
-      files: length > 1 ? form?.uploader?.filesIcon : form?.uploader?.fileIcon,
-      application: length > 1 ? form?.uploader?.applicationsIcon : form?.uploader?.applicationIcon,
-      executable: length > 1 ? form?.uploader?.executablesIcon : form?.uploader?.executableIcon,
+      all: length > 1 ? form?.uploaderField?.filesIcon : form?.uploaderField?.fileIcon,
+      image: length > 1 ? form?.uploaderField?.imagesIcon : form?.uploaderField?.imageIcon,
+      video: length > 1 ? form?.uploaderField?.videosIcon : form?.uploaderField?.videoIcon,
+      audio: length > 1 ? form?.uploaderField?.audiosIcon : form?.uploaderField?.audioIcon,
+      text: length > 1 ? form?.uploaderField?.textsIcon : form?.uploaderField?.textIcon,
+      files: length > 1 ? form?.uploaderField?.filesIcon : form?.uploaderField?.fileIcon,
+      application: length > 1 ? form?.uploaderField?.applicationsIcon : form?.uploaderField?.applicationIcon,
+      executable: length > 1 ? form?.uploaderField?.executablesIcon : form?.uploaderField?.executableIcon,
     }
 
     return { icon: icons[category], hasImageAssigned: category === 'image' && Boolean(file?.url) }
@@ -411,7 +411,7 @@ export function useUploaderHelper() {
       id,
       name,
       disabled,
-      accept: extensions = form?.uploader?.defaultFileCategory ?? ['all'],
+      accept: extensions = form?.uploaderField?.defaultFileCategory ?? ['all'],
       minSize,
       maxSize,
       minFiles,
@@ -536,18 +536,18 @@ export function useUploaderHelper() {
       if (errors.length === 0) return
       onError?.(errors)
       const errorTranslated: Record<string, string> = {
-        duplicateFileRule: t('uploader.duplicateFileRule'),
-        minFilesRule: t('uploader.minFilesRule', { min: Number(minFiles) }),
-        maxFilesRule: t('uploader.maxFilesRule', { max: Number(maxFiles) }),
-        acceptRule: t('uploader.acceptRule', { rules: rules.join(', ') }),
-        minSizeRule: t('uploader.minSizeRule', { min: Number(minSize) }),
-        maxSizeRule: t('uploader.maxSizeRule', { max: Number(maxSize) }),
-        minFilesSizeRule: t('uploader.minFilesSizeRule', { min: Number(minFilesSize) }),
-        maxFilesSizeRule: t('uploader.maxFilesSizeRule', { max: Number(maxFilesSize) }),
-        uploadError: t('uploader.uploadError'),
+        duplicateFileRule: t('uploaderField.duplicateFileRule'),
+        minFilesRule: t('uploaderField.minFilesRule', { min: Number(minFiles) }),
+        maxFilesRule: t('uploaderField.maxFilesRule', { max: Number(maxFiles) }),
+        acceptRule: t('uploaderField.acceptRule', { rules: rules.join(', ') }),
+        minSizeRule: t('uploaderField.minSizeRule', { min: Number(minSize) }),
+        maxSizeRule: t('uploaderField.maxSizeRule', { max: Number(maxSize) }),
+        minFilesSizeRule: t('uploaderField.minFilesSizeRule', { min: Number(minFilesSize) }),
+        maxFilesSizeRule: t('uploaderField.maxFilesSizeRule', { max: Number(maxFilesSize) }),
+        uploadError: t('uploaderField.uploadError'),
       }
 
-      form?.uploader?.onDetectErrors?.(
+      form?.uploaderField?.onDetectErrors?.(
         Object.entries(errorTranslated)
           .filter(([key]) => errors.includes(key))
           .map(([, value]) => value)

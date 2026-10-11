@@ -21,7 +21,7 @@ import {
   InputLabel,
   Label,
   LabelProps,
-} from '../../'
+} from '../..'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
@@ -43,7 +43,7 @@ export interface SelectProps extends InputBase, InputFieldset, InputLabel, Input
   trigger?: ReactNode | (Pick<ButtonProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode })
 }
 
-export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) => {
+export const SelectField = forwardRef<HTMLSelectElement, SelectProps>((props, ref) => {
   const { form } = useLoomora()
 
   const {
@@ -61,7 +61,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
     active: forceActive = false,
     options = [],
     showTrigger = true,
-    trigger = form?.select?.triggerIcon,
+    trigger = form?.selectField?.triggerIcon,
     loading = false,
     condition,
   } = props
@@ -91,7 +91,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
   }
 
   let restTrigger: Pick<ButtonProps, 'variant' | 'color' | 'corner'> & { icon: ReactNode } = {
-    icon: form?.select?.triggerIcon,
+    icon: form?.selectField?.triggerIcon,
     color: 'second',
     corner: 'small',
     variant: 'text',
@@ -171,11 +171,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) =>
           {...{ value, required, ...selectProps }}
         >
           {options?.map(({ isGroup, ...option }, i: number) => {
-            const { label, value, className = form?.select?.optionClassName, ...op } = option as OptionItem
+            const { label, value, className = form?.selectField?.optionClassName, ...op } = option as OptionItem
             const {
               label: gLabel,
               children,
-              className: gClass = form?.select?.optionGroupClassName,
+              className: gClass = form?.selectField?.optionGroupClassName,
               ...gOp
             } = option as OptionGroupItem
 

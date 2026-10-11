@@ -85,7 +85,7 @@ export type PhoneValue = {
   final: string
 }
 export const phoneFallBackValue: PhoneValue = {
-  codePrefix: loomoraDefaults.form.phone.codePrefix,
+  codePrefix: loomoraDefaults.form.phoneField.codePrefix,
   code: undefined,
   value: '',
   final: '',

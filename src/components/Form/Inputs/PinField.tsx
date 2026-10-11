@@ -11,13 +11,13 @@ import {
   InputLabel,
   Label,
   LabelProps,
-} from '../../'
+} from '../..'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
 import { ConditionalWrapper } from '../../Helper'
 
-export interface OtpFieldProps extends InputBase, Pick<InputFieldset, 'fieldset'>, InputLabel, InputHelperAndError {
+export interface PinFieldProps extends InputBase, Pick<InputFieldset, 'fieldset'>, InputLabel, InputHelperAndError {
   wrapper?: GlobalElement<'div'>
   length?: number
   properties?: Pick<
@@ -26,7 +26,7 @@ export interface OtpFieldProps extends InputBase, Pick<InputFieldset, 'fieldset'
   > & { value?: string[]; onChange?: Dispatch<SetStateAction<string[]>> }
 }
 
-export function OtpField(props: Readonly<OtpFieldProps>) {
+export function PinField(props: Readonly<PinFieldProps>) {
   const { form } = useLoomora()
 
   const {
@@ -39,7 +39,7 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
     inputHelper,
     errors,
     loading = false,
-    length = form?.otp?.length ?? 6,
+    length = form?.pinField?.length ?? 6,
   } = props
 
   const error = hasError(errors)
@@ -52,7 +52,7 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   // Configs
-  const otp = value.length === length ? value : new Array<string>(length).fill('')
+  const pin = value.length === length ? value : new Array<string>(length).fill('')
 
   let labelClass: string = '',
     restLabel: LabelProps = { children: '' }
@@ -67,21 +67,21 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
   // Functions
   function handleChange(index: number, inputValue: string) {
     if (!/^\d*$/.test(inputValue)) return
-    const next = [...otp]
+    const next = [...pin]
     next[index] = inputValue.slice(-1)
     onChange?.(next)
     if (inputValue && index < length - 1) inputRefs.current[index + 1]?.focus()
   }
 
   function handleKeyDown(index: number, e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) inputRefs.current[index - 1]?.focus()
+    if (e.key === 'Backspace' && !pin[index] && index > 0) inputRefs.current[index - 1]?.focus()
   }
 
   function handlePaste(e: ClipboardEvent<HTMLInputElement>) {
     e.preventDefault()
     const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, length)
     if (!pasted) return
-    const next = [...otp]
+    const next = [...pin]
     pasted.split('').forEach((char, i) => {
       next[i] = char
     })
@@ -115,7 +115,7 @@ export function OtpField(props: Readonly<OtpFieldProps>) {
         className={cx(['flex flex-1 gap-3 w-full flex-wrap justify-center', wrapperClass])}
         {...{ ...wrapperAttrs, dir: 'ltr', ...restWrapper }}
       >
-        {otp.map((digit, i) => (
+        {pin.map((digit, i) => (
           <input
             key={i}
             ref={(el) => {

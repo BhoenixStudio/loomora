@@ -10,7 +10,7 @@ import {
   InputLabel,
   Label,
   LabelProps,
-} from '../../'
+} from '../..'
 import { useLoomora } from '../../../config'
 import { cx, hasProps } from '../../../hooks'
 import { GlobalElement } from '../../../types'
@@ -73,14 +73,14 @@ export const RangeField = forwardRef<HTMLInputElement, RangeFieldProps>((props, 
     setValue,
     min = 0,
     max = 0,
-    step = form?.range?.step ?? 1,
-    showValue = form?.range?.showValue,
-    showMinMax = form?.range?.showMinMax,
-    valuePrefix = form?.range?.valuePrefix,
-    valueSuffix = form?.range?.valueSuffix,
+    step = form?.rangeField?.step ?? 1,
+    showValue = form?.rangeField?.showValue,
+    showMinMax = form?.rangeField?.showMinMax,
+    valuePrefix = form?.rangeField?.valuePrefix,
+    valueSuffix = form?.rangeField?.valueSuffix,
     marks = [],
     formatValue,
-    className = form?.range?.className,
+    className = form?.rangeField?.className,
     required,
     disabled,
     ...inputProps

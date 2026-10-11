@@ -9,29 +9,29 @@ import { Button } from '../../../UI'
 import { TextField } from '../TextField'
 import { PasswordFieldProps, usePasswordHelper } from './helper'
 
-export function PasswordField(props: PasswordFieldProps) {
+export function PasswordField(props: Readonly<PasswordFieldProps>) {
   const { t, form } = useLoomora()
 
   const {
     prefix,
     suffix,
     properties,
-    hasCopy = form?.password?.hasCopy,
-    hasGenerate = form?.password?.hasGenerate,
-    hasValidation = form?.password?.hasValidation,
+    hasCopy = form?.passwordField?.hasCopy,
+    hasGenerate = form?.passwordField?.hasGenerate,
+    hasValidation = form?.passwordField?.hasValidation,
     asConfirm = false,
-    hasShow = form?.password?.hasShow,
+    hasShow = form?.passwordField?.hasShow,
     validationSettings,
-    showValidationProgress = form?.password?.showValidationProgress,
-    showValidationsList = form?.password?.showValidationsList,
+    showValidationProgress = form?.passwordField?.showValidationProgress,
+    showValidationsList = form?.passwordField?.showValidationsList,
     onValidate,
     confirmValue = '',
-    matchText = t('password.confirmMismatch'),
-    mismatchText = t('password.confirmMatch'),
+    matchText = t('passwordField.confirmMismatch'),
+    mismatchText = t('passwordField.confirmMatch'),
     showConfirmIcon,
     onConfirm,
     onShow,
-    generateLength = form?.password?.length,
+    generateLength = form?.passwordField?.length,
     onGenerate,
     generateText,
     ...inputRest
@@ -39,7 +39,7 @@ export function PasswordField(props: PasswordFieldProps) {
 
   const { GeneratePassword, ValidatePassword } = usePasswordHelper()
 
-  const { value = '', placeholder = t('password.placeholder'), ...inputProps } = properties ?? {}
+  const { value = '', placeholder = t('passwordField.placeholder'), ...inputProps } = properties ?? {}
   const { items, textColor, progressColor, strength, note, valid } = ValidatePassword(value, validationSettings)
 
   // States
@@ -82,7 +82,7 @@ export function PasswordField(props: PasswordFieldProps) {
       className={cx([{ value: 'self-end', condition: hasGenerate && !hasValidation }])}
       onClick={HandleGenerate}
     >
-      {generateText ?? t('password.generate')}
+      {generateText ?? t('passwordField.generate')}
     </Button>
   )
 
@@ -118,16 +118,20 @@ export function PasswordField(props: PasswordFieldProps) {
       prefix={
         <>
           {prefix}
-          {showConfirmIcon && <>{asConfirm ? form?.password?.confirmingMainIcon : form?.password?.confirmMainIcon}</>}
+          {showConfirmIcon && (
+            <>{asConfirm ? form?.passwordField?.confirmingMainIcon : form?.passwordField?.confirmMainIcon}</>
+          )}
         </>
       }
       suffix={
         <>
           {suffix}
 
-          {hasShow && (show ? form?.password?.hideIcon : form?.password?.showIcon)}
+          {hasShow && (show ? form?.passwordField?.hideIcon : form?.passwordField?.showIcon)}
 
-          {hasCopy && Boolean(value) && <Button onClick={() => copy(String(value))}>{form?.password?.copyIcon}</Button>}
+          {hasCopy && Boolean(value) && (
+            <Button onClick={() => copy(String(value))}>{form?.passwordField?.copyIcon}</Button>
+          )}
 
           {(asConfirm || (hasValidation && note)) && (
             <p

@@ -40,12 +40,12 @@ export interface LoomoraConfig extends LoomoraBase {
     timezones: LoomoraTimezonesT
     useDates: LoomoraUseDateT
     form: LoomoraFormT
-    textEditor: LoomoraTextEditorT
+    textEditorField: LoomoraTextEditorT
     searchField: LoomoraSearchT
-    password: LoomoraPasswordT
-    phone: LoomoraPhoneT
-    autoComplete: LoomoraAutocompleteT
-    uploader: LoomoraUploaderT
+    passwordField: LoomoraPasswordT
+    phoneField: LoomoraPhoneT
+    autoCompleteField: LoomoraAutocompleteT
+    uploaderField: LoomoraUploaderT
     settings: LoomoraThemeT
   }
   // Components
@@ -53,16 +53,16 @@ export interface LoomoraConfig extends LoomoraBase {
   breadcrumbs: LoomoraBreadCrumb
   form: LoomoraFormBase & {
     label: LoomoraLabel
-    textarea: LoomoraTextArea
+    textareaField: LoomoraTextArea
     searchField: LoomoraSearchField
-    select: LoomoraSelectField
-    check: LoomoraCheckField
-    password: LoomoraPasswordField
-    otp: LoomoraOtpField
-    range: LoomoraRangeField
-    phone: LoomoraPhoneField
-    autoComplete: LoomoraAutocompleteField
-    uploader: LoomoraUploaderField
+    selectField: LoomoraSelectField
+    checkField: LoomoraCheckField
+    passwordField: LoomoraPasswordField
+    pinField: LoomoraOtpField
+    rangeField: LoomoraRangeField
+    phoneField: LoomoraPhoneField
+    autoCompleteField: LoomoraAutocompleteField
+    uploaderField: LoomoraUploaderField
   }
   theme: LoomoraTheme
   responsive: LoomoraResponsive

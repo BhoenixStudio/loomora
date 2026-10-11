@@ -1,23 +1,19 @@
 'use client'
 
 import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { Autocomplete, AutocompleteOption, Flag, PhoneInputProps, TextField, usePhoneHelper } from '../../../'
 import { useLoomora } from '../../../../config'
 import { CountryType, useCountries } from '../../../../database'
-import { Flag } from '../../../UI'
-import { Autocomplete } from '../Autocomplete'
-import { AutocompleteOption } from '../Autocomplete/helper'
-import { TextField } from '../TextField'
-import { PhoneInputProps, usePhoneHelper } from './helper'
 
-export function PhoneInput(props: PhoneInputProps) {
+export function PhoneInput(props: Readonly<PhoneInputProps>) {
   const { t, form } = useLoomora()
 
   const {
-    worldwide = form?.phone?.worldwide ?? true,
-    codePrefix = form?.phone?.codePrefix ?? '+',
-    showCountriesName = form?.phone?.showCountriesName ?? true,
-    showCountriesFlags = form?.phone?.showCountriesFlags ?? true,
-    selectedCountriesOnly = form?.phone?.selectedCountriesOnly ?? [],
+    worldwide = form?.phoneField?.worldwide ?? true,
+    codePrefix = form?.phoneField?.codePrefix ?? '+',
+    showCountriesName = form?.phoneField?.showCountriesName ?? true,
+    showCountriesFlags = form?.phoneField?.showCountriesFlags ?? true,
+    selectedCountriesOnly = form?.phoneField?.selectedCountriesOnly ?? [],
     properties,
     inputHelper,
     prefix,
@@ -60,8 +56,8 @@ export function PhoneInput(props: PhoneInputProps) {
 
   const startPH =
     Number(phone?.start?.length) > 1
-      ? t('phone.startPlaceholder', { start: String(phone?.start?.join(', ')) })
-      : t('phone.startPlaceholderOne', { start: String(phone?.start?.[0] ?? '') })
+      ? t('phoneField.startPlaceholder', { start: String(phone?.start?.join(', ')) })
+      : t('phoneField.startPlaceholderOne', { start: String(phone?.start?.[0] ?? '') })
   const placeholder = worldwide && phone?.start?.length ? startPH : (ph ?? startPH)
 
   const countryTitle = GetPhoneTitle({
@@ -69,7 +65,7 @@ export function PhoneInput(props: PhoneInputProps) {
     showCountriesFlags,
     codePrefix,
     worldwide,
-    defaultTitle: t('phone.defaultTitle') ?? 'Country',
+    defaultTitle: t('phoneField.defaultTitle') ?? 'Country',
     render: ({ country, showCountriesFlags, codePrefix }) => (
       <>
         {showCountriesFlags && country?.code && <Flag country={country.code} className="me-1" />}
@@ -181,7 +177,7 @@ export function PhoneInput(props: PhoneInputProps) {
             country: sCountry,
             setValue,
             setValueError,
-            startError: t('phone.startError', { country: String(name), start: String(phone?.start?.join(', ')) }),
+            startError: t('phoneField.startError', { country: String(name), start: String(phone?.start?.join(', ')) }),
             onInput,
             isPasting,
             setIsPasting,
@@ -192,7 +188,7 @@ export function PhoneInput(props: PhoneInputProps) {
             country: sCountry,
             setValue,
             setValueError,
-            startError: t('phone.startError', { country: String(name), start: String(phone?.start?.join(', ')) }),
+            startError: t('phoneField.startError', { country: String(name), start: String(phone?.start?.join(', ')) }),
             onPaste,
             setIsPasting,
             codePrefix,

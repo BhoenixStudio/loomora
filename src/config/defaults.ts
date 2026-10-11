@@ -407,15 +407,15 @@ export const loomoraDefaults: LoomoraConfig = {
       },
     },
     form: { dialogTitle: 'Form', dialogCloseTitle: 'Close' },
-    textEditor: { menusView: 'View', menusEdit: 'Edit', menusFormat: 'Format', menusInsert: 'Insert' },
+    textEditorField: { menusView: 'View', menusEdit: 'Edit', menusFormat: 'Format', menusInsert: 'Insert' },
     searchField: { clearSearchTitle: 'Clear', searchButtonTitle: 'Search' },
-    password: {
+    passwordField: {
       placeholder: 'e.g.: ********',
       confirmMatch: 'Match',
       confirmMismatch: 'Mismatch',
       copyTooltip: 'Copy {password} to clipboard',
       get generate() {
-        return `Generate ${loomoraDefaults?.form?.password?.length}bit {password}`
+        return `Generate ${loomoraDefaults?.form?.passwordField?.length}bit {password}`
       },
       hideTooltip: 'Hide {password}',
       label: '{password}',
@@ -428,59 +428,59 @@ export const loomoraDefaults: LoomoraConfig = {
         strong: 'Strong',
         minLength: {
           get short() {
-            return `${loomoraDefaults?.form?.password?.length}+ letter(s) long`
+            return `${loomoraDefaults?.form?.passwordField?.length}+ letter(s) long`
           },
           get long() {
-            return `At least ${loomoraDefaults?.form?.password?.maxLength}+ letter(s) long`
+            return `At least ${loomoraDefaults?.form?.passwordField?.maxLength}+ letter(s) long`
           },
         },
         lowercase: {
           get short() {
-            return `${loomoraDefaults?.form?.password?.lowercaseLength}+ Lowercase letter(s) long`
+            return `${loomoraDefaults?.form?.passwordField?.lowercaseLength}+ Lowercase letter(s) long`
           },
           get long() {
-            return `At least ${loomoraDefaults?.form?.password?.lowercaseLength}+ Lowercase letter(s) long`
+            return `At least ${loomoraDefaults?.form?.passwordField?.lowercaseLength}+ Lowercase letter(s) long`
           },
         },
         uppercase: {
           get short() {
-            return `${loomoraDefaults?.form?.password?.uppercaseLength}+ Uppercase letter(s) long`
+            return `${loomoraDefaults?.form?.passwordField?.uppercaseLength}+ Uppercase letter(s) long`
           },
           get long() {
-            return `At least ${loomoraDefaults?.form?.password?.uppercaseLength}+ Uppercase letter(s) long`
+            return `At least ${loomoraDefaults?.form?.passwordField?.uppercaseLength}+ Uppercase letter(s) long`
           },
         },
         number: {
           get short() {
-            return `${loomoraDefaults?.form?.password?.numbersLength}+ Number(s) long`
+            return `${loomoraDefaults?.form?.passwordField?.numbersLength}+ Number(s) long`
           },
           get long() {
-            return `At least ${loomoraDefaults?.form?.password?.numbersLength}+ Number(s) long`
+            return `At least ${loomoraDefaults?.form?.passwordField?.numbersLength}+ Number(s) long`
           },
         },
         special: {
           get short() {
-            return `${loomoraDefaults?.form?.password?.specialCharsLength}+ special character(s) long`
+            return `${loomoraDefaults?.form?.passwordField?.specialCharsLength}+ special character(s) long`
           },
           get long() {
-            return `At least ${loomoraDefaults?.form?.password?.specialCharsLength}+ special character(s) long`
+            return `At least ${loomoraDefaults?.form?.passwordField?.specialCharsLength}+ special character(s) long`
           },
         },
       },
     },
-    phone: {
+    phoneField: {
       startPlaceholder: '[{start}]XXXXXXXXX',
       startPlaceholderOne: '{start}XXXXXXXXX',
       defaultTitle: 'Country',
       startError: 'Phone number must start with one of [{start}] for {country}',
     },
-    autoComplete: {
+    autoCompleteField: {
       loadingState: 'Loading options...',
       emptyState: 'No options available',
       searchPlaceholder: 'Search...',
       selectedCount: '{count} selected',
     },
-    uploader: {
+    uploaderField: {
       allCatAccepted: 'All {cat} file(s) allowed',
       extsAccepted: 'Only {exts} files allowed',
       duplicateFileRule: 'File/Files already uploaded',
@@ -704,15 +704,15 @@ export const loomoraDefaults: LoomoraConfig = {
     },
     fieldset: { className: 'text-title-2 [&_label]:bg-[inherit]' },
     textfield: { className: 'text-sm placeholder:text-body-3' },
-    textarea: { className: 'text-sm placeholder:text-body-3', defaultRows: 2 },
+    textareaField: { className: 'text-sm placeholder:text-body-3', defaultRows: 2 },
     searchField: { clearIcon: '🗙', searchIcon: '🔎︎' },
-    select: {
+    selectField: {
       triggerIcon: '⮟',
       optionClassName: 'bg-main hover:bg-third',
       optionGroupClassName: 'bg-main hover:bg-third',
     },
-    check: { color: 'text-', activeColor: 'text-success' },
-    password: {
+    checkField: { checkIcon: '', color: 'text-muted', activeColor: 'text-primary' },
+    passwordField: {
       useLength: true,
       length: 8,
       maxLength: undefined,
@@ -746,16 +746,16 @@ export const loomoraDefaults: LoomoraConfig = {
       confirmingMainIcon: 'ᗢ',
       copyIcon: '🗐',
     },
-    otp: { length: 6, className: 'rounded-xl text-center text-xl font-bold text-title-1' },
-    range: { step: 1, showMinMax: true, showValue: true, valuePrefix: '', valueSuffix: '', className: 'text-sm' },
-    phone: {
+    pinField: { length: 6, className: 'rounded-xl text-center text-xl font-bold text-title-1' },
+    rangeField: { step: 1, showMinMax: true, showValue: true, valuePrefix: '', valueSuffix: '', className: 'text-sm' },
+    phoneField: {
       worldwide: true,
       codePrefix: '+',
       showCountriesName: true,
       selectedCountriesOnly: [],
       showCountriesFlags: true,
     },
-    autoComplete: {
+    autoCompleteField: {
       triggerIcon: '⮟',
       triggerWrapperClassName: 'text-sm',
       multiple: false,
@@ -765,7 +765,7 @@ export const loomoraDefaults: LoomoraConfig = {
       ClearSearchIcon: '🗙',
       multipleTagsCloseIcon: '🗙',
     },
-    uploader: {
+    uploaderField: {
       defaultFileCategory: ['all'],
       onDetectErrors: () => {},
       minBlockHeight: 'min-h-[100px]',

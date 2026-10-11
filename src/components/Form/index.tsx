@@ -24,60 +24,64 @@ export { Label } from './Modules/Label'
 export type { LabelProps } from './Modules/Label'
 
 // Inputs
-export { Autocomplete } from './Inputs/Autocomplete'
-export type { AutocompleteOption, AutocompleteProps, AutocompleteValue } from './Inputs/Autocomplete/helper'
+export { AutocompleteField } from './Inputs/AutocompleteField'
+export type {
+  AutocompleteFieldOption,
+  AutocompleteFieldProps,
+  AutocompleteFieldValue,
+} from './Inputs/AutocompleteField/helper'
 
-export { CheckField } from './Inputs/Check'
-export type { CheckFieldProps, CheckFieldType } from './Inputs/Check'
+export { CheckField } from './Inputs/CheckField'
+export type { CheckFieldProps, CheckFieldType } from './Inputs/CheckField'
 
-export { OtpField } from './Inputs/Otp'
-export type { OtpFieldProps } from './Inputs/Otp'
+export { PinField } from './Inputs/PinField'
+export type { PinFieldProps } from './Inputs/PinField'
 
-export { PasswordField } from './Inputs/Password'
-export { usePasswordHelper } from './Inputs/Password/helper'
-export type { PasswordFieldProps, PasswordValidationProps } from './Inputs/Password/helper'
+export { PasswordField } from './Inputs/PasswordField'
+export { usePasswordHelper } from './Inputs/PasswordField/helper'
+export type { PasswordFieldProps, PasswordValidationProps } from './Inputs/PasswordField/helper'
 
-export { PhoneInput } from './Inputs/Phone'
-export { phoneFallBackValue, usePhoneHelper } from './Inputs/Phone/helper'
-export type { PhoneInputProps, PhonePrefix, PhoneValue } from './Inputs/Phone/helper'
+export { PhoneInput } from './Inputs/PhoneField'
+export { phoneFallBackValue, usePhoneHelper } from './Inputs/PhoneField/helper'
+export type { PhoneInputProps, PhonePrefix, PhoneValue } from './Inputs/PhoneField/helper'
 
-export { RangeField } from './Inputs/Range'
-export type { RangeFieldProps, RangeMark } from './Inputs/Range'
+export { RangeField } from './Inputs/RangeField'
+export type { RangeFieldProps, RangeMark } from './Inputs/RangeField'
 
 export { SearchField } from './Inputs/SearchField'
 export type { SearchFieldProps } from './Inputs/SearchField'
 
-export { Select } from './Inputs/Select'
-export type { SelectProps, SelectOption } from './Inputs/Select'
+export { SelectField } from './Inputs/SelectField'
+export type { SelectOption, SelectProps } from './Inputs/SelectField'
 
-export { TextareaField } from './Inputs/Textarea'
-export type { TextareaProps } from './Inputs/Textarea'
+export { TextareaField } from './Inputs/TextareaField'
+export type { TextareaFieldProps } from './Inputs/TextareaField'
 
-export { TextEditor } from './Inputs/TextEditor'
-export type { TextEditorProps } from './Inputs/TextEditor'
+export { TextEditorField } from './Inputs/TextEditorField'
+export type { TextEditorFieldProps } from './Inputs/TextEditorField'
 
-export { useTextEditorData, useExtractHeadingsFromHtml } from './Inputs/TextEditor/helper'
-export type { TextEditorDataReturn, UseTextEditorDataProps } from './Inputs/TextEditor/helper'
+export { useExtractHeadingsFromHtml, useTextEditorData } from './Inputs/TextEditorField/helper'
+export type { TextEditorDataReturn, UseTextEditorDataProps } from './Inputs/TextEditorField/helper'
 
 export { TextField } from './Inputs/TextField'
 export type { TextFieldProps } from './Inputs/TextField'
 
-export { UploaderField } from './Inputs/Uploader'
-export { EXT_CATEGORIES, useUploaderHelper } from './Inputs/Uploader/helper'
+export { UploaderField } from './Inputs/UploaderField'
+export { EXT_CATEGORIES, useUploaderHelper } from './Inputs/UploaderField/helper'
 export type {
-  FileProps,
   FileCategoryType,
   FileExtType,
+  FileProps,
   GetFileIconProps,
-  UploadFilesProps,
+  UploaderFieldProperties,
   UploaderFieldProps,
   UploaderFieldViewType,
   UploaderValidation,
+  UploadFilesProps,
   UseUploaderOptions,
-  UploaderFieldProperties,
-} from './Inputs/Uploader/helper'
-export { useUploaderModules } from './Inputs/Uploader/Modules'
-export type { UploaderDialogProps } from './Inputs/Uploader/Modules'
+} from './Inputs/UploaderField/helper'
+export { useUploaderModules } from './Inputs/UploaderField/Modules'
+export type { UploaderDialogProps } from './Inputs/UploaderField/Modules'
 
 export function Form<T extends ElementType = 'form'>(props: Readonly<FormProps<T>>) {
   const {

@@ -12,7 +12,7 @@ import {
   Label,
   LabelProps,
   Loader,
-} from '../../../'
+} from '../../..'
 import { useLoomora } from '../../../../config'
 import { cx, hasProps } from '../../../../hooks'
 import { ConditionalWrapper } from '../../../Helper'
@@ -35,12 +35,12 @@ type InputProps = {
   language?: InitOptions['language']
 }
 
-export interface TextEditorProps
+export interface TextEditorFieldProps
   extends InputBase, Omit<InputFieldset, 'fieldsetPrefix' | 'fieldsetSuffix'>, InputLabel, InputHelperAndError {
   properties?: InputProps
 }
 
-export function TextEditor(props: Readonly<TextEditorProps>) {
+export function TextEditorField(props: Readonly<TextEditorFieldProps>) {
   const { size = [], properties, fieldset, label, inputHelper, errors, loading = false, condition } = props
 
   const editorRef = useRef<TinyMCEEditor | null>(null)
@@ -155,22 +155,22 @@ export function TextEditor(props: Readonly<TextEditorProps>) {
           browser_spellcheck: true,
           menu: {
             edit: {
-              title: t('textEditor.menusEdit') ?? '',
+              title: t('textEditorField.menusEdit') ?? '',
               items:
                 'searchreplace spellchecker spellcheckerlanguage a11ycheck | undo redo | cut copy paste pastetext | selectall',
             },
             view: {
-              title: t('textEditor.menusView') ?? '',
+              title: t('textEditorField.menusView') ?? '',
               items:
                 'code wordcount | preview fullscreen | visualaid visualchars visualblocks | showcomments | export print | restoredraft deleteallconversations',
             },
             insert: {
-              title: t('textEditor.menusInsert') ?? '',
+              title: t('textEditorField.menusInsert') ?? '',
               items:
                 'image link media codesample | charmap emoticons | hr pagebreak nonbreaking anchor tableofcontents | insertdatetime',
             },
             format: {
-              title: t('textEditor.menusFormat') ?? '',
+              title: t('textEditorField.menusFormat') ?? '',
               items:
                 'underline strikethrough superscript subscript codeformat lineheight | blocks | language | removeformat',
             },

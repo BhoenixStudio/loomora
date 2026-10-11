@@ -88,8 +88,8 @@ export function useUploaderModules<T extends string | number = number>(props: Re
     showOnly,
   } = props
 
-  const { className: wrapperClass = `${form?.uploader?.minBlockHeight} p-3`, ...restWrapper } = wrapper ?? {}
-  const { className: progressClass = 'w-full', color = form?.uploader?.progressColor } = progressAttrs ?? {}
+  const { className: wrapperClass = `${form?.uploaderField?.minBlockHeight} p-3`, ...restWrapper } = wrapper ?? {}
+  const { className: progressClass = 'w-full', color = form?.uploaderField?.progressColor } = progressAttrs ?? {}
 
   const { getIcon, calcFileSize } = useUploaderHelper()
 
@@ -138,14 +138,14 @@ export function useUploaderModules<T extends string | number = number>(props: Re
   )
   const dropFilesNote = isDragging && (
     <div className="flex flex-col flex-nowrap absolute inset-0 z-20 w-full h-full bg-second rounded-[inherit] justify-center items-center text-lg font-medium text-title-1 pointer-events-none gap-1">
-      {t('uploader.dropFilesHere.title')}
-      <p className="font-normal text-sm text-body-2">{t('uploader.dropFilesHere.description')}</p>
+      {t('uploaderField.dropFilesHere.title')}
+      <p className="font-normal text-sm text-body-2">{t('uploaderField.dropFilesHere.description')}</p>
     </div>
   )
   const updateButton = (
     <Button
       type="button"
-      title={t('uploader.actions.update')}
+      title={t('uploaderField.actions.update')}
       startIcon="ph:upload"
       color="second"
       size="small"
@@ -155,7 +155,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
   )
   const viewButton = preview?.url && (
     <Button
-      attributes={{ 'aria-label': t('uploader.actions.view') }}
+      attributes={{ 'aria-label': t('uploaderField.actions.view') }}
       startIcon="icon-park-twotone:preview-open"
       color="second"
       size="small"
@@ -168,7 +168,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
   const deleteButton = onRemove && (
     <Button
       type="button"
-      attributes={{ 'aria-label': t('uploader.actions.removeFile') }}
+      attributes={{ 'aria-label': t('uploaderField.actions.removeFile') }}
       startIcon="qlementine-icons:trash-16"
       color="second"
       size="small"
@@ -213,25 +213,25 @@ export function useUploaderModules<T extends string | number = number>(props: Re
 
     // Configs
     let content: ReactNode = items.map((file, i: number) => {
-      const { id, name = t('uploader.item.number', { number: i + 1 }), size, ext, url } = file
+      const { id, name = t('uploaderField.item.number', { number: i + 1 }), size, ext, url } = file
       const { icon, hasImageAssigned } = getIcon({ file, extensions })
 
       const data: { label: string; condition: boolean }[] = [
-        { label: t('uploader.item.id', { id: String(id) }), condition: Boolean(id) },
-        { label: t('uploader.item.size', { size: calcFileSize(Number(size)) }), condition: Boolean(size) },
-        { label: t('uploader.item.ext', { ext: String(ext) }), condition: Boolean(ext) },
+        { label: t('uploaderField.item.id', { id: String(id) }), condition: Boolean(id) },
+        { label: t('uploaderField.item.size', { size: calcFileSize(Number(size)) }), condition: Boolean(size) },
+        { label: t('uploaderField.item.ext', { ext: String(ext) }), condition: Boolean(ext) },
       ]
       const actions: ButtonProps[] = [
         {
           startIcon: 'qlementine-icons:eye-16',
-          attributes: { 'aria-label': t('uploader.actions.view') },
+          attributes: { 'aria-label': t('uploaderField.actions.view') },
           href: url,
           target: '_blank',
           referrerPolicy: 'no-referrer',
         },
         {
           startIcon: 'qlementine-icons:trash-16',
-          attributes: { 'aria-label': t('uploader.actions.removeFile') },
+          attributes: { 'aria-label': t('uploaderField.actions.removeFile') },
           color: 'error',
           onClick: () => onRemove?.(file),
           condition: Boolean(onRemove),
@@ -289,7 +289,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
         />
 
         <Dialog {...{ open, setOpen, show, setShow, position, ...restDialog }}>
-          <p className="text-lg font-medium text-title-2 mb-5">{t('uploader.dialogTitle')}</p>
+          <p className="text-lg font-medium text-title-2 mb-5">{t('uploaderField.dialogTitle')}</p>
           <ul className="flex flex-nowrap flex-col gap-3">{content}</ul>
         </Dialog>
       </>
@@ -430,7 +430,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
               <li key={i} className="flex flex-nowrap relative rounded-lg overflow-hidden w-20 h-20">
                 <Button
                   variant="none"
-                  attributes={{ 'aria-label': t('uploader.actions.view') }}
+                  attributes={{ 'aria-label': t('uploaderField.actions.view') }}
                   href={url}
                   target="_blank"
                   referrerPolicy="no-referrer"
@@ -452,7 +452,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
                     type="button"
                     color="error"
                     size="tiny"
-                    attributes={{ 'aria-label': t('uploader.actions.removeFile') }}
+                    attributes={{ 'aria-label': t('uploaderField.actions.removeFile') }}
                     startIcon="qlementine-icons:trash-16"
                     className="absolute top-1 inset-e-1"
                     onClick={() => onRemove(file)}
@@ -506,18 +506,18 @@ export function useUploaderModules<T extends string | number = number>(props: Re
       {previews.length > 0 && (
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
           {list.map((file, i) => {
-            const { id, name = t('uploader.item.number', { number: i + 1 }), size, ext, url } = file
+            const { id, name = t('uploaderField.item.number', { number: i + 1 }), size, ext, url } = file
             const { icon, hasImageAssigned } = getIcon({ file, extensions })
 
             const data: { label: string; condition: boolean }[] = [
-              { label: t('uploader.item.id', { id: String(id) }), condition: Boolean(id) },
-              { label: t('uploader.item.size', { size: calcFileSize(Number(size)) }), condition: Boolean(size) },
-              { label: t('uploader.item.ext', { ext: String(ext) }), condition: Boolean(ext) },
+              { label: t('uploaderField.item.id', { id: String(id) }), condition: Boolean(id) },
+              { label: t('uploaderField.item.size', { size: calcFileSize(Number(size)) }), condition: Boolean(size) },
+              { label: t('uploaderField.item.ext', { ext: String(ext) }), condition: Boolean(ext) },
             ]
             const actions: ButtonProps[] = [
               {
                 startIcon: 'qlementine-icons:eye-16',
-                attributes: { 'aria-label': t('uploader.actions.view') },
+                attributes: { 'aria-label': t('uploaderField.actions.view') },
                 href: url,
                 target: '_blank',
                 referrerPolicy: 'no-referrer',
@@ -525,7 +525,7 @@ export function useUploaderModules<T extends string | number = number>(props: Re
               {
                 type: 'button',
                 startIcon: 'qlementine-icons:trash-16',
-                attributes: { 'aria-label': t('uploader.actions.removeFile') },
+                attributes: { 'aria-label': t('uploaderField.actions.removeFile') },
                 color: 'error',
                 onClick: () => onRemove?.(file),
                 condition: Boolean(onRemove),
