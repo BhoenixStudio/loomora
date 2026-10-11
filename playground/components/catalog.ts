@@ -506,9 +506,9 @@ export const componentCatalog: ComponentDoc[] = [
       { name: 'inputHelper', type: 'ReactNode', defaultValue: '—', description: 'Supporting field description.' },
       {
         name: 'error / errorHelper',
-        type: 'boolean / ReactNode',
+        type: 'boolean / { condition: boolean; helper: ReactNode }[]',
         defaultValue: 'false / —',
-        description: 'Enables the error border and message.',
+        description: 'Enables the error border; shows the helper of the first entry whose condition is true.',
       },
       {
         name: 'prefix / suffix',
@@ -591,9 +591,9 @@ export const componentCatalog: ComponentDoc[] = [
       { name: 'inputHelper', type: 'ReactNode', defaultValue: '—', description: 'Supporting field description.' },
       {
         name: 'error / errorHelper',
-        type: 'boolean / ReactNode',
+        type: 'boolean / { condition: boolean; helper: ReactNode }[]',
         defaultValue: 'false / —',
-        description: 'Error presentation and explanation.',
+        description: 'Error state; shows the helper of the first entry whose condition is true.',
       },
     ],
     notes: ['Set rows to match expected content length.', 'Native textarea attributes belong in properties.'],
