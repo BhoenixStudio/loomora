@@ -4,6 +4,7 @@ import {
   ButtonProps,
   CheckFieldProps,
   ColorFieldProps,
+  DateFieldProps,
   InputError,
   InputHelperProps,
   LabelProps,
@@ -45,6 +46,8 @@ export type InputProps = InputBase &
     | ({ type: 'range' } & RangeFieldProps)
     | ({ type: 'rating' } & RatingFieldProps)
     | ({ type: 'color' } & ColorFieldProps)
+    | ({ type: 'date' } & DateFieldProps)
+    | ({ type: 'datePicker' } & DateFieldProps)
     | ({ type: 'number' } & NumberFieldProps)
     | ({ type: 'divider' } & DividerInputProps)
     | ({ type: 'empty' } & EmptyInputProps)

@@ -40,6 +40,20 @@ export type { CheckFieldProps, CheckFieldType } from './Inputs/CheckField'
 export { ColorField } from './Inputs/ColorField'
 export type { ColorFieldProps } from './Inputs/ColorField'
 
+export { DateField, DatePickerField } from './Inputs/DateField'
+export type {
+  CalendarView,
+  DateFieldBaseProperties,
+  DateFieldMode,
+  DateFieldProperties,
+  DateFieldProps,
+  DateFieldRangeProperties,
+  DateFieldSingleProperties,
+  DateFieldValue,
+  DatePreset,
+  DateRangeValue,
+} from './Inputs/DateField/helper'
+
 export { PinField } from './Inputs/PinField'
 export type { PinFieldProps } from './Inputs/PinField'
 

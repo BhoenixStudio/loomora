@@ -8,6 +8,8 @@ import {
   LoomoraCheckField,
   LoomoraColorField,
   LoomoraCountriesT,
+  LoomoraDateField,
+  LoomoraDateFieldT,
   LoomoraDates,
   LoomoraFormBase,
   LoomoraFormT,
@@ -51,6 +53,7 @@ export interface LoomoraConfig extends LoomoraBase {
     phoneField: LoomoraPhoneT
     autoCompleteField: LoomoraAutocompleteT
     uploaderField: LoomoraUploaderT
+    dateField: LoomoraDateFieldT
     settings: LoomoraThemeT
   }
   // Hooks
@@ -74,6 +77,7 @@ export interface LoomoraConfig extends LoomoraBase {
     uploaderField: LoomoraUploaderField
     numberField: LoomoraNumberField
     ratingField: LoomoraRatingField
+    dateField: LoomoraDateField
   }
   theme: LoomoraTheme
   responsive: LoomoraResponsive

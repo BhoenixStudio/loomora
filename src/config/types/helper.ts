@@ -280,6 +280,65 @@ export type LoomoraNumberField = {
   thousandSeparator: string
 }
 
+export type LoomoraDateFieldT = {
+  selectDate: string
+  selectTime: string
+  selectRange: string
+  startDate: string
+  endDate: string
+  startTime: string
+  endTime: string
+  today: string
+  yesterday: string
+  thisWeek: string
+  last7Days: string
+  last30Days: string
+  thisMonth: string
+  lastMonth: string
+  thisYear: string
+  now: string
+  apply: string
+  cancel: string
+  clear: string
+  hours: string
+  minutes: string
+  seconds: string
+  am: string
+  pm: string
+  weekDays: {
+    sun: string
+    mon: string
+    tue: string
+    wed: string
+    thu: string
+    fri: string
+    sat: string
+  }
+  shortWeekDays: {
+    sun: string
+    mon: string
+    tue: string
+    wed: string
+    thu: string
+    fri: string
+    sat: string
+  }
+}
+
+export type LoomoraDateField = {
+  firstDayOfWeek: 0 | 1 | 6
+  hour12: boolean
+  showSeconds: boolean
+  allowClear: boolean
+  minuteStep: number
+  secondStep: number
+  calendarIcon: ReactNode
+  clockIcon: ReactNode
+  clearIcon: ReactNode
+  chevronLeft: ReactNode
+  chevronRight: ReactNode
+}
+
 // Hooks
 export type LoomoraDatesT = {
   justNow: string

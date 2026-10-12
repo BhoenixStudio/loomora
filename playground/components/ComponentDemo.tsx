@@ -11,6 +11,7 @@ import {
   ConditionalWrapper,
   Content,
   Copyrights,
+  DateField,
   Dialog,
   Digit,
   Dropdown,
@@ -401,6 +402,18 @@ function DemoContent({ demo }: { demo: string }) {
   const [dialogShow, setDialogShow] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [editor, setEditor] = useState('<p>Edit <strong>rich text</strong> in the editor.</p>')
+  const [dateVal, setDateVal] = useState<Date | string | null>(new Date())
+  const [dateTimeVal, setDateTimeVal] = useState<Date | string | null>(new Date())
+  const [timeVal, setTimeVal] = useState<Date | string | null>('14:30')
+  const [dateRangeVal, setDateRangeVal] = useState<[Date | string | null, Date | string | null]>([
+    new Date(),
+    new Date(Date.now() + 6 * 86400000),
+  ])
+  const [timeRangeVal, setTimeRangeVal] = useState<[Date | string | null, Date | string | null]>(['09:00', '17:30'])
+  const [dateTimeRangeVal, setDateTimeRangeVal] = useState<[Date | string | null, Date | string | null]>([
+    new Date(),
+    new Date(Date.now() + 3 * 86400000),
+  ])
 
   const demos: Record<string, React.ReactNode> = {
     accordion: (
@@ -706,6 +719,123 @@ function DemoContent({ demo }: { demo: string }) {
         <p className="text-xs text-body-2">
           Values: {color || '(empty)'} / {colorAlpha || '(empty)'}
         </p>
+      </div>
+    ),
+    'date-field': (
+      <div className="grid max-w-3xl gap-6">
+        <div>
+          <h4 className="text-sm font-semibold text-title-1 mb-2">1. Date Only (`mode="date"`)</h4>
+          <DateField
+            label="Single Date (with presets & decade jump)"
+            inputHelper="Click the input to pick a date or choose a quick preset."
+            properties={{
+              mode: 'date',
+              value: dateVal,
+              onChange: (val) => setDateVal(val),
+              allowClear: true,
+            }}
+          />
+          <p className="mt-1 text-xs text-body-2">
+            Value: <code>{dateVal ? String(dateVal) : '(empty)'}</code>
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-title-1 mb-2">2. Date with Time (`mode="datetime"`)</h4>
+          <DateField
+            label="Date & Time (12h AM/PM)"
+            properties={{
+              mode: 'datetime',
+              value: dateTimeVal,
+              onChange: (val) => setDateTimeVal(val),
+              hour12: true,
+              allowClear: true,
+            }}
+          />
+          <p className="mt-1 text-xs text-body-2">
+            Value: <code>{dateTimeVal ? String(dateTimeVal) : '(empty)'}</code>
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-title-1 mb-2">3. Time Only (`mode="time"`)</h4>
+          <DateField
+            label="Time Picker"
+            properties={{
+              mode: 'time',
+              value: timeVal,
+              onChange: (val) => setTimeVal(val),
+              hour12: true,
+              allowClear: true,
+            }}
+          />
+          <p className="mt-1 text-xs text-body-2">
+            Value: <code>{timeVal ? String(timeVal) : '(empty)'}</code>
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-title-1 mb-2">4. Date Range (`mode="dateRange"`)</h4>
+          <DateField
+            label="Date Range (Responsive: Dual Month on Desktop, Single on Mobile)"
+            inputHelper="Desktop displays two side-by-side calendars; mobile adapts to single calendar."
+            properties={{
+              mode: 'dateRange',
+              value: dateRangeVal,
+              onChange: (val) => setDateRangeVal(val),
+              allowClear: true,
+            }}
+          />
+          <p className="mt-1 text-xs text-body-2">
+            Range: <code>{JSON.stringify(dateRangeVal)}</code>
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-title-1 mb-2">5. Time Range (`mode="timeRange"`)</h4>
+          <DateField
+            label="Working Hours Range"
+            properties={{
+              mode: 'timeRange',
+              value: timeRangeVal,
+              onChange: (val) => setTimeRangeVal(val),
+              hour12: true,
+              allowClear: true,
+            }}
+          />
+          <p className="mt-1 text-xs text-body-2">
+            Time Range: <code>{JSON.stringify(timeRangeVal)}</code>
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-title-1 mb-2">6. Date with Time Range (`mode="dateTimeRange"`)</h4>
+          <DateField
+            label="Full Event Schedule Range"
+            properties={{
+              mode: 'dateTimeRange',
+              value: dateTimeRangeVal,
+              onChange: (val) => setDateTimeRangeVal(val),
+              hour12: true,
+              allowClear: true,
+            }}
+          />
+          <p className="mt-1 text-xs text-body-2">
+            Date & Time Range: <code>{JSON.stringify(dateTimeRangeVal)}</code>
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-title-1 mb-2">7. Via Unified `Input` component (`type="date"`)</h4>
+          <Input
+            type="date"
+            label="Unified Form Input (type='date')"
+            properties={{
+              mode: 'date',
+              allowClear: true,
+            }}
+          />
+        </div>
       </div>
     ),
     autocomplete: (

@@ -964,6 +964,71 @@ export const componentCatalog: ComponentDoc[] = [
     ],
   },
   {
+    slug: 'date-field',
+    name: 'DateField',
+    group: 'Form fields',
+    summary: 'Comprehensive date and time picker supporting single dates, times, ranges, presets, and responsive dual calendars.',
+    description:
+      'A feature-packed date/time picker that supports 6 distinct modes: date, datetime, time, dateRange, timeRange, and dateTimeRange. Includes responsive dual-month calendars on desktop and single-month on mobile, quick presets, decade jumps, time spinners, and full Loomora i18n localization.',
+    importName: 'DateField',
+    demo: 'date-field',
+    code: `<DateField label="Appointment date" properties={{ mode: 'datetime', value, onChange: setValue }} />`,
+    props: [
+      {
+        name: 'properties.mode',
+        type: "'date' | 'datetime' | 'time' | 'dateRange' | 'timeRange' | 'dateTimeRange'",
+        defaultValue: "'date'",
+        description: 'Operational mode of the picker.',
+      },
+      {
+        name: 'properties.value / onChange',
+        type: 'Date | string | [Date, Date] | null',
+        defaultValue: '—',
+        description: 'Controlled picker value and change callback.',
+      },
+      {
+        name: 'properties.minDate / maxDate',
+        type: 'Date | string',
+        defaultValue: '—',
+        description: 'Restricts the selectable date range.',
+      },
+      {
+        name: 'properties.hour12',
+        type: 'boolean',
+        defaultValue: 'config default (true)',
+        description: 'Toggles 12-hour AM/PM format versus 24-hour.',
+      },
+      {
+        name: 'properties.showSeconds',
+        type: 'boolean',
+        defaultValue: 'false',
+        description: 'Shows the seconds column in time pickers.',
+      },
+      {
+        name: 'properties.allowClear',
+        type: 'boolean',
+        defaultValue: 'true',
+        description: 'Shows an inline clear button when a value is selected.',
+      },
+      {
+        name: 'properties.showPresets',
+        type: 'boolean',
+        defaultValue: 'true',
+        description: 'Enables quick preset shortcuts (Today, Yesterday, Last 7 days, etc.).',
+      },
+      {
+        name: 'properties.disabledDates',
+        type: '(date: Date) => boolean',
+        defaultValue: '—',
+        description: 'Custom function to disable specific dates (e.g. holidays).',
+      },
+    ],
+    notes: [
+      'Automatically adapts layout on mobile (single calendar, top preset pills) vs desktop (dual calendar, sidebar presets).',
+      'Also exported as DatePickerField, and available in Form/Input via type="date" or type="datePicker".',
+    ],
+  },
+  {
     slug: 'autocomplete',
     name: 'Autocomplete',
     group: 'Form fields',
