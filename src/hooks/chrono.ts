@@ -177,10 +177,11 @@ function formatCustom(date: Date, pattern: string, locale = 'en'): string {
   })
 }
 
-export function useChrono() {
+export function useChrono(defaultLocale?: string) {
   const monthList = Months()
 
   const { translations, settings, t } = useLoomora()
+  const activeHookLocale = defaultLocale || settings?.locale || 'en'
 
   // Functions
   const listMonths = <T extends object = object>(props?: GetMonths<T>): (MonthItem & T)[] => {
@@ -302,10 +303,12 @@ export function useChrono() {
     const targetDate = new Date(date!)
     const diffInSeconds = Math.round((targetDate.getTime() - baseDate.getTime()) / 1000)
 
+    const activeLocale = locale || activeHookLocale
+
     // If caller specified an ad-hoc locale different from the configured application locale, use native Intl.RelativeTimeFormat
-    if (locale && settings?.locale && locale !== settings.locale) {
+    if (activeLocale !== (settings?.locale || 'en')) {
       try {
-        const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' })
+        const rtf = new Intl.RelativeTimeFormat(activeLocale, { numeric: 'auto' })
         const absSeconds = Math.abs(diffInSeconds)
         if (absSeconds < 45) return diffInSeconds >= 0 ? rtf.format(0, 'second') : rtf.format(diffInSeconds, 'second')
         if (absSeconds < 2700) return rtf.format(Math.round(diffInSeconds / 60), 'minute')
@@ -362,7 +365,7 @@ export function useChrono() {
     if (!isDate(date)) return null
 
     const sanitizedDate = new Date(date!)
-    const activeLocale = locale || settings?.locale || 'en'
+    const activeLocale = locale || activeHookLocale
 
     const types: Record<FormatDateType, string | number> = {
       number: Number(formatCustom(sanitizedDate, 'yyyyMMdd', activeLocale)),
@@ -386,8 +389,9 @@ export function useChrono() {
     return types[type]
   }
 
-  const timeSpan = (dates: DateRange, type: DateRangeType = 'dynamic') => {
+  const timeSpan = (dates: DateRange, type: DateRangeType = 'dynamic', options?: { locale?: string }) => {
     const { first, second } = dates
+    const activeLocale = options?.locale || activeHookLocale
 
     if (!isDate(first) || !isDate(second)) return { match: false, range: '', fallback: '' }
 
@@ -403,28 +407,28 @@ export function useChrono() {
     const types: Record<Exclude<DateRangeType, 'dynamic'>, DateRangeResult> = {
       sameHour: {
         match: sameHour,
-        range: `${stamp(first, { type: 'custom', format: 'HH:mm' })} - ${stamp(second, { type: 'custom', format: 'HH:mm dd-MM-yyyy' })}`,
-        fallback: `${stamp(first, { type: 'custom', format: 'HH:mm dd-MM-yyyy' })} - ${stamp(second, { type: 'custom', format: 'HH:mm dd-MM-yyyy' })}`,
+        range: `${stamp(first, { type: 'custom', format: 'HH:mm', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'HH:mm dd-MM-yyyy', locale: activeLocale })}`,
+        fallback: `${stamp(first, { type: 'custom', format: 'HH:mm dd-MM-yyyy', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'HH:mm dd-MM-yyyy', locale: activeLocale })}`,
       },
       sameDay: {
         match: sameDay,
-        range: `${stamp(first, { type: 'custom', format: 'dd' })} - ${stamp(second, { type: 'custom', format: 'dd-MM-yyyy' })}`,
-        fallback: `${stamp(first, { type: 'custom', format: 'dd-MM-yyyy' })} - ${stamp(second, { type: 'custom', format: 'dd-MM-yyyy' })}`,
+        range: `${stamp(first, { type: 'custom', format: 'dd', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'dd-MM-yyyy', locale: activeLocale })}`,
+        fallback: `${stamp(first, { type: 'custom', format: 'dd-MM-yyyy', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'dd-MM-yyyy', locale: activeLocale })}`,
       },
       sameWeek: {
         match: sameWeek,
-        range: `${stamp(first, { type: 'custom', format: 'dd MMM' })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy' })}`,
-        fallback: `${stamp(first, { type: 'custom', format: 'dd MMM yyyy' })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy' })}`,
+        range: `${stamp(first, { type: 'custom', format: 'dd MMM', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy', locale: activeLocale })}`,
+        fallback: `${stamp(first, { type: 'custom', format: 'dd MMM yyyy', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy', locale: activeLocale })}`,
       },
       sameMonth: {
         match: sameMonth,
-        range: `${stamp(first, { type: 'custom', format: 'dd MMM' })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy' })}`,
-        fallback: `${stamp(first, { type: 'custom', format: 'dd MMM yyyy' })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy' })}`,
+        range: `${stamp(first, { type: 'custom', format: 'dd MMM', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy', locale: activeLocale })}`,
+        fallback: `${stamp(first, { type: 'custom', format: 'dd MMM yyyy', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy', locale: activeLocale })}`,
       },
       sameYear: {
         match: sameYear,
-        range: `${stamp(first, { type: 'custom', format: 'dd MMM' })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy' })}`,
-        fallback: `${stamp(first, { type: 'custom', format: 'dd MMM yyyy' })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy' })}`,
+        range: `${stamp(first, { type: 'custom', format: 'dd MMM', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy', locale: activeLocale })}`,
+        fallback: `${stamp(first, { type: 'custom', format: 'dd MMM yyyy', locale: activeLocale })} - ${stamp(second, { type: 'custom', format: 'dd MMM yyyy', locale: activeLocale })}`,
       },
     }
 

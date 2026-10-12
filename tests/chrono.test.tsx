@@ -182,10 +182,8 @@ describe('useChrono hook (native without date-fns)', () => {
           config={{
             translations: {
               dates: {
-                relative: {
-                  justNow: 'الآن',
-                  minutesAgo: 'منذ {count} دقائق',
-                },
+                justNow: 'الآن',
+                minutesAgo: 'منذ {count} دقائق',
               },
             },
           }}
