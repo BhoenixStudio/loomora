@@ -128,7 +128,7 @@ Confirmed project conventions:
 
 ### Critical execution & efficiency rules
 
-- **Do NOT run tests before doing the task**: Implement what is requested first. Only after the implementation is completed should you add tests for it.
+- **Do NOT run typecheck, tests, builds, or any validation commands before finishing the task**: Completely finish implementing the requested changes first. Do not run any checks in the middle or before doing the work.
 - **Do NOT build, pack, format, or run heavy suites after finishing the task**: After completing a task, **ONLY run `pnpm run typecheck`** to verify types. Do NOT run `build`, `pack:dry`, `format`, or `pnpm run check`. Avoid wasting time on unnecessary post-task builds and formatting.
 
 ### Operating steps
