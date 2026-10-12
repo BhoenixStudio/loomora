@@ -11,7 +11,7 @@ The package is at version `0.1.0` and is prepared for npm publishing. Do not ass
 - TypeScript with React and JSX; ESM source (`"type": "module"`).
 - Node.js `>=20.19.0` and npm `>=10.0.0` are recorded in `package.json`.
 - React and React DOM peer range: `>=18.2.0 <20`.
-- Other declared peer dependencies: `@tinymce/tinymce-react >=6.3.0` and `date-fns >=4.4.0`.
+- Other declared peer dependencies: `@tinymce/tinymce-react >=6.3.0`.
 - Build: tsup, from `src/index.ts` to `dist/`, in ESM and CJS formats with declarations and source maps; React and React DOM are external.
 - Tests: Vitest with jsdom and Testing Library. Lint: ESLint with TypeScript and React Hooks rules. Formatting: Prettier.
 - The checked-in dependency lockfile is `pnpm-lock.yaml`. Repository installs should use pnpm to honor it. npm and Yarn commands are usable for scripts, but their installs do not use this lockfile; do not create or update another lockfile as a side effect.

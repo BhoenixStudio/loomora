@@ -16,7 +16,7 @@ Loomora is a TypeScript React library of reusable form inputs, UI components, ho
 
 - Node.js `>=20.19.0`.
 - React and React DOM `>=18.2.0 <20`.
-- Install the package's declared peer dependencies for the features your application uses: `@tinymce/tinymce-react` `>=6.3.0` and `date-fns` `>=4.4.0`, in addition to React and React DOM.
+- Install the package's declared peer dependencies for the features your application uses: `@tinymce/tinymce-react` `>=6.3.0`, in addition to React and React DOM.
 - A React application with a bundler that can consume package CSS when using `LoomoraProvider` (the provider imports Loomora's stylesheet).
 
 The supported peer dependency ranges are defined in [`package.json`](./package.json). When using `LoomoraProvider`, also install and configure a compatible `next-intl` version: Loomora's theme provider imports it and uses its `theme` translation namespace, but `next-intl` is not currently declared as a package peer dependency. Place `LoomoraProvider` beneath the application's `NextIntlClientProvider`.
@@ -27,16 +27,16 @@ Install Loomora and its peer dependencies with your package manager:
 
 ```sh
 # npm
-npm install loomora react react-dom @tinymce/tinymce-react date-fns
+npm install loomora react react-dom @tinymce/tinymce-react
 
 # pnpm
-pnpm add loomora react react-dom @tinymce/tinymce-react date-fns
+pnpm add loomora react react-dom @tinymce/tinymce-react
 
 # Yarn
-yarn add loomora react react-dom @tinymce/tinymce-react date-fns
+yarn add loomora react react-dom @tinymce/tinymce-react
 ```
 
-React and React DOM are peer dependencies, so use versions compatible with the supported range. If your application does not use a feature that needs TinyMCE or date-fns, check your package manager's peer dependency behavior and install the required peers as appropriate.
+React and React DOM are peer dependencies, so use versions compatible with the supported range. If your application does not use a feature that needs TinyMCE, check your package manager's peer dependency behavior and install the required peers as appropriate.
 
 ## Use
 
