@@ -83,7 +83,7 @@ pnpm run check             # lint, typecheck, tests, build, and npm pack dry run
 pnpm run check:playground  # playground typecheck, lint, and build
 ```
 
-Use the corresponding `npm run <script>` or `yarn run <script>` form if needed. The defined root scripts also include `test` for Vitest watch mode, `build:watch`, `dev:playground`, `format` (writes formatting changes), and `pack:dry` (`npm pack --dry-run`). `prepublishOnly` invokes `check`. Run the smallest relevant checks while iterating, then run `pnpm run check` for changes that affect the package contract or release readiness. Run `pnpm run check:playground` when an integration change could affect the playground.
+Use the corresponding `npm run <script>` or `yarn run <script>` form if needed. The defined root scripts also include `test` for Vitest watch mode, `build:watch`, `dev:playground`, `format` (writes formatting changes), and `pack:dry` (`npm pack --dry-run`). `prepublishOnly` invokes `check`. For AI agents, only `pnpm run typecheck` is expected after completing tasks—do NOT run `build`, `format`, `pack`, or full `check` pipelines unless explicitly requested.
 
 ## Public API and compatibility
 
@@ -109,10 +109,11 @@ Confirmed project conventions:
 
 ## Testing expectations
 
+- **Task-first execution**: Do NOT run or write tests before doing the requested task. First complete what was requested, and only then add or run tests for the changes.
 - Tests are under `tests/` and named `*.test.tsx` in the inspected suite. Vitest includes `tests/**/*.{test,spec}.{ts,tsx}`, runs with jsdom, and loads `tests/setup.ts`.
 - Use Testing Library for React behavior where suitable. Add focused coverage for changed behavior and regression cases; update tests alongside changed public behavior.
 - Run `pnpm run test:run` for a one-time complete suite or `pnpm run test -- <pattern>` for a focused Vitest run. The root `test` script starts Vitest watch mode.
-- Use `pnpm run typecheck`, `pnpm run lint`, `pnpm run format:check`, and `pnpm run build` as applicable. Do not claim checks passed unless they were run.
+- For post-task verification by AI agents, ONLY run `pnpm run typecheck`. Do not run full test suites, builds, or formatting checks. Do not claim checks passed unless they were run.
 - The currently inspected tests cover configuration merging/provider behavior and timezone utilities; do not infer coverage for untested components.
 
 ## Security, dependencies, and release
@@ -125,10 +126,17 @@ Confirmed project conventions:
 
 ## Agent operating procedure
 
+### Critical execution & efficiency rules
+
+- **Do NOT run tests before doing the task**: Implement what is requested first. Only after the implementation is completed should you add tests for it.
+- **Do NOT build, pack, format, or run heavy suites after finishing the task**: After completing a task, **ONLY run `pnpm run typecheck`** to verify types. Do NOT run `build`, `pack:dry`, `format`, or `pnpm run check`. Avoid wasting time on unnecessary post-task builds and formatting.
+
+### Operating steps
+
 1. Read this file and any applicable scoped guidance or component documentation.
-2. Inspect the relevant implementation, public barrels, types, tests, and package configuration before editing.
-3. Preserve established feature and export patterns; make the smallest complete change.
-4. Update meaningful tests and developer/release documentation when public behavior or package usage changes.
-5. Run the focused test, lint, type, format, or build checks relevant to the change; broaden to `pnpm run check` when appropriate.
+2. Inspect the relevant implementation, public barrels, types, and package configuration before editing.
+3. Preserve established feature and export patterns; make the smallest complete change (do what was asked first).
+4. After implementing the requested task, add tests for the new/modified functionality if appropriate.
+5. Validate types with `pnpm run typecheck` ONLY. Do NOT run `build`, `pack`, `format`, or full test/check suites.
 6. Review `git diff` for accidental generated output, lockfile churn, missing exports, broken examples, or unintended public API changes.
-7. Report what changed, the checks actually run, and any relevant limitations or unknowns.
+7. Report what changed, that `pnpm run typecheck` was run, and any relevant limitations or unknowns.
