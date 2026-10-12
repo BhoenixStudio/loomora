@@ -28,12 +28,13 @@ import {
   LoomoraSocialT,
   LoomoraTextArea,
   LoomoraTextEditorT,
+  LoomoraTextField,
   LoomoraTheme,
   LoomoraThemeT,
   LoomoraTimezonesT,
   LoomoraUploaderField,
   LoomoraUploaderT,
-  LoomoraUseDateT,
+  LoomoraDatesT,
 } from './helper'
 
 /** Fully resolved Loomora configuration. */
@@ -42,7 +43,7 @@ export interface LoomoraConfig extends LoomoraBase {
     socials: LoomoraSocialT
     countries: LoomoraCountriesT
     timezones: LoomoraTimezonesT
-    useDates: LoomoraUseDateT
+    dates: LoomoraDatesT
     form: LoomoraFormT
     textEditorField: LoomoraTextEditorT
     searchField: LoomoraSearchT
@@ -59,6 +60,7 @@ export interface LoomoraConfig extends LoomoraBase {
   breadcrumbs: LoomoraBreadCrumb
   form: LoomoraFormBase & {
     label: LoomoraLabel
+    textField: LoomoraTextField
     textareaField: LoomoraTextArea
     searchField: LoomoraSearchField
     selectField: LoomoraSelectField

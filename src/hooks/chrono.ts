@@ -88,7 +88,7 @@ function Months() {
 export function useChrono() {
   const monthList = Months()
 
-  const { translations } = useLoomora()
+  const { dates, translations } = useLoomora()
 
   // Functions
   const listMonths = <T extends object = object>(props?: GetMonths<T>): (MonthItem & T)[] => {
@@ -97,7 +97,7 @@ export function useChrono() {
     let months = Object.entries(monthList).map(([key, month]) => ({
       key: key as MonthKey,
       ...month,
-      ...translations?.useDates?.months?.[key as MonthKey],
+      ...translations?.dates?.months?.[key as MonthKey],
       ...extra?.[key as MonthKey],
     }))
 
@@ -109,7 +109,7 @@ export function useChrono() {
   const pickMonth = <T extends object = object>(key: MonthKey, props?: Pick<GetMonths<T>, 'extra'>): MonthItem & T => ({
     key,
     ...monthList[key],
-    ...translations?.useDates?.months?.[key as MonthKey],
+    ...translations?.dates?.months?.[key as MonthKey],
     ...props?.extra?.[key],
   })
 
@@ -247,7 +247,7 @@ export function useChrono() {
     return formatDistance(new Date(date!), baseDate, {
       addSuffix: true,
       includeSeconds: true,
-      locale: translations?.useDates?.locales?.[locale],
+      locale: dates?.locales?.[locale],
     })
   }
 

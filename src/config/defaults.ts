@@ -389,7 +389,7 @@ export const loomoraDefaults: LoomoraConfig = {
       'indian/cocos': 'Cocos',
       'indian/christmas': 'Christmas',
     },
-    useDates: {
+    dates: {
       months: {
         JAN: { name: 'January', shortName: 'Jan' },
         FEB: { name: 'February', shortName: 'Feb' },
@@ -676,7 +676,7 @@ export const loomoraDefaults: LoomoraConfig = {
       activeClassName: 'top-0 inset-s-3 translate-y-[-50%] scale-90 max-w-[calc(100%-0.5rem)] px-1.5 py-px',
     },
     fieldset: { className: 'text-title-2 [&_label]:bg-[inherit]' },
-    textfield: { className: 'text-sm placeholder:text-body-3' },
+    textField: { className: 'text-sm placeholder:text-body-3' },
     textareaField: { className: 'text-sm placeholder:text-body-3', defaultRows: 2 },
     searchField: { clearIcon: '🗙', searchIcon: '🔎︎' },
     selectField: {
@@ -808,6 +808,8 @@ export const loomoraDefaults: LoomoraConfig = {
       className: 'text-body-3',
       activeClassName: 'text-amber-400',
       iconSize: 24,
+      emptyIcon: undefined,
+      icon: undefined,
     },
   },
   // Others

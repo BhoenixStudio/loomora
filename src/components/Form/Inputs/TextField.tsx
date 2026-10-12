@@ -61,7 +61,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, re
     value = '',
     onFocus,
     onBlur,
-    className = form?.textfield?.className,
+    className = form?.textField?.className,
     required,
     disabled,
     ...restProperties
