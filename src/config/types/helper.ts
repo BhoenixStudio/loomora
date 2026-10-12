@@ -1,4 +1,3 @@
-import { Locale } from 'date-fns'
 import { ButtonHTMLAttributes, ElementType, ReactNode } from 'react'
 import { LoomoraConfig } from '.'
 import { ButtonCorner, ButtonSize, ButtonVariant, FileExtType, PhonePrefix } from '../../components'
@@ -283,6 +282,31 @@ export type LoomoraNumberField = {
 
 // Hooks
 export type LoomoraDatesT = {
+  justNow: string
+  fewSecondsAgo: string
+  inFewSeconds: string
+  secondsAgo: RequireKeys<['count']>
+  inSeconds: RequireKeys<['count']>
+  minuteAgo: string
+  minutesAgo: RequireKeys<['count']>
+  inMinute: string
+  inMinutes: RequireKeys<['count']>
+  hourAgo: string
+  hoursAgo: RequireKeys<['count']>
+  inHour: string
+  inHours: RequireKeys<['count']>
+  yesterday: string
+  daysAgo: RequireKeys<['count']>
+  tomorrow: string
+  inDays: RequireKeys<['count']>
+  monthAgo: string
+  monthsAgo: RequireKeys<['count']>
+  inMonth: string
+  inMonths: RequireKeys<['count']>
+  yearAgo: string
+  yearsAgo: RequireKeys<['count']>
+  inYear: string
+  inYears: RequireKeys<['count']>
   months: {
     JAN: { name: string; shortName: string }
     FEB: { name: string; shortName: string }
@@ -298,7 +322,7 @@ export type LoomoraDatesT = {
     DEC: { name: string; shortName: string }
   }
 }
-export type LoomoraDates = { locales: Record<string, Locale> }
+export type LoomoraDates = { locale?: string }
 
 // Other
 export type LoomoraThemeT = {
