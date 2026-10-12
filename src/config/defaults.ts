@@ -390,7 +390,6 @@ export const loomoraDefaults: LoomoraConfig = {
       'indian/christmas': 'Christmas',
     },
     useDates: {
-      locales: {},
       months: {
         JAN: { name: 'January', shortName: 'Jan' },
         FEB: { name: 'February', shortName: 'Feb' },
@@ -414,9 +413,7 @@ export const loomoraDefaults: LoomoraConfig = {
       confirmMatch: 'Match',
       confirmMismatch: 'Mismatch',
       copyTooltip: 'Copy {password} to clipboard',
-      get generate() {
-        return `Generate ${loomoraDefaults?.form?.passwordField?.length}bit {password}`
-      },
+      generate: 'Generate {length}bit {password}',
       hideTooltip: 'Hide {password}',
       label: '{password}',
       missing: 'Please enter a password.',
@@ -426,45 +423,19 @@ export const loomoraDefaults: LoomoraConfig = {
         weak: 'Weak',
         medium: 'Medium',
         strong: 'Strong',
-        minLength: {
-          get short() {
-            return `${loomoraDefaults?.form?.passwordField?.length}+ letter(s) long`
-          },
-          get long() {
-            return `At least ${loomoraDefaults?.form?.passwordField?.maxLength}+ letter(s) long`
-          },
-        },
+        minLength: { short: '{length}+ letter(s) long', long: 'At least {maxLength}+ letter(s) long' },
         lowercase: {
-          get short() {
-            return `${loomoraDefaults?.form?.passwordField?.lowercaseLength}+ Lowercase letter(s) long`
-          },
-          get long() {
-            return `At least ${loomoraDefaults?.form?.passwordField?.lowercaseLength}+ Lowercase letter(s) long`
-          },
+          short: '{lowercaseLength}+ Lowercase letter(s) long',
+          long: 'At least {lowercaseLength}+ Lowercase letter(s) long',
         },
         uppercase: {
-          get short() {
-            return `${loomoraDefaults?.form?.passwordField?.uppercaseLength}+ Uppercase letter(s) long`
-          },
-          get long() {
-            return `At least ${loomoraDefaults?.form?.passwordField?.uppercaseLength}+ Uppercase letter(s) long`
-          },
+          short: '{uppercaseLength}+ Uppercase letter(s) long',
+          long: 'At least {uppercaseLength}+ Uppercase letter(s) long',
         },
-        number: {
-          get short() {
-            return `${loomoraDefaults?.form?.passwordField?.numbersLength}+ Number(s) long`
-          },
-          get long() {
-            return `At least ${loomoraDefaults?.form?.passwordField?.numbersLength}+ Number(s) long`
-          },
-        },
+        number: { short: `{numbersLength}+ Number(s) long`, long: `At least {numbersLength}+ Number(s) long` },
         special: {
-          get short() {
-            return `${loomoraDefaults?.form?.passwordField?.specialCharsLength}+ special character(s) long`
-          },
-          get long() {
-            return `At least ${loomoraDefaults?.form?.passwordField?.specialCharsLength}+ special character(s) long`
-          },
+          short: '{specialCharsLength}+ special character(s) long',
+          long: 'At least {specialCharsLength}+ special character(s) long',
         },
       },
     },
@@ -514,6 +485,8 @@ export const loomoraDefaults: LoomoraConfig = {
         'System Detection mode follows your device settings and auto-switches between Light and Dark',
     },
   },
+  // Hooks
+  dates: { locales: {} },
   // Components
   flagResource: 'https://flagcdn.com/{key}.svg',
   button: {

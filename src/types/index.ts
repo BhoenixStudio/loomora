@@ -96,7 +96,6 @@ export type TWColorName =
   | TWColorSName<'ring'>
   | TWColorSName<'shadow'>
   | TWColorSName<'stroke'>
-  | TWColorSName<'text'>
 
 // Functions types
 export type Enumerate<N extends number, E extends number[] = [], T extends number[] = []> = T['length'] extends N

@@ -82,7 +82,7 @@ export function PasswordField(props: Readonly<PasswordFieldProps>) {
       className={cx([{ value: 'self-end', condition: hasGenerate && !hasValidation }])}
       onClick={HandleGenerate}
     >
-      {generateText ?? t('passwordField.generate')}
+      {generateText ?? t('passwordField.generate', { length: form?.passwordField?.length })}
     </Button>
   )
 

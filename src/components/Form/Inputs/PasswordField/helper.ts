@@ -166,37 +166,37 @@ export function usePasswordHelper() {
       const passwordStr = String(password)
       const validations = [
         {
-          message: t('passwordField.validation.minLength.long', { length: minLength }),
+          message: t('passwordField.validation.minLength.long', { maxLength: form?.passwordField?.length }),
           excerpt: t('passwordField.validation.minLength.short', { length: minLength }),
           valid: passwordStr.length >= minLength,
           condition: useLength,
         },
         {
-          message: t('passwordField.validation.lowercase.long', { length: lowercaseLength }),
-          excerpt: t('passwordField.validation.lowercase.short', { length: lowercaseLength }),
+          message: t('passwordField.validation.lowercase.long', { lowercaseLength }),
+          excerpt: t('passwordField.validation.lowercase.short', { lowercaseLength }),
           valid:
             /[a-z]/.test(passwordStr) ||
             (useLowercase && (passwordStr.match(/[a-z]/g) || []).length >= lowercaseLength),
           condition: useLowercase,
         },
         {
-          message: t('passwordField.validation.uppercase.long', { length: uppercaseLength }),
-          excerpt: t('passwordField.validation.uppercase.short', { length: uppercaseLength }),
+          message: t('passwordField.validation.uppercase.long', { uppercaseLength }),
+          excerpt: t('passwordField.validation.uppercase.short', { uppercaseLength }),
           valid:
             /[A-Z]/.test(passwordStr) ||
             (useUppercase && (passwordStr.match(/[A-Z]/g) || []).length >= uppercaseLength),
           condition: useUppercase,
         },
         {
-          message: t('passwordField.validation.number.long', { length: numbersLength }),
-          excerpt: t('passwordField.validation.number.short', { length: numbersLength }),
+          message: t('passwordField.validation.number.long', { numbersLength }),
+          excerpt: t('passwordField.validation.number.short', { numbersLength }),
           valid:
             /[0-9]/.test(passwordStr) || (useNumbers && (passwordStr.match(/[0-9]/g) || []).length >= numbersLength),
           condition: useNumbers,
         },
         {
-          message: t('passwordField.validation.special.long', { length: specialCharsLength }),
-          excerpt: t('passwordField.validation.special.short', { length: specialCharsLength }),
+          message: t('passwordField.validation.special.long', { specialCharsLength }),
+          excerpt: t('passwordField.validation.special.short', { specialCharsLength }),
           valid:
             specialCharsRegex.test(passwordStr) ||
             (useSpecialChars &&

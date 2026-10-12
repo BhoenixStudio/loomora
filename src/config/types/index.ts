@@ -8,6 +8,7 @@ import {
   LoomoraCheckField,
   LoomoraColorField,
   LoomoraCountriesT,
+  LoomoraDates,
   LoomoraFormBase,
   LoomoraFormT,
   LoomoraLabel,
@@ -51,6 +52,8 @@ export interface LoomoraConfig extends LoomoraBase {
     uploaderField: LoomoraUploaderT
     settings: LoomoraThemeT
   }
+  // Hooks
+  dates: LoomoraDates
   // Components
   button: LoomoraButton
   breadcrumbs: LoomoraBreadCrumb

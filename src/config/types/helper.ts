@@ -71,21 +71,27 @@ export type LoomoraSearchField = { searchIcon: ReactNode; clearIcon: ReactNode }
 export type LoomoraSelectField = { triggerIcon: ReactNode; optionClassName: string; optionGroupClassName: string }
 export type LoomoraCheckField = { checkIcon: ReactNode; color: TWColorSName<'text'>; activeColor: TWColorSName<'text'> }
 
-export type LoomoraPasswordT = Record<
-  | 'placeholder'
-  | 'confirmMatch'
-  | 'confirmMismatch'
-  | 'copyTooltip'
-  | 'generate'
-  | 'hideTooltip'
-  | 'label'
-  | 'missing'
-  | 'missingButton'
-  | 'showTooltip',
-  string
-> & {
-  validation: Record<'medium' | 'strong' | 'weak', string> &
-    Record<'lowercase' | 'minLength' | 'number' | 'special' | 'uppercase', Record<'short' | 'long', string>>
+export type LoomoraPasswordT = {
+  copyTooltip: RequireKeys<['password']>
+  generate: RequireKeys<['length', 'password']>
+  hideTooltip: RequireKeys<['password']>
+  label: RequireKeys<['password']>
+  showTooltip: RequireKeys<['password']>
+  placeholder: string
+  confirmMatch: string
+  confirmMismatch: string
+  missing: string
+  missingButton: string
+  validation: {
+    medium: string
+    strong: string
+    weak: string
+    minLength: { short: RequireKeys<['length']>; long: RequireKeys<['maxLength']> }
+    lowercase: { short: RequireKeys<['lowercaseLength']>; long: RequireKeys<['lowercaseLength']> }
+    uppercase: { short: RequireKeys<['uppercaseLength']>; long: RequireKeys<['uppercaseLength']> }
+    number: { short: RequireKeys<['numbersLength']>; long: RequireKeys<['numbersLength']> }
+    special: { short: RequireKeys<['specialCharsLength']>; long: RequireKeys<['specialCharsLength']> }
+  }
 }
 export type LoomoraPasswordLength = Record<
   'length' | 'maxLength' | 'uppercaseLength' | 'lowercaseLength' | 'numbersLength' | 'specialCharsLength',
@@ -225,11 +231,13 @@ export type LoomoraNumberField = {
 
 // Hooks
 export type LoomoraUseDateT = {
-  locales: Record<string, Locale>
   months: Record<
     'JAN' | 'FEB' | 'MAR' | 'APR' | 'MAY' | 'JUN' | 'JUL' | 'AUG' | 'SEP' | 'OCT' | 'NOV' | 'DEC',
     { name: string; shortName: string }
   >
+}
+export type LoomoraDates = {
+  locales: Record<string, Locale>
 }
 
 // Other
@@ -272,3 +280,11 @@ export type TranslateFn = <K extends NestedKeyOf<LoomoraConfig['translations']>>
   key: K,
   vars?: PartialRecord<string, string | number | undefined | null>
 ) => string
+
+export type RequireKeys<Keys extends string[]> = Keys extends []
+  ? string
+  : Keys extends [infer SingleKey extends string]
+    ? `${string}{${SingleKey}}${string}`
+    : Keys extends [infer First extends string, ...infer Rest extends string[]]
+      ? `${string}{${First}}${RequireKeys<Rest>}`
+      : string
