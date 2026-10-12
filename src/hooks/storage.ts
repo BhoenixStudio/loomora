@@ -17,7 +17,9 @@ const storageNames: Record<StorageType, 'localStorage' | 'sessionStorage'> = {
 function getWebStorage(type: StorageType): Storage | null {
   if (typeof window === 'undefined') return null
   try {
-    return window[storageNames[type]] ?? null
+    const storage = window[storageNames[type]]
+    if (storage && typeof storage.getItem === 'function') return storage
+    return null
   } catch {
     return null
   }
