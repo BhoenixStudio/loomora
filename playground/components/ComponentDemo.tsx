@@ -35,6 +35,7 @@ import {
   TextField,
   TextareaField,
   fade,
+  useChrono,
   useContextMenu,
 } from 'loomora'
 import { useState, type MouseEvent } from 'react'
@@ -126,6 +127,247 @@ function ContextMenuDemo() {
       <p aria-live="polite" className="text-xs text-body-2">
         Last action: {lastAction}. Controlled menu open: {controlledOpen ? 'yes' : 'no'}.
       </p>
+    </div>
+  )
+}
+
+function ChronoDemo() {
+  const { stamp, diff, relative, forward, rewind, timeSpan, listMonths } = useChrono()
+  const [activeTab, setActiveTab] = useState<'relative' | 'stamp' | 'diff' | 'step' | 'months'>('relative')
+  const [baseDate, setBaseDate] = useState(() => new Date().toISOString().slice(0, 16))
+  const [stepDays, setStepDays] = useState(7)
+  const [customFormat, setCustomFormat] = useState('EEEE, d MMMM yyyy HH:mm')
+  const [selectedPreset, setSelectedPreset] = useState<string>('fullTime24')
+  const [selectedLocale, setSelectedLocale] = useState('en')
+  const [compareDate, setCompareDate] = useState(() => {
+    const d = new Date()
+    d.setDate(d.getDate() - 3)
+    return d.toISOString().slice(0, 16)
+  })
+
+  const dateObj = new Date(baseDate)
+  const compareObj = new Date(compareDate)
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-wrap gap-2 border-b border-third pb-3">
+        {(
+          [
+            ['relative', 'Relative Time'],
+            ['stamp', 'Formatting (stamp)'],
+            ['diff', 'Date Diff & TimeSpan'],
+            ['step', 'Forward & Rewind'],
+            ['months', 'Month Catalog'],
+          ] as const
+        ).map(([key, label]) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setActiveTab(key)}
+            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+              activeTab === key
+                ? 'bg-primary text-white shadow-sm'
+                : 'border border-third bg-second text-title-2 hover:border-primary/50'
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="block">
+          <span className="mb-1 block text-xs font-medium text-body-2">Primary Date</span>
+          <input
+            type="datetime-local"
+            value={baseDate}
+            onChange={(e) => setBaseDate(e.target.value)}
+            className="w-full rounded-xl border border-third bg-second px-3 py-2 text-sm text-title-1 outline-none focus:border-primary"
+          />
+        </label>
+        <label className="block">
+          <span className="mb-1 block text-xs font-medium text-body-2">Locale</span>
+          <select
+            value={selectedLocale}
+            onChange={(e) => setSelectedLocale(e.target.value)}
+            className="w-full rounded-xl border border-third bg-second px-3 py-2 text-sm text-title-1 outline-none focus:border-primary"
+          >
+            <option value="en">English (en)</option>
+            <option value="ar">Arabic (ar)</option>
+            <option value="fr">French (fr)</option>
+            <option value="es">Spanish (es)</option>
+            <option value="de">German (de)</option>
+            <option value="ja">Japanese (ja)</option>
+          </select>
+        </label>
+      </div>
+
+      {activeTab === 'relative' && (
+        <div className="space-y-4">
+          <div className="rounded-xl border border-third bg-second p-4">
+            <p className="text-xs uppercase tracking-wider text-body-3">Result of relative(date)</p>
+            <p className="mt-2 text-2xl font-bold text-primary">
+              {relative(dateObj, { locale: selectedLocale }) || '(invalid date)'}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <span className="self-center text-xs text-body-2">Quick Presets:</span>
+            {[
+              { label: 'Now', offsetSec: 0 },
+              { label: '-5 min', offsetSec: -300 },
+              { label: '-2 hours', offsetSec: -7200 },
+              { label: 'Yesterday', offsetSec: -86400 },
+              { label: '+3 days', offsetSec: 259200 },
+              { label: '-3 months', offsetSec: -7776000 },
+              { label: '+1 year', offsetSec: 31536000 },
+            ].map((p) => (
+              <button
+                key={p.label}
+                type="button"
+                onClick={() => {
+                  const d = new Date(Date.now() + p.offsetSec * 1000)
+                  setBaseDate(d.toISOString().slice(0, 16))
+                }}
+                className="rounded-lg border border-third bg-main px-2.5 py-1 text-xs hover:border-primary/50"
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'stamp' && (
+        <div className="space-y-4">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="block">
+              <span className="mb-1 block text-xs font-medium text-body-2">Preset Type</span>
+              <select
+                value={selectedPreset}
+                onChange={(e) => setSelectedPreset(e.target.value)}
+                className="w-full rounded-xl border border-third bg-second px-3 py-2 text-sm text-title-1 outline-none focus:border-primary"
+              >
+                <option value="custom">custom (token pattern)</option>
+                <option value="number">number (yyyyMMdd)</option>
+                <option value="fullYear">fullYear (yyyy)</option>
+                <option value="smallYear">smallYear (yy)</option>
+                <option value="month">month (MM)</option>
+                <option value="day">day (dd)</option>
+                <option value="dayName">dayName (weekday long)</option>
+                <option value="shortDayName">shortDayName (weekday short)</option>
+                <option value="fullTime24">fullTime24 (HH:mm:ss)</option>
+                <option value="fullTime12">fullTime12 (hh:mm:ss aa)</option>
+                <option value="time24">time24 (HH:mm)</option>
+                <option value="time12">time12 (hh:mm aa)</option>
+                <option value="relative">relative</option>
+              </select>
+            </label>
+            {selectedPreset === 'custom' && (
+              <label className="block">
+                <span className="mb-1 block text-xs font-medium text-body-2">Custom Pattern Tokens</span>
+                <input
+                  type="text"
+                  value={customFormat}
+                  onChange={(e) => setCustomFormat(e.target.value)}
+                  placeholder="e.g. yyyy-MM-dd HH:mm:ss"
+                  className="w-full rounded-xl border border-third bg-second px-3 py-2 text-sm text-title-1 outline-none focus:border-primary"
+                />
+              </label>
+            )}
+          </div>
+          <div className="rounded-xl border border-third bg-second p-4">
+            <p className="text-xs uppercase tracking-wider text-body-3">Formatted Output</p>
+            <p className="mt-2 font-mono text-2xl font-bold text-primary">
+              {String(
+                (selectedPreset === 'custom'
+                  ? stamp(dateObj, { type: 'custom', format: customFormat, locale: selectedLocale })
+                  : stamp(dateObj, { type: selectedPreset as any, locale: selectedLocale })) ?? 'null'
+              )}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'diff' && (
+        <div className="space-y-4">
+          <label className="block">
+            <span className="mb-1 block text-xs font-medium text-body-2">Compare Target Date</span>
+            <input
+              type="datetime-local"
+              value={compareDate}
+              onChange={(e) => setCompareDate(e.target.value)}
+              className="w-full rounded-xl border border-third bg-second px-3 py-2 text-sm text-title-1 outline-none focus:border-primary"
+            />
+          </label>
+          {(() => {
+            const diffResult = diff(dateObj, compareObj, { type: 'before' })
+            const spanResult = timeSpan({ first: dateObj, second: compareObj }, 'dynamic')
+            return (
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-xl border border-third bg-second p-4">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-body-3">diff() Calculations</p>
+                  <ul className="space-y-1 font-mono text-xs text-body-1">
+                    <li>Match (first &lt; second): <span className="font-bold text-title-1">{String(diffResult.match)}</span></li>
+                    <li>Hours: <span className="font-bold text-title-1">{diffResult.differenceInHours}</span></li>
+                    <li>Days: <span className="font-bold text-title-1">{diffResult.differenceInDays}</span></li>
+                    <li>Weeks: <span className="font-bold text-title-1">{diffResult.differenceInWeeks}</span></li>
+                    <li>Months: <span className="font-bold text-title-1">{diffResult.differenceInMonths}</span></li>
+                    <li>Years: <span className="font-bold text-title-1">{diffResult.differenceInYears}</span></li>
+                  </ul>
+                </div>
+                <div className="rounded-xl border border-third bg-second p-4">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-body-3">timeSpan() Dynamic Window</p>
+                  <ul className="space-y-1 font-mono text-xs text-body-1">
+                    <li>Match: <span className="font-bold text-title-1">{String(spanResult.match)}</span></li>
+                    <li>Range: <span className="font-bold text-title-1">{spanResult.range || 'none'}</span></li>
+                    <li>Fallback: <span className="font-bold text-title-1">{spanResult.fallback || 'none'}</span></li>
+                  </ul>
+                </div>
+              </div>
+            )
+          })()}
+        </div>
+      )}
+
+      {activeTab === 'step' && (
+        <div className="space-y-4">
+          <label className="block">
+            <span className="mb-1 block text-xs font-medium text-body-2">Days to Step</span>
+            <input
+              type="number"
+              value={stepDays}
+              onChange={(e) => setStepDays(Number(e.target.value))}
+              className="w-full rounded-xl border border-third bg-second px-3 py-2 text-sm text-title-1 outline-none focus:border-primary"
+            />
+          </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-third bg-second p-4">
+              <p className="text-xs uppercase tracking-wider text-body-3">forward(date, {stepDays})</p>
+              <p className="mt-2 font-mono text-lg font-bold text-title-1">
+                {forward(dateObj, stepDays)?.toLocaleDateString(selectedLocale, { dateStyle: 'full' }) ?? 'null'}
+              </p>
+            </div>
+            <div className="rounded-xl border border-third bg-second p-4">
+              <p className="text-xs uppercase tracking-wider text-body-3">rewind(date, {stepDays})</p>
+              <p className="mt-2 font-mono text-lg font-bold text-title-1">
+                {rewind(dateObj, stepDays)?.toLocaleDateString(selectedLocale, { dateStyle: 'full' }) ?? 'null'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'months' && (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+          {listMonths().map((m) => (
+            <div key={m.key} className="rounded-xl border border-third bg-second p-3 text-center">
+              <span className="block text-[10px] font-semibold uppercase tracking-widest text-primary">#{m.order}</span>
+              <p className="text-sm font-semibold text-title-1">{m.name ?? m.key}</p>
+              <span className="text-xs text-body-3">{m.shortName ?? m.key}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -599,6 +841,7 @@ function DemoContent({ demo }: { demo: string }) {
       </div>
     ),
     'context-menu': <ContextMenuDemo />,
+    chrono: <ChronoDemo />,
     content: (
       <Content
         data={['Button', 'Input', 'Accordion']}

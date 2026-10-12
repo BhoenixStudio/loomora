@@ -1305,6 +1305,83 @@ export const componentCatalog: ComponentDoc[] = [
       'Prefer an explicit empty state when no data is a meaningful condition.',
     ],
   },
+  {
+    slug: 'chrono',
+    name: 'useChrono',
+    group: 'Helpers',
+    summary: 'Native date calculation, formatting, comparison, relative time, and month catalog hook.',
+    description:
+      'A comprehensive zero-dependency date utility hook powered by native JavaScript Date and Web Intl APIs. Provides date validation, formatting presets, custom token stamping, forward/rewind stepping, multi-unit differences, temporal span matching, and localized relative time calculations.',
+    importName: 'useChrono',
+    demo: 'chrono',
+    code: `const { stamp, diff, relative, forward, rewind, timeSpan, isDate, listMonths } = useChrono()\n\n// Format with presets or custom tokens\nconst formatted = stamp(new Date(), { type: 'custom', format: 'EEEE, d MMMM yyyy' })\n\n// Human relative distance\nconst timeAgo = relative(earlierDate)\n\n// Step days forward or backward\nconst nextWeek = forward(new Date(), 7)\n\n// Calculate granular difference\nconst difference = diff(dateA, dateB, { type: 'before' })`,
+    props: [
+      {
+        name: 'stamp(date, options)',
+        type: '(date: DateType, props?: FormatDate) => string | number | null',
+        defaultValue: '—',
+        description:
+          'Formats dates using 15 presets (fullYear, dayName, time24, relative, etc.) or custom token patterns with locale awareness.',
+      },
+      {
+        name: 'relative(date, options)',
+        type: '(date: DateType, props?: RelativeDateProps) => string',
+        defaultValue: '—',
+        description:
+          'Calculates humanized relative time strings using Loomora configuration translations or native Intl.RelativeTimeFormat.',
+      },
+      {
+        name: 'diff(first, second, options)',
+        type: '(first: DateType, second: DateType, props?: CompareDate) => DiffResult',
+        defaultValue: '—',
+        description:
+          'Computes directional differences across hours, days, weeks, months, and years with optional day adjustments.',
+      },
+      {
+        name: 'timeSpan(dates, type)',
+        type: '(dates: DateRange, type?: DateRangeType) => DateRangeResult',
+        defaultValue: "'dynamic'",
+        description:
+          'Evaluates if two dates fall within the same hour, day, week, month, or year and generates formatted range strings.',
+      },
+      {
+        name: 'forward(date, days)',
+        type: '(date: DateType, days: number) => Date | null',
+        defaultValue: '—',
+        description: 'Advances a date by a specified number of days natively handling month rollovers and leap years.',
+      },
+      {
+        name: 'rewind(date, days)',
+        type: '(date: DateType, days: number) => Date | null',
+        defaultValue: '—',
+        description: 'Rewinds a date backward by a specified number of days.',
+      },
+      {
+        name: 'isDate(date)',
+        type: '(date: DateType) => boolean',
+        defaultValue: '—',
+        description:
+          'Validates whether an input represents a valid date, filtering sentinel zero-dates and invalid strings.',
+      },
+      {
+        name: 'listMonths(options)',
+        type: '<T>(props?: GetMonths<T>) => (MonthItem & T)[]',
+        defaultValue: '—',
+        description: 'Returns an ordered 1-12 list of months enriched with Loomora localization translations.',
+      },
+      {
+        name: 'pickMonth(key, options)',
+        type: '<T>(key: MonthKey, props?: GetMonths<T>) => MonthItem & T',
+        defaultValue: '—',
+        description: 'Retrieves metadata and translations for a specific month key (JAN through DEC).',
+      },
+    ],
+    notes: [
+      'Zero external dependencies: Fully operates on native Date, Intl.DateTimeFormat, and Intl.RelativeTimeFormat.',
+      'Relative sentences are fully customizable via LoomoraProvider translations (translations.dates.relative).',
+      'Supports BCP-47 locale tags directly in stamp and relative methods.',
+    ],
+  },
 ]
 
 export function getComponentDoc(slug: string) {
