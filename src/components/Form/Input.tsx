@@ -9,6 +9,9 @@ import {
   CheckFieldProps,
   ColorField,
   ColorFieldProps,
+  CustomInputProps,
+  DividerInputProps,
+  EmptyInputProps,
   InputProps,
   InputsWrapperProps,
   Label,
@@ -40,7 +43,9 @@ import {
 } from '../index'
 
 export function Input(props: Readonly<InputProps>) {
-  const { type = 'text', ...rest } = props
+  const { type = 'text', condition, ...rest } = props
+
+  if (condition === false) return null
 
   // Configs
   const types: Record<Exclude<InputProps['type'], undefined>, ReactNode> = {
@@ -60,7 +65,25 @@ export function Input(props: Readonly<InputProps>) {
     rating: <RatingField {...(rest as RatingFieldProps)} />,
     number: <NumberField {...(rest as NumberFieldProps)} />,
     color: <ColorField {...(rest as ColorFieldProps)} />,
-    custom: (rest as { element: ReactNode }).element,
+    divider: (() => {
+      const { size = ['col-span-12'], className, attributes, ...attrs } = rest as DividerInputProps
+      return <hr className={cx(['border-t border-third w-full my-2', ...size, className])} {...attributes} {...attrs} />
+    })(),
+    empty: (() => {
+      const { size = [], className, attributes, ...attrs } = rest as EmptyInputProps
+      return <div className={cx([...size, className])} aria-hidden="true" {...attributes} {...attrs} />
+    })(),
+    custom: (() => {
+      const { element, size = [], className, attributes, ...attrs } = rest as CustomInputProps
+      if (size.length > 0 || className || attributes || Object.keys(attrs).length > 0) {
+        return (
+          <div className={cx([...size, className])} {...attributes} {...attrs}>
+            {element}
+          </div>
+        )
+      }
+      return element
+    })(),
   }
 
   return types[type ?? 'text'] ?? types.text

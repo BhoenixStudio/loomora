@@ -4,6 +4,9 @@ import { Button, FormProps, Inputs } from '../index'
 
 export { InputFocus } from './helper'
 export type {
+  CustomInputProps,
+  DividerInputProps,
+  EmptyInputProps,
   FormProps,
   InputBase,
   InputFieldset,

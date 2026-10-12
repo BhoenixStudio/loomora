@@ -23,6 +23,11 @@ import {
 import { ChildSize, GlobalElement, WrapperSize } from '../../types'
 
 export type InputBase = { size?: ChildSize[]; condition?: boolean; loading?: boolean }
+
+export type DividerInputProps = GlobalElement<'hr'> & Pick<InputBase, 'condition' | 'size'>
+export type EmptyInputProps = GlobalElement<'div'> & Pick<InputBase, 'condition' | 'size'>
+export type CustomInputProps = GlobalElement<'div'> & Pick<InputBase, 'condition' | 'size'> & { element: ReactNode }
+
 export type InputProps = InputBase &
   (
     | ({ type?: 'text' } & TextFieldProps)
@@ -41,7 +46,9 @@ export type InputProps = InputBase &
     | ({ type: 'rating' } & RatingFieldProps)
     | ({ type: 'color' } & ColorFieldProps)
     | ({ type: 'number' } & NumberFieldProps)
-    | ({ type: 'custom'; element: ReactNode } & Pick<InputBase, 'condition'>)
+    | ({ type: 'divider' } & DividerInputProps)
+    | ({ type: 'empty' } & EmptyInputProps)
+    | ({ type: 'custom' } & CustomInputProps)
   )
 
 export type InputFieldset = {
