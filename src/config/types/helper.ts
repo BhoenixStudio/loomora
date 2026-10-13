@@ -336,6 +336,7 @@ export type LoomoraDateFieldPresets = {
   time?: LoomoraDateFieldPresetItem<string | Date | null>[]
   timeRange?: LoomoraDateFieldPresetItem<[string | Date | null, string | Date | null]>[]
   dateTime?: LoomoraDateFieldPresetItem<Date | string | null>[]
+  datetime?: LoomoraDateFieldPresetItem<Date | string | null>[]
   dateTimeRange?: LoomoraDateFieldPresetItem<[Date | string | null, Date | string | null]>[]
 }
 

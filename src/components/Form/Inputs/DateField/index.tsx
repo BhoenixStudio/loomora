@@ -223,9 +223,24 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
   const presetsList = useMemo<DatePreset[]>(() => {
     if (!showPresets) return []
     if (customPresets) return customPresets
-    const configPresets = form?.dateField?.presets?.[mode]
+    const pConfig = form?.dateField?.presets
+    const configPresets =
+      mode === 'datetime'
+        ? (pConfig?.datetime ?? pConfig?.dateTime)
+        : mode === 'date'
+        ? pConfig?.date
+        : mode === 'dateRange'
+        ? pConfig?.dateRange
+        : mode === 'time'
+        ? pConfig?.time
+        : mode === 'timeRange'
+        ? pConfig?.timeRange
+        : mode === 'dateTimeRange'
+        ? pConfig?.dateTimeRange
+        : undefined
+
     if (configPresets && configPresets.length > 0) {
-      return configPresets.map((item) => ({
+      return (configPresets as Array<{ title: string; date: any }>).map((item) => ({
         title: item.title,
         label: item.title,
         date: item.date,
