@@ -883,15 +883,137 @@ export const loomoraDefaults: LoomoraConfig = {
     dateField: {
       firstDayOfWeek: 0,
       hour12: true,
+      timeFormat: '12',
       showSeconds: false,
       allowClear: true,
       minuteStep: 1,
       secondStep: 1,
+      openOnInputClick: false,
+      manualInput: true,
+      editManual: true,
       calendarIcon: '📅',
       clockIcon: '🕒',
       clearIcon: '✕',
       chevronLeft: '‹',
       chevronRight: '›',
+      presets: {
+        date: [
+          {
+            title: 'Today',
+            date: () => new Date(),
+          },
+          {
+            title: 'Yesterday',
+            date: () => {
+              const d = new Date()
+              d.setDate(d.getDate() - 1)
+              return d
+            },
+          },
+          {
+            title: 'Tomorrow',
+            date: () => {
+              const d = new Date()
+              d.setDate(d.getDate() + 1)
+              return d
+            },
+          },
+        ],
+        dateRange: [
+          {
+            title: 'Today',
+            date: () => [new Date(), new Date()],
+          },
+          {
+            title: 'Yesterday',
+            date: () => {
+              const d = new Date()
+              d.setDate(d.getDate() - 1)
+              return [d, d]
+            },
+          },
+          {
+            title: 'Last 7 Days',
+            date: () => {
+              const start = new Date()
+              start.setDate(start.getDate() - 6)
+              return [start, new Date()]
+            },
+          },
+          {
+            title: 'Last 30 Days',
+            date: () => {
+              const start = new Date()
+              start.setDate(start.getDate() - 29)
+              return [start, new Date()]
+            },
+          },
+          {
+            title: 'This Month',
+            date: () => {
+              const now = new Date()
+              const start = new Date(now.getFullYear(), now.getMonth(), 1)
+              const end = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+              return [start, end]
+            },
+          },
+          {
+            title: 'Last Month',
+            date: () => {
+              const now = new Date()
+              const start = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+              const end = new Date(now.getFullYear(), now.getMonth(), 0)
+              return [start, end]
+            },
+          },
+          {
+            title: 'This Year',
+            date: () => {
+              const now = new Date()
+              return [new Date(now.getFullYear(), 0, 1), new Date(now.getFullYear(), 11, 31)]
+            },
+          },
+        ],
+        time: [
+          { title: 'Now', date: () => new Date() },
+          { title: '09:00', date: '09:00' },
+          { title: '12:00', date: '12:00' },
+          { title: '15:00', date: '15:00' },
+          { title: '18:00', date: '18:00' },
+        ],
+        timeRange: [
+          { title: 'Morning (09:00 - 12:00)', date: ['09:00', '12:00'] },
+          { title: 'Afternoon (13:00 - 17:00)', date: ['13:00', '17:00'] },
+          { title: 'Business Day (09:00 - 18:00)', date: ['09:00', '18:00'] },
+        ],
+        dateTime: [
+          { title: 'Now', date: () => new Date() },
+        ],
+        dateTimeRange: [
+          {
+            title: 'Today',
+            date: () => [new Date(), new Date()],
+          },
+          {
+            title: 'Last 7 Days',
+            date: () => {
+              const start = new Date()
+              start.setDate(start.getDate() - 6)
+              return [start, new Date()]
+            },
+          },
+          {
+            title: 'This Month',
+            date: () => {
+              const now = new Date()
+              return [
+                new Date(now.getFullYear(), now.getMonth(), 1),
+                new Date(now.getFullYear(), now.getMonth() + 1, 0),
+              ]
+            },
+          },
+        ],
+      },
     },
   },
   // Others

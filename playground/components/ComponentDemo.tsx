@@ -727,7 +727,7 @@ function DemoContent({ demo }: { demo: string }) {
           <h4 className="text-sm font-semibold text-title-1 mb-2">1. Date Only (`mode="date"`)</h4>
           <DateField
             label="Single Date (with presets & decade jump)"
-            inputHelper="Click the input to pick a date or choose a quick preset."
+            inputHelper="Click icon to open picker, or edit text directly. Month/Year views support returning back to calendar."
             properties={{
               mode: 'date',
               value: dateVal,

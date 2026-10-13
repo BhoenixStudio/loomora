@@ -56,7 +56,7 @@ export function ResponsiveProvider({ children }: Readonly<{ children: ReactNode 
 
       return acc
     }, {} as Partial<ResponsiveReturn>) as ResponsiveReturn
-    conditions.isMobile = UseAgent('gtSm')
+    conditions.isMobile = UseAgent('ltSm')
     conditions.isTablet = UseAgent('md')
     conditions.isDesktop = UseAgent('lg')
     conditions.isUltra = UseAgent('2xl')

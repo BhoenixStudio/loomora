@@ -124,6 +124,15 @@ export function Calendar(props: Readonly<CalendarProps>) {
             </button>
           )
         })}
+        <div className="col-span-3 pt-2 border-t border-body-3/20">
+          <button
+            type="button"
+            onClick={() => onViewChange('days')}
+            className="w-full py-1 px-2 rounded-md text-xs font-medium text-body-2 hover:text-primary hover:bg-second transition-colors cursor-pointer text-center"
+          >
+            ‹ Return to Calendar
+          </button>
+        </div>
       </div>
     )
   }
@@ -154,6 +163,22 @@ export function Calendar(props: Readonly<CalendarProps>) {
             </button>
           )
         })}
+        <div className="col-span-3 pt-2 border-t border-body-3/20 flex gap-2">
+          <button
+            type="button"
+            onClick={() => onViewChange('months')}
+            className="flex-1 py-1 px-2 rounded-md text-xs font-medium text-body-2 hover:text-primary hover:bg-second transition-colors cursor-pointer text-center"
+          >
+            ‹ Months
+          </button>
+          <button
+            type="button"
+            onClick={() => onViewChange('days')}
+            className="flex-1 py-1 px-2 rounded-md text-xs font-medium text-body-2 hover:text-primary hover:bg-second transition-colors cursor-pointer text-center"
+          >
+            Calendar
+          </button>
+        </div>
       </div>
     )
   }

@@ -10,8 +10,10 @@ export type DateFieldValue = Date | string | null
 export type DateRangeValue = [DateFieldValue, DateFieldValue]
 
 export type DatePreset = {
-  label: ReactNode
-  value: DateFieldValue | DateRangeValue
+  title?: ReactNode
+  label?: ReactNode
+  date?: DateFieldValue | DateRangeValue | (() => DateFieldValue | DateRangeValue)
+  value?: DateFieldValue | DateRangeValue | (() => DateFieldValue | DateRangeValue)
 }
 
 export type CalendarView = 'days' | 'months' | 'years'
@@ -26,6 +28,10 @@ export type DateFieldBaseProperties = {
   allowClear?: boolean
   format?: string
   hour12?: boolean
+  timeFormat?: '12' | '24' | '12h' | '24h'
+  openOnInputClick?: boolean
+  manualInput?: boolean
+  editManual?: boolean
   showSeconds?: boolean
   minuteStep?: number
   secondStep?: number
@@ -104,6 +110,23 @@ export function parseTime(val: DateFieldValue | undefined): { hours: number; min
   const d = parseDate(val)
   if (!d) return null
   return { hours: d.getHours(), minutes: d.getMinutes(), seconds: d.getSeconds() }
+}
+
+export function parseDateRange(val: string | undefined): [Date | null, Date | null] | null {
+  if (!val || typeof val !== 'string') return null
+  const trimmed = val.trim()
+  if (!trimmed) return null
+
+  const separators = ['→', ' - ', ' to ', '~']
+  for (const sep of separators) {
+    if (trimmed.includes(sep)) {
+      const [startStr, endStr] = trimmed.split(sep)
+      const start = parseDate(startStr)
+      const end = parseDate(endStr)
+      return [start, end]
+    }
+  }
+  return null
 }
 
 export function isSameDay(a: Date | null, b: Date | null): boolean {

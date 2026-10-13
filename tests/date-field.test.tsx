@@ -99,4 +99,85 @@ describe('DateField component', () => {
   it('DatePickerField alias is identical to DateField', () => {
     expect(DatePickerField).toBe(DateField)
   })
+
+  it('renders picker trigger icon before input and opens popover on icon click', () => {
+    render(
+      <DateField
+        label="Schedule"
+        properties={{
+          mode: 'date',
+          value: '2025-05-15',
+        }}
+      />,
+      { wrapper }
+    )
+
+    const triggerBtn = screen.getByLabelText('Open date picker')
+    expect(triggerBtn).toBeInTheDocument()
+
+    // Popover is initially closed
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+
+    // Clicking trigger icon opens popover
+    fireEvent.click(triggerBtn)
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+  })
+
+  it('allows manual input editing when openOnInputClick is false (default)', () => {
+    let committed: unknown = null
+    render(
+      <DateField
+        label="Event Date"
+        properties={{
+          mode: 'date',
+          value: '2025-05-15',
+          onChange: (val) => {
+            committed = val
+          },
+        }}
+      />,
+      { wrapper }
+    )
+
+    const input = screen.getByDisplayValue('2025-05-15') as HTMLInputElement
+    expect(input.readOnly).toBe(false)
+
+    // Clicking input does NOT open popover when openOnInputClick is false
+    fireEvent.click(input)
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+
+    // Typing in manual input
+    fireEvent.change(input, { target: { value: '2025-05-20' } })
+    expect(input.value).toBe('2025-05-20')
+    expect(committed).not.toBeNull()
+  })
+
+  it('provides navigation to go back from month and year view to calendar', () => {
+    render(
+      <DateField
+        label="Trip"
+        properties={{
+          mode: 'date',
+          value: '2025-05-15',
+        }}
+      />,
+      { wrapper }
+    )
+
+    // Open picker
+    fireEvent.click(screen.getByLabelText('Open date picker'))
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+
+    // Click Month name in header to enter month selection view
+    const monthBtn = screen.getByText('May')
+    fireEvent.click(monthBtn)
+
+    // In month selection view, back button is available
+    const backBtn = screen.getByLabelText('Back to calendar')
+    expect(backBtn).toBeInTheDocument()
+
+    // Clicking back button returns to days calendar
+    fireEvent.click(backBtn)
+    expect(screen.getByText('May')).toBeInTheDocument()
+  })
 })

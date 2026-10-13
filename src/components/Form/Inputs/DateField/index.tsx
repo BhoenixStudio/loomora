@@ -39,6 +39,7 @@ import {
   isSameDay,
   padZero,
   parseDate,
+  parseDateRange,
   parseTime,
 } from './helper'
 import { Calendar, Footer, Header, Presets, TimeSpinner } from './Modules'
@@ -58,7 +59,17 @@ function useSafeResponsive() {
 
 export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, ref) => {
   const { form, translations, t } = useLoomora()
-  const { isMobile } = useSafeResponsive()
+  const responsive = useSafeResponsive()
+  const [windowWidth, setWindowWidth] = useState<number | null>(null)
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const isMobile = windowWidth !== null ? windowWidth < 768 : responsive.isMobile
 
   const {
     size = [],
@@ -116,6 +127,20 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
     onClose,
     onClear,
   } = properties ?? {}
+
+  const openOnInputClick =
+    properties?.openOnInputClick ??
+    (properties?.manualInput !== undefined ? !properties.manualInput : undefined) ??
+    (properties?.editManual !== undefined ? !properties.editManual : undefined) ??
+    form?.dateField?.openOnInputClick ??
+    (form?.dateField?.manualInput !== undefined ? !form.dateField.manualInput : false)
+
+  const isManualEdit =
+    properties?.manualInput ??
+    properties?.editManual ??
+    form?.dateField?.manualInput ??
+    form?.dateField?.editManual ??
+    !openOnInputClick
 
   // Props for single vs range
   const singleProps = !isRangeMode ? (properties as DateFieldSingleProperties | undefined) : undefined
@@ -198,14 +223,21 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
   const presetsList = useMemo<DatePreset[]>(() => {
     if (!showPresets) return []
     if (customPresets) return customPresets
+    const configPresets = form?.dateField?.presets?.[mode]
+    if (configPresets && configPresets.length > 0) {
+      return configPresets.map((item) => ({
+        title: item.title,
+        label: item.title,
+        date: item.date,
+        value: item.date,
+      }))
+    }
     return getDefaultPresets(mode, t)
-  }, [showPresets, customPresets, mode, t])
+  }, [showPresets, customPresets, form?.dateField?.presets, mode, t])
 
   // Calculated Second Month for dual-month display on desktop
   const secondMonthDate = useMemo(() => {
-    const d = new Date(viewDate)
-    d.setMonth(d.getMonth() + 1)
-    return d
+    return new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1)
   }, [viewDate])
 
   // Year decade bounds for year jump view
@@ -310,15 +342,16 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
   // Presets handler
   const handlePresetSelect = useCallback(
-    (presetVal: DatePreset['value']) => {
-      if (isRangeMode && Array.isArray(presetVal)) {
-        const [s, e] = presetVal
+    (presetVal: DatePreset['value'] | DatePreset['date']) => {
+      const resolved = typeof presetVal === 'function' ? (presetVal as () => any)() : presetVal
+      if (isRangeMode && Array.isArray(resolved)) {
+        const [s, e] = resolved
         const sD = parseDate(s)
         const eD = parseDate(e)
         commitRange([sD, eD])
         if (sD) setViewDate(sD)
-      } else if (!isRangeMode && !Array.isArray(presetVal)) {
-        const d = parseDate(presetVal)
+      } else if (!isRangeMode && !Array.isArray(resolved)) {
+        const d = parseDate(resolved)
         commitSingle(d)
         if (d) setViewDate(d)
       }
@@ -474,13 +507,14 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
       {fieldsetPrefix}
 
       <div
-        onClick={handleToggleOpen}
+        onClick={openOnInputClick ? handleToggleOpen : undefined}
         className={cx([
-          'flex flex-nowrap items-center relative border bg-inherit rounded gap-2 cursor-pointer transition-colors',
+          'flex flex-nowrap items-center relative border bg-inherit rounded gap-2 transition-colors',
           { value: 'ps-3', condition: Boolean(prefix) },
           { value: 'pe-3', condition: Boolean(suffix) },
           { value: 'border-error/70', fallback: 'border-body-3/40', condition: error },
           { value: 'opacity-60 cursor-not-allowed', condition: isDisabled },
+          { value: 'cursor-pointer', condition: !isDisabled && openOnInputClick },
           wrapperClass,
         ])}
         {...wrapperAttrs}
@@ -498,20 +532,53 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
         {prefix}
 
+        {/* Calendar / Clock Trigger Icon (before input) */}
+        <button
+          type="button"
+          tabIndex={-1}
+          disabled={isDisabled}
+          aria-label={isTimeMode ? 'Open time picker' : 'Open date picker'}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleToggleOpen()
+          }}
+          className={cx([
+            'shrink-0 flex items-center justify-center p-1.5 ms-2 text-body-3 text-sm transition-colors rounded select-none',
+            {
+              value: 'cursor-not-allowed opacity-50',
+              fallback: 'cursor-pointer hover:text-primary hover:bg-second/70 active:scale-95',
+              condition: isDisabled,
+            },
+          ])}
+        >
+          {defaultIcon}
+        </button>
+
         {/* Input display field */}
         <input
           ref={ref}
           type="text"
-          readOnly={!allowInput || isDisabled}
+          readOnly={isDisabled || (!allowInput && !isManualEdit && openOnInputClick)}
           value={inputText}
           placeholder={defaultPlaceholder}
           disabled={isDisabled}
           required={required}
+          onClick={() => {
+            if (openOnInputClick) {
+              handleToggleOpen()
+            }
+          }}
           onChange={(e) => {
-            if (!allowInput) return
             setInputText(e.target.value)
-            const parsed = parseDate(e.target.value)
-            if (parsed) commitSingle(parsed)
+            if (isRangeMode) {
+              const range = parseDateRange(e.target.value)
+              if (range && range[0] && range[1]) {
+                commitRange(range)
+              }
+            } else {
+              const parsed = parseDate(e.target.value)
+              if (parsed) commitSingle(parsed)
+            }
           }}
           onKeyDown={(e: ReactKeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
@@ -520,11 +587,10 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
             }
           }}
           className={cx([
-            'flex-1 bg-transparent outline-none py-3 font-normal text-sm select-none',
+            'flex-1 bg-transparent outline-none py-3 font-normal text-sm',
             { value: 'cursor-not-allowed', condition: isDisabled },
-            { value: 'cursor-pointer', condition: !isDisabled && !allowInput },
-            { value: 'ps-2', fallback: 'ps-3', condition: Boolean(prefix) },
-            { value: 'pe-2', fallback: 'pe-3', condition: Boolean(suffix) },
+            { value: 'cursor-pointer', condition: !isDisabled && openOnInputClick },
+            'pe-2',
             {
               value: 'placeholder:opacity-70',
               fallback: 'placeholder:opacity-0',
@@ -542,16 +608,11 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
               e.stopPropagation()
               handleClear()
             }}
-            className="shrink-0 p-1 text-body-3 hover:text-error transition-colors cursor-pointer text-sm"
+            className="shrink-0 p-1 me-2 text-body-3 hover:text-error transition-colors cursor-pointer text-sm"
           >
             {form?.dateField?.clearIcon ?? '✕'}
           </button>
         )}
-
-        {/* Calendar / Clock Trigger Icon */}
-        <span className="shrink-0 text-body-3 text-sm pe-2 pointer-events-none select-none">
-          {defaultIcon}
-        </span>
 
         {name && <input type="hidden" name={name} value={hiddenValue} />}
 
@@ -590,7 +651,15 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
               condition: isMobile,
             },
           ])}
-          style={{ minWidth: isMobile ? '280px' : isRangeMode ? '560px' : '300px' }}
+          style={{
+            minWidth: isMobile
+              ? '280px'
+              : mode === 'dateTimeRange'
+              ? '780px'
+              : isRangeMode
+              ? '560px'
+              : '300px',
+          }}
         >
           {/* Mobile Presets Bar */}
           {isMobile && showPresets && presetsList.length > 0 && (
@@ -606,7 +675,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
             <div className="flex flex-col flex-1">
               {/* If it's pure time mode */}
               {isTimeMode && (
-                <div className="flex flex-wrap p-2 items-center justify-center">
+                <div className="flex flex-wrap p-3 items-center justify-center">
                   {mode === 'time' && (
                     <TimeSpinner
                       hours={timeState.hours}
@@ -625,7 +694,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
                     />
                   )}
                   {mode === 'timeRange' && (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap items-center justify-center gap-3">
                       <TimeSpinner
                         label={translations?.dateField?.startTime ?? 'Start Time'}
                         hours={startTimeState.hours}
@@ -643,6 +712,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
                         minuteStep={minuteStep}
                         secondStep={secondStep}
                       />
+                      <span className="hidden sm:inline-block text-body-3 font-bold text-lg select-none">→</span>
                       <TimeSpinner
                         label={translations?.dateField?.endTime ?? 'End Time'}
                         hours={endTimeState.hours}
@@ -671,6 +741,8 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
                   {/* Calendar Header */}
                   <Header
                     viewDate={viewDate}
+                    secondMonthDate={secondMonthDate}
+                    isDualMonth={!isMobile && isRangeMode && view === 'days'}
                     view={view}
                     onViewChange={setView}
                     onPrev={handlePrev}
@@ -703,9 +775,6 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
                     {/* Secondary Calendar (Month 2 for dual-month on desktop) */}
                     {!isMobile && isRangeMode && view === 'days' && (
                       <div className="border-s border-body-3/20">
-                        <div className="px-2 py-1.5 border-b border-body-3/20 text-center font-medium text-sm text-title-1 select-none">
-                          {secondMonthDate.toLocaleString('default', { month: 'long' })} {secondMonthDate.getFullYear()}
-                        </div>
                         <Calendar
                           viewDate={secondMonthDate}
                           selectedDate={null}
@@ -731,31 +800,33 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
                       </div>
                     )}
 
-                    {/* Time selection for datetime / dateTimeRange modes */}
+                    {/* Time selection for datetime */}
                     {mode === 'datetime' && (
-                      <TimeSpinner
-                        hours={timeState.hours}
-                        minutes={timeState.minutes}
-                        seconds={timeState.seconds}
-                        onChange={(next) => {
-                          setTimeState(next)
-                          const d = parseDate(currentSingle)
-                          if (d) {
-                            d.setHours(next.hours, next.minutes, next.seconds)
-                            commitSingle(d)
-                          }
-                        }}
-                        hour12={hour12}
-                        showSeconds={showSeconds}
-                        minuteStep={minuteStep}
-                        secondStep={secondStep}
-                      />
+                      <div className="p-2 border-s border-body-3/20">
+                        <TimeSpinner
+                          hours={timeState.hours}
+                          minutes={timeState.minutes}
+                          seconds={timeState.seconds}
+                          onChange={(next) => {
+                            setTimeState(next)
+                            const d = parseDate(currentSingle)
+                            if (d) {
+                              d.setHours(next.hours, next.minutes, next.seconds)
+                              commitSingle(d)
+                            }
+                          }}
+                          hour12={hour12}
+                          showSeconds={showSeconds}
+                          minuteStep={minuteStep}
+                          secondStep={secondStep}
+                        />
+                      </div>
                     )}
 
                     {mode === 'dateTimeRange' && (
-                      <div className="flex flex-col border-s border-body-3/20 p-1">
+                      <div className="flex flex-col sm:flex-row gap-2 p-2 border-s border-body-3/20">
                         <TimeSpinner
-                          label={translations?.dateField?.startTime ?? 'Start'}
+                          label={translations?.dateField?.startTime ?? 'Start Time'}
                           hours={startTimeState.hours}
                           minutes={startTimeState.minutes}
                           seconds={startTimeState.seconds}
@@ -771,7 +842,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
                           secondStep={secondStep}
                         />
                         <TimeSpinner
-                          label={translations?.dateField?.endTime ?? 'End'}
+                          label={translations?.dateField?.endTime ?? 'End Time'}
                           hours={endTimeState.hours}
                           minutes={endTimeState.minutes}
                           seconds={endTimeState.seconds}
