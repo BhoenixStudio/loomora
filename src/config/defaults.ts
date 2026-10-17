@@ -899,10 +899,7 @@ export const loomoraDefaults: LoomoraConfig = {
       chevronRight: '›',
       presets: {
         date: [
-          {
-            title: 'Today',
-            date: () => new Date(),
-          },
+          { title: 'Today', date: () => new Date() },
           {
             title: 'Yesterday',
             date: () => {
@@ -921,10 +918,7 @@ export const loomoraDefaults: LoomoraConfig = {
           },
         ],
         dateRange: [
-          {
-            title: 'Today',
-            date: () => [new Date(), new Date()],
-          },
+          { title: 'Today', date: () => [new Date(), new Date()] },
           {
             title: 'Yesterday',
             date: () => {
@@ -987,14 +981,9 @@ export const loomoraDefaults: LoomoraConfig = {
           { title: 'Afternoon (13:00 - 17:00)', date: ['13:00', '17:00'] },
           { title: 'Business Day (09:00 - 18:00)', date: ['09:00', '18:00'] },
         ],
-        dateTime: [
-          { title: 'Now', date: () => new Date() },
-        ],
+        dateTime: [{ title: 'Now', date: () => new Date() }],
         dateTimeRange: [
-          {
-            title: 'Today',
-            date: () => [new Date(), new Date()],
-          },
+          { title: 'Today', date: () => [new Date(), new Date()] },
           {
             title: 'Last 7 Days',
             date: () => {
@@ -1014,6 +1003,7 @@ export const loomoraDefaults: LoomoraConfig = {
             },
           },
         ],
+        datetime: [],
       },
     },
   },

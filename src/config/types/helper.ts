@@ -332,32 +332,32 @@ export type LoomoraDateFieldPresetItem<T = Date | string | [Date | string | null
 }
 
 export type LoomoraDateFieldPresets = {
-  date?: LoomoraDateFieldPresetItem<Date | string | null>[]
-  dateRange?: LoomoraDateFieldPresetItem<[Date | string | null, Date | string | null]>[]
-  time?: LoomoraDateFieldPresetItem<string | Date | null>[]
-  timeRange?: LoomoraDateFieldPresetItem<[string | Date | null, string | Date | null]>[]
-  dateTime?: LoomoraDateFieldPresetItem<Date | string | null>[]
-  datetime?: LoomoraDateFieldPresetItem<Date | string | null>[]
-  dateTimeRange?: LoomoraDateFieldPresetItem<[Date | string | null, Date | string | null]>[]
+  date: LoomoraDateFieldPresetItem<Date | string | null>[]
+  dateRange: LoomoraDateFieldPresetItem<[Date | string | null, Date | string | null]>[]
+  time: LoomoraDateFieldPresetItem<string | Date | null>[]
+  timeRange: LoomoraDateFieldPresetItem<[string | Date | null, string | Date | null]>[]
+  dateTime: LoomoraDateFieldPresetItem<Date | string | null>[]
+  datetime: LoomoraDateFieldPresetItem<Date | string | null>[]
+  dateTimeRange: LoomoraDateFieldPresetItem<[Date | string | null, Date | string | null]>[]
 }
 
 export type LoomoraDateField = {
   firstDayOfWeek: 0 | 1 | 6
   hour12: boolean
-  timeFormat?: '12' | '24' | '12h' | '24h'
+  timeFormat: '12' | '24' | '12h' | '24h'
   showSeconds: boolean
   allowClear: boolean
   minuteStep: number
   secondStep: number
   openOnInputClick: boolean
-  manualInput?: boolean
-  editManual?: boolean
+  manualInput: boolean
+  editManual: boolean
   calendarIcon: ReactNode
   clockIcon: ReactNode
   clearIcon: ReactNode
   chevronLeft: ReactNode
   chevronRight: ReactNode
-  presets?: LoomoraDateFieldPresets
+  presets: LoomoraDateFieldPresets
 }
 
 // Hooks
