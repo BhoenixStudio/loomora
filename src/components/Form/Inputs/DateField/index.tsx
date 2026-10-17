@@ -229,7 +229,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
   // Refs
   const rootRef = useRef<HTMLFieldSetElement>(null)
   const iconButtonRef = useRef<HTMLButtonElement>(null)
-  const popoverRef = useRef<HTMLDivElement>(null)
+  const popoverRef = useRef<HTMLDialogElement>(null)
 
   const isDisabled = disabled || loading || readOnly
 
@@ -485,24 +485,18 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
     const shouldPlaceTop = spaceBelow < popoverHeight && spaceAbove > spaceBelow
 
     const placementV: 'top' | 'bottom' = shouldPlaceTop ? 'top' : 'bottom'
-    const rawTop = shouldPlaceTop
-      ? triggerRect.top - popoverHeight - GAP
-      : triggerRect.bottom + GAP
+    const rawTop = shouldPlaceTop ? triggerRect.top - popoverHeight - GAP : triggerRect.bottom + GAP
 
     const top = Math.max(PADDING, Math.min(rawTop, Math.max(PADDING, winHeight - popoverHeight - PADDING)))
 
     const isRtl = document.documentElement.dir === 'rtl' || document.body.dir === 'rtl'
-    const rawLeft = isRtl
-      ? triggerRect.right - popoverWidth
-      : triggerRect.left
+    const rawLeft = isRtl ? triggerRect.right - popoverWidth : triggerRect.left
 
     const maxLeft = Math.max(PADDING, winWidth - popoverWidth - PADDING)
     const left = Math.max(PADDING, Math.min(rawLeft, maxLeft))
 
     setCoords((prev) =>
-      prev.top === top && prev.left === left && prev.placementV === placementV
-        ? prev
-        : { top, left, placementV }
+      prev.top === top && prev.left === left && prev.placementV === placementV ? prev : { top, left, placementV }
     )
   }, [])
 
@@ -737,12 +731,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
           />
 
           {/* Main Calendar Area */}
-          <div
-            className={cx([
-              'flex flex-wrap items-start justify-center',
-              { value: 'gap-1', condition: !isMobile },
-            ])}
-          >
+          <div className={cx(['flex flex-wrap items-start justify-center', { value: 'gap-1', condition: !isMobile }])}>
             {/* Primary Calendar (Month 1) */}
             <Calendar
               viewDate={viewDate}
@@ -857,79 +846,74 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
   )
 
   // Floating Popover Portal Content
-  const portalContent = mounted && open && !isDisabled && typeof document !== 'undefined'
-    ? createPortal(
-        isMobile ? (
-          // Mobile View: Full Screen Dialog
-          <div
-            ref={popoverRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Date and time picker"
-            className="fixed inset-0 z-[9999] w-full h-[100dvh] bg-main flex flex-col justify-between overflow-hidden animate-in fade-in select-none"
-          >
-            {/* Mobile Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-body-3/20 shrink-0 bg-second/10">
-              <div className="flex flex-col">
-                <span className="text-sm font-bold text-title-1">
-                  {typeof label === 'string' && label ? label : modalTitle}
-                </span>
-                <span className="text-xs text-body-3">{defaultPlaceholder}</span>
-              </div>
-              <button
-                type="button"
-                aria-label="Close picker"
-                onClick={() => {
-                  setOpen(false)
-                  onClose?.()
-                }}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-second text-title-2 hover:text-title-1 hover:bg-second/80 transition-colors cursor-pointer text-sm font-semibold"
-              >
-                ✕
-              </button>
+  const portalContent =
+    mounted &&
+    open &&
+    !isDisabled &&
+    typeof document !== 'undefined' &&
+    createPortal(
+      isMobile ? (
+        <dialog
+          ref={popoverRef}
+          aria-modal="true"
+          aria-label="Date and time picker"
+          className="fixed inset-0 z-9999 w-full h-dvh bg-main flex flex-col justify-between overflow-hidden animate-in fade-in select-none"
+        >
+          <div className="flex items-center justify-between px-4 py-3 border-b border-body-3/20 shrink-0 bg-second/10">
+            <div className="flex flex-col">
+              <span className="text-sm font-bold text-title-1">
+                {typeof label === 'string' && label ? label : modalTitle}
+              </span>
+              <span className="text-xs text-body-3">{defaultPlaceholder}</span>
             </div>
+            <button
+              type="button"
+              aria-label="Close picker"
+              onClick={() => {
+                setOpen(false)
+                onClose?.()
+              }}
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-second text-title-2 hover:text-title-1 hover:bg-second/80 transition-colors cursor-pointer text-sm font-semibold"
+            >
+              ✕
+            </button>
+          </div>
 
-            {/* Mobile Presets Bar */}
+          {showPresets && presetsList.length > 0 && (
+            <Presets presets={presetsList} onSelect={handlePresetSelect} isMobile />
+          )}
+
+          <div className="flex-1 overflow-y-auto flex flex-col items-center justify-start py-3 px-2">
+            {pickerMainContent}
+          </div>
+        </dialog>
+      ) : (
+        <dialog
+          ref={popoverRef}
+          aria-modal="true"
+          aria-label="Date and time picker"
+          style={{
+            position: 'fixed',
+            top: `${coords.top}px`,
+            left: `${coords.left}px`,
+            minWidth: mode === 'dateTimeRange' ? '780px' : isRangeMode ? '560px' : '300px',
+          }}
+          className={cx([
+            'fixed z-9999 max-w-[calc(100vw-1.5rem)] rounded-2xl border border-body-3/30',
+            'bg-main shadow-2xl backdrop-blur flex flex-col overflow-hidden animate-in fade-in select-none',
+          ])}
+        >
+          <div className="flex">
             {showPresets && presetsList.length > 0 && (
-              <Presets presets={presetsList} onSelect={handlePresetSelect} isMobile />
+              <Presets presets={presetsList} onSelect={handlePresetSelect} isMobile={false} />
             )}
 
-            {/* Mobile Scrollable Body */}
-            <div className="flex-1 overflow-y-auto flex flex-col items-center justify-start py-3 px-2">
-              {pickerMainContent}
-            </div>
+            {pickerMainContent}
           </div>
-        ) : (
-          // Desktop View: Fixed Position calculated from picker icon, popover size, and window size
-          <div
-            ref={popoverRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Date and time picker"
-            style={{
-              position: 'fixed',
-              top: `${coords.top}px`,
-              left: `${coords.left}px`,
-              minWidth: mode === 'dateTimeRange' ? '780px' : isRangeMode ? '560px' : '300px',
-            }}
-            className={cx([
-              'fixed z-[9999] max-w-[calc(100vw-1.5rem)] rounded-2xl border border-body-3/30',
-              'bg-main shadow-2xl backdrop-blur flex flex-col overflow-hidden animate-in fade-in select-none',
-            ])}
-          >
-            <div className="flex">
-              {/* Desktop Presets Sidebar */}
-              {showPresets && presetsList.length > 0 && (
-                <Presets presets={presetsList} onSelect={handlePresetSelect} isMobile={false} />
-              )}
-
-              {pickerMainContent}
-            </div>
-          </div>
-        ),
-        document.body
-      )
-    : null
+        </dialog>
+      ),
+      document.body
+    )
 
   return (
     <fieldset
@@ -966,7 +950,6 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
         {prefix}
 
-        {/* Calendar / Clock Trigger Icon (before input) */}
         <button
           ref={iconButtonRef}
           type="button"
@@ -989,7 +972,6 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
           {defaultIcon}
         </button>
 
-        {/* Input display field */}
         <input
           ref={ref}
           type="text"
@@ -1052,7 +1034,6 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
       <InputErrorMessage {...{ errors }} />
 
-      {/* Floating Popover / Full screen mobile dialog in Portal */}
       {portalContent}
     </fieldset>
   )

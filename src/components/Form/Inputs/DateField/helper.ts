@@ -2,8 +2,8 @@
 
 import { ReactNode } from 'react'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../../..'
-import { GlobalElement } from '../../../../types'
 import { TranslateFn } from '../../../../config/types/helper'
+import { GlobalElement } from '../../../../types'
 
 export type DateFieldMode = 'date' | 'datetime' | 'time' | 'dateRange' | 'timeRange' | 'dateTimeRange'
 
@@ -91,9 +91,9 @@ export function parseDate(val: DateFieldValue | undefined): Date | null {
   // If it's pure time format HH:mm or HH:mm:ss
   const timeMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*(AM|PM))?$/i.exec(trimmed)
   if (timeMatch) {
-    const rawH = parseInt(timeMatch[1], 10)
-    const minutes = parseInt(timeMatch[2], 10)
-    const seconds = timeMatch[3] ? parseInt(timeMatch[3], 10) : 0
+    const rawH = Number.parseInt(timeMatch[1], 10)
+    const minutes = Number.parseInt(timeMatch[2], 10)
+    const seconds = timeMatch[3] ? Number.parseInt(timeMatch[3], 10) : 0
     const ampm = timeMatch[4]?.toUpperCase()
     const hours = ampm === 'PM' && rawH < 12 ? rawH + 12 : ampm === 'AM' && rawH === 12 ? 0 : rawH
     const d = new Date()
@@ -157,8 +157,8 @@ export function isDateDisabled(
 ): boolean {
   const { minDate, maxDate, disabledDates, disabledDaysOfWeek } = options
 
-  if (disabledDaysOfWeek && disabledDaysOfWeek.includes(date.getDay())) return true
-  if (disabledDates && disabledDates(date)) return true
+  if (disabledDaysOfWeek?.includes(date.getDay())) return true
+  if (disabledDates?.(date)) return true
 
   const dayTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime()
 
