@@ -507,6 +507,7 @@ export const loomoraDefaults: LoomoraConfig = {
       endTime: 'End time',
       today: 'Today',
       yesterday: 'Yesterday',
+      tomorrow: 'Tomorrow',
       thisWeek: 'This week',
       last7Days: 'Last 7 days',
       last30Days: 'Last 30 days',

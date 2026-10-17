@@ -290,6 +290,7 @@ export type LoomoraDateFieldT = {
   endTime: string
   today: string
   yesterday: string
+  tomorrow: string
   thisWeek: string
   last7Days: string
   last30Days: string
