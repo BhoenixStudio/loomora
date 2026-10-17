@@ -46,7 +46,7 @@ export type InputProps = InputBase &
     | ({ type: 'range' } & RangeFieldProps)
     | ({ type: 'rating' } & RatingFieldProps)
     | ({ type: 'color' } & ColorFieldProps)
-    | ({ type: 'dateTime' } & DateFieldProps)
+    | ({ type: 'dateTime' | 'date' } & DateFieldProps)
     | ({ type: 'number' } & NumberFieldProps)
     | ({ type: 'divider' } & DividerInputProps)
     | ({ type: 'empty' } & EmptyInputProps)

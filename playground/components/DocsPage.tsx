@@ -73,8 +73,9 @@ export function DocsPage({ doc, children }: { doc: ComponentDoc; children: React
                 <section id="usage" className="scroll-mt-24">
                   <h2 className="text-xl font-semibold">Usage</h2>
                   <p className="mt-2 text-sm leading-6 text-body-2">
-                    Import from the Loomora package root. The example shows the core composition; connect controlled
-                    fields to state in the parent component.
+                    Import from the Loomora package root. For projects without Tailwind CSS, ensure{' '}
+                    <code className="rounded bg-main px-1.5 py-0.5 text-xs text-title-1">loomora/dist/index.css</code> is
+                    imported in your root layout or entry file.
                   </p>
                   <CopyCode code={`import { ${doc.importName} } from 'loomora'\n\n${doc.code}`} />
                 </section>

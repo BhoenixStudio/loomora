@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { componentCatalog, componentGroups } from '../components/catalog'
 import { ComponentIndex } from '../components/ComponentIndex'
+import { InstallationGuide } from '../components/InstallationGuide'
 
 export default function HomePage() {
   return (
@@ -31,20 +32,23 @@ export default function HomePage() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="#component-index"
+              href="#installation-guide"
               className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              Get Started & Installation{' '}
+              <span aria-hidden="true" className="ms-2">
+                ↓
+              </span>
+            </Link>
+            <Link
+              href="#component-index"
+              className="inline-flex min-h-11 items-center rounded-xl border border-third bg-second px-5 text-sm font-semibold text-title-2 transition hover:border-primary/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               Browse components{' '}
               <span aria-hidden="true" className="ms-2">
                 →
               </span>
             </Link>
-            <a
-              href="https://www.npmjs.com/package/loomora"
-              className="inline-flex min-h-11 items-center rounded-xl border border-third bg-second px-5 text-sm font-semibold text-title-2 transition hover:border-primary/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              Package details
-            </a>
           </div>
         </div>
 
@@ -63,6 +67,8 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <InstallationGuide />
 
       <ComponentIndex />
 

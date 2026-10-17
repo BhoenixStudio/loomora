@@ -23,20 +23,20 @@ The supported peer dependency ranges are defined in [`package.json`](./package.j
 
 ## Install
 
-Install Loomora and its peer dependencies with your package manager:
+Install Loomora with your package manager:
 
 ```sh
 # npm
-npm install loomora react react-dom @tinymce/tinymce-react
+npm install loomora
 
 # pnpm
-pnpm add loomora react react-dom @tinymce/tinymce-react
+pnpm add loomora
 
 # Yarn
-yarn add loomora react react-dom @tinymce/tinymce-react
+yarn add loomora
 ```
 
-React and React DOM are peer dependencies, so use versions compatible with the supported range. If your application does not use a feature that needs TinyMCE, check your package manager's peer dependency behavior and install the required peers as appropriate.
+> **Peer Dependencies**: Loomora requires `react` and `react-dom` (`>=18.2.0 <20`) to be installed in your application as peer dependencies. If your application does not already have them, install them separately with your package manager (`pnpm add react react-dom`). Optional features like `TextEditorField` also declare `@tinymce/tinymce-react >=6.3.0`.
 
 ## Use
 
@@ -91,7 +91,74 @@ export function AppProviders({ children }: { children: ReactNode }) {
 }
 ```
 
-`LoomoraProvider` includes Loomora's stylesheet. Ensure the application build handles CSS imports from dependencies. Loomora components also use utility-class names; applications should provide the styling setup required by their chosen CSS workflow.
+`LoomoraProvider` includes Loomora's stylesheet. Ensure the application build handles CSS imports from dependencies.
+
+## Styling & Setup
+
+Loomora supports both **non-Tailwind** and **Tailwind CSS** projects.
+
+### 1. Non-Tailwind Projects (Vite, Next.js, Remix, Vanilla CSS, etc.)
+
+No Tailwind configuration is needed. Loomora ships a self-contained, pre-compiled stylesheet that includes all utility classes, theme variables, and keyframe animations needed by the components. It does **not** include an aggressive preflight reset, so it will not disrupt your app's global typography or layouts.
+
+Import the stylesheet once in your application root (such as `main.tsx`, `index.tsx`, or `app/layout.tsx`):
+
+```tsx
+// main.tsx or layout.tsx
+import 'loomora/dist/index.css'
+import { Button, LoomoraProvider } from 'loomora'
+
+export default function App() {
+  return (
+    <LoomoraProvider>
+      <Button title="Click Me" variant="fill" color="info" />
+    </LoomoraProvider>
+  )
+}
+```
+
+### 2. Tailwind CSS Projects
+
+If your application already uses Tailwind CSS, you can scan Loomora's source classes directly with your Tailwind build pipeline:
+
+#### Tailwind CSS v4
+
+Add the `@source` directive pointing to Loomora in your main CSS file (`globals.css` or `app.css`):
+
+```css
+@import 'tailwindcss';
+@source '../node_modules/loomora';
+
+/* Optional: Custom color overrides */
+:root {
+  --loomora-primary: #f37035;
+  --loomora-main: #f5f7fa;
+}
+```
+
+#### Tailwind CSS v3
+
+Add the Loomora package path to your `tailwind.config.js` `content` array:
+
+```js
+// tailwind.config.js
+module.exports = {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/loomora/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+And import Loomora's stylesheet in your app entry for component keyframe animations:
+
+```tsx
+import 'loomora/dist/index.css'
+```
 
 ## Develop in this repository
 
@@ -126,7 +193,8 @@ The root development command starts the playground, which aliases `loomora` to t
 
 | Script                    | Purpose                                                                     |
 | ------------------------- | --------------------------------------------------------------------------- |
-| `build`                   | Build ESM, CommonJS, source maps, and TypeScript declarations into `dist/`. |
+| `build`                   | Build CSS, ESM, CommonJS, source maps, and TypeScript declarations into `dist/`. |
+| `build:css`               | Compile Tailwind utilities, theme variables, and keyframes into `dist/index.css`. |
 | `build:watch`             | Rebuild the library when source files change.                               |
 | `dev`                     | Start the private playground development server.                            |
 | `dev:playground`          | Start the playground's Next.js development server.                          |

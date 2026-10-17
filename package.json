@@ -42,7 +42,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./index.css": "./dist/index.css",
+    "./dist/index.css": "./dist/index.css",
+    "./styles/index.css": "./dist/index.css"
   },
   "files": [
     "dist",
@@ -54,7 +57,8 @@
     "**/*.css"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "node scripts/build-css.mjs && tsup",
+    "build:css": "node scripts/build-css.mjs",
     "build:watch": "tsup --watch",
     "check": "npm run lint && npm run typecheck && npm run test:run && npm run build && npm run pack:dry",
     "check:playground": "npm run typecheck --workspace playground && npm run lint --workspace playground && npm run build --workspace playground",

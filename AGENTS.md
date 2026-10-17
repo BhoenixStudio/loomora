@@ -12,7 +12,10 @@ The package is at version `0.1.0` and is prepared for npm publishing. Do not ass
 - Node.js `>=20.19.0` and npm `>=10.0.0` are recorded in `package.json`.
 - React and React DOM peer range: `>=18.2.0 <20`.
 - Other declared peer dependencies: `@tinymce/tinymce-react >=6.3.0`.
-- Build: tsup, from `src/index.ts` to `dist/`, in ESM and CJS formats with declarations and source maps; React and React DOM are external.
+- Build: `node scripts/build-css.mjs && tsup`, outputting ESM, CJS, declaration maps, and `dist/index.css`; React and React DOM are external.
+- Styling contract: Loomora supports both non-Tailwind and Tailwind projects. It compiles a standalone stylesheet (`dist/index.css` / `src/styles/index.css`) containing theme tokens (`--loomora-*`), keyframe animations, component elements, and pre-compiled Tailwind utilities without a global preflight reset. It is exported via `"./dist/index.css"`, `"./index.css"`, and `"./styles/index.css"`.
+  - **Non-Tailwind projects**: Consumers import `import 'loomora/dist/index.css'` or use `LoomoraProvider`.
+  - **Tailwind projects**: Consumers can scan Loomora with `@source '../node_modules/loomora'` (v4) or `content` (v3), or simply import `loomora/dist/index.css`.
 - Tests: Vitest with jsdom and Testing Library. Lint: ESLint with TypeScript and React Hooks rules. Formatting: Prettier.
 - The checked-in dependency lockfile is `pnpm-lock.yaml`. Repository installs should use pnpm to honor it. npm and Yarn commands are usable for scripts, but their installs do not use this lockfile; do not create or update another lockfile as a side effect.
 - `package.json` declares the `playground` npm workspace. The playground is a private Next.js app configured to consume the local library source while developing.
@@ -73,7 +76,8 @@ These latter installs do not use `pnpm-lock.yaml`. Do not check in a competing l
 ### Build, run, and validate
 
 ```sh
-pnpm run build             # package ESM, CJS, and declaration output
+pnpm run build             # compile CSS and package ESM, CJS, and declarations
+pnpm run build:css         # compile standalone CSS (Tailwind utilities + keyframes)
 pnpm run dev               # library watch build plus playground
 pnpm run test:run          # complete Vitest suite once
 pnpm run lint              # ESLint
