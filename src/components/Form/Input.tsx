@@ -67,8 +67,7 @@ export function Input(props: Readonly<InputProps>) {
     rating: <RatingField {...(rest as RatingFieldProps)} />,
     number: <NumberField {...(rest as NumberFieldProps)} />,
     color: <ColorField {...(rest as ColorFieldProps)} />,
-    date: <DateField {...(rest as DateFieldProps)} />,
-    datePicker: <DateField {...(rest as DateFieldProps)} />,
+    dateTime: <DateField {...(rest as DateFieldProps)} />,
     divider: (() => {
       const { size = ['col-span-12'], className, attributes, ...attrs } = rest as DividerInputProps
       return <hr className={cx(['border-t border-third w-full my-2', ...size, className])} {...attributes} {...attrs} />
