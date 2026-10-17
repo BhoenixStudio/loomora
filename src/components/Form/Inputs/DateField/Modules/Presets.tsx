@@ -1,7 +1,7 @@
 'use client'
 
 import { cx } from '../../../../../hooks'
-import { DatePreset } from '../helper'
+import { DateFieldValue, DatePreset, DateRangeValue } from '../helper'
 
 export type PresetsProps = {
   presets: DatePreset[]
@@ -16,7 +16,7 @@ export function Presets(props: Readonly<PresetsProps>) {
 
   const handleSelect = (preset: DatePreset) => {
     const rawVal = preset.date ?? preset.value
-    const resolved = typeof rawVal === 'function' ? (rawVal as () => any)() : rawVal
+    const resolved = typeof rawVal === 'function' ? (rawVal as () => DateFieldValue | DateRangeValue)() : rawVal
     onSelect(resolved)
   }
 

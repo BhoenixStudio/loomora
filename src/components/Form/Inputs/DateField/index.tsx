@@ -10,22 +10,15 @@ import {
   useRef,
   useState,
 } from 'react'
-import {
-  hasError,
-  InputErrorMessage,
-  InputHelper,
-  InputHelperProps,
-  Label,
-  LabelProps,
-} from '../../..'
-import { ConditionalWrapper } from '../../../Helper'
+import { createPortal } from 'react-dom'
+import { hasError, InputErrorMessage, InputHelper, InputHelperProps, Label, LabelProps } from '../../..'
 import { useLoomora } from '../../../../config'
 import { cx, hasProps } from '../../../../hooks'
 import { useResponsive } from '../../../../utils'
+import { ConditionalWrapper } from '../../../Helper'
 import {
   CalendarView,
   DateFieldMode,
-  DateFieldProperties,
   DateFieldProps,
   DateFieldRangeProperties,
   DateFieldSingleProperties,
@@ -35,12 +28,8 @@ import {
   formatDisplay,
   formatTimePart,
   getDefaultPresets,
-  isDateDisabled,
-  isSameDay,
-  padZero,
   parseDate,
   parseDateRange,
-  parseTime,
 } from './helper'
 import { Calendar, Footer, Header, Presets, TimeSpinner } from './Modules'
 
@@ -57,12 +46,20 @@ function useSafeResponsive() {
   }
 }
 
+type PopoverCoords = {
+  top: number
+  left: number
+  placementV: 'top' | 'bottom'
+}
+
 export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, ref) => {
   const { form, translations, t } = useLoomora()
   const responsive = useSafeResponsive()
   const [windowWidth, setWindowWidth] = useState<number | null>(null)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const handleResize = () => setWindowWidth(window.innerWidth)
     handleResize()
     window.addEventListener('resize', handleResize)
@@ -115,8 +112,6 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
     secondStep = form?.dateField?.secondStep ?? 1,
     minDate,
     maxDate,
-    minTime,
-    maxTime,
     disabledDates,
     disabledDaysOfWeek,
     firstDayOfWeek = form?.dateField?.firstDayOfWeek ?? 0,
@@ -154,17 +149,21 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
   // Internal state for uncontrolled usage
   const [internalSingle, setInternalSingle] = useState<DateFieldValue>(() => defaultSingle ?? null)
-  const [internalRange, setInternalRange] = useState<DateRangeValue>(
-    () => (Array.isArray(defaultRange) ? defaultRange : [null, null])
+  const [internalRange, setInternalRange] = useState<DateRangeValue>(() =>
+    Array.isArray(defaultRange) ? defaultRange : [null, null]
   )
 
-  const currentSingle: DateFieldValue = !isRangeMode
-    ? (controlledSingle !== undefined ? controlledSingle : internalSingle)
-    : null
+  const currentSingle = useMemo<DateFieldValue>(() => {
+    if (isRangeMode) return null
+    if (controlledSingle !== undefined) return controlledSingle
+    return internalSingle
+  }, [isRangeMode, controlledSingle, internalSingle])
 
-  const currentRange: DateRangeValue = isRangeMode
-    ? (Array.isArray(controlledRange) ? controlledRange : internalRange)
-    : [null, null]
+  const currentRange = useMemo<DateRangeValue>(() => {
+    if (!isRangeMode) return [null, null]
+    if (Array.isArray(controlledRange)) return controlledRange
+    return internalRange
+  }, [isRangeMode, controlledRange, internalRange])
 
   const rangeDates: [Date | null, Date | null] = useMemo(() => {
     if (isRangeMode && Array.isArray(currentRange)) {
@@ -175,19 +174,22 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
   // Popover state
   const [open, setOpen] = useState(false)
-  const [popoverPosition, setPopoverPosition] = useState<'bottom' | 'top'>('bottom')
+  const [coords, setCoords] = useState<PopoverCoords>({
+    top: 0,
+    left: 0,
+    placementV: 'bottom',
+  })
   const [hoverDate, setHoverDate] = useState<Date | null>(null)
 
   // Navigation Calendar View state
   const initialViewDate = useMemo(() => {
-    if (!isRangeMode && currentSingle) {
-      const d = parseDate(currentSingle)
-      if (d) return d
-    }
-    if (isRangeMode && Array.isArray(currentRange) && currentRange[0]) {
-      const d = parseDate(currentRange[0])
-      if (d) return d
-    }
+    const singleParsed = !isRangeMode && currentSingle ? parseDate(currentSingle) : null
+    if (singleParsed) return singleParsed
+
+    const rangeStart = isRangeMode && Array.isArray(currentRange) ? currentRange[0] : null
+    const rangeStartParsed = rangeStart ? parseDate(rangeStart) : null
+    if (rangeStartParsed) return rangeStartParsed
+
     return new Date()
   }, [currentSingle, currentRange, isRangeMode])
 
@@ -202,19 +204,31 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
   // Time components for range mode
   const [startTimeState, setStartTimeState] = useState<{ hours: number; minutes: number; seconds: number }>(() => {
-    const initDate = isRangeMode && Array.isArray(currentRange) ? parseDate(currentRange[0]) ?? new Date() : new Date()
+    const initDate =
+      isRangeMode && Array.isArray(currentRange) ? (parseDate(currentRange[0]) ?? new Date()) : new Date()
     return { hours: initDate.getHours(), minutes: initDate.getMinutes(), seconds: initDate.getSeconds() }
   })
   const [endTimeState, setEndTimeState] = useState<{ hours: number; minutes: number; seconds: number }>(() => {
-    const initDate = isRangeMode && Array.isArray(currentRange) ? parseDate(currentRange[1]) ?? new Date() : new Date()
+    const initDate =
+      isRangeMode && Array.isArray(currentRange) ? (parseDate(currentRange[1]) ?? new Date()) : new Date()
     return { hours: initDate.getHours(), minutes: initDate.getMinutes(), seconds: initDate.getSeconds() }
   })
+
+  const timeStateRef = useRef(timeState)
+  timeStateRef.current = timeState
+
+  const startTimeStateRef = useRef(startTimeState)
+  startTimeStateRef.current = startTimeState
+
+  const endTimeStateRef = useRef(endTimeState)
+  endTimeStateRef.current = endTimeState
 
   // Text input value (when allowInput is enabled)
   const [inputText, setInputText] = useState('')
 
   // Refs
   const rootRef = useRef<HTMLFieldSetElement>(null)
+  const iconButtonRef = useRef<HTMLButtonElement>(null)
   const popoverRef = useRef<HTMLDivElement>(null)
 
   const isDisabled = disabled || loading || readOnly
@@ -228,19 +242,19 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
       mode === 'datetime'
         ? (pConfig?.datetime ?? pConfig?.dateTime)
         : mode === 'date'
-        ? pConfig?.date
-        : mode === 'dateRange'
-        ? pConfig?.dateRange
-        : mode === 'time'
-        ? pConfig?.time
-        : mode === 'timeRange'
-        ? pConfig?.timeRange
-        : mode === 'dateTimeRange'
-        ? pConfig?.dateTimeRange
-        : undefined
+          ? pConfig?.date
+          : mode === 'dateRange'
+            ? pConfig?.dateRange
+            : mode === 'time'
+              ? pConfig?.time
+              : mode === 'timeRange'
+                ? pConfig?.timeRange
+                : mode === 'dateTimeRange'
+                  ? pConfig?.dateTimeRange
+                  : undefined
 
     if (configPresets && configPresets.length > 0) {
-      return (configPresets as Array<{ title: string; date: any }>).map((item) => ({
+      return (configPresets as Array<{ title: string; date: DateFieldValue | DateRangeValue }>).map((item) => ({
         title: item.title,
         label: item.title,
         date: item.date,
@@ -269,13 +283,27 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
   // Commit Single Value
   const commitSingle = useCallback(
-    (nextDate: Date | null) => {
+    (nextDate: Date | null, overrideTime?: { hours: number; minutes: number; seconds: number }) => {
+      if (!nextDate && controlledSingle === undefined) setInternalSingle(null)
+      if (!nextDate) {
+        singleProps?.onChange?.(null, null)
+        return
+      }
+
+      const t = overrideTime ?? timeStateRef.current
       let finalVal: DateFieldValue = nextDate
-      if (nextDate && mode === 'time') {
-        finalVal = formatTimePart(nextDate.getHours(), nextDate.getMinutes(), nextDate.getSeconds(), hour12, showSeconds)
-      } else if (nextDate && mode === 'datetime') {
+
+      if (mode === 'time') {
+        finalVal = formatTimePart(
+          nextDate.getHours(),
+          nextDate.getMinutes(),
+          nextDate.getSeconds(),
+          hour12,
+          showSeconds
+        )
+      } else if (mode === 'datetime') {
         const d = new Date(nextDate)
-        d.setHours(timeState.hours, timeState.minutes, timeState.seconds)
+        d.setHours(t.hours, t.minutes, t.seconds)
         finalVal = d
       }
 
@@ -284,24 +312,39 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
       }
       singleProps?.onChange?.(finalVal, nextDate)
     },
-    [mode, hour12, showSeconds, timeState, controlledSingle, singleProps]
+    [mode, hour12, showSeconds, controlledSingle, singleProps]
   )
 
   // Commit Range Value
   const commitRange = useCallback(
-    (nextRange: [Date | null, Date | null]) => {
+    (
+      nextRange: [Date | null, Date | null],
+      overrideTimes?: {
+        start?: { hours: number; minutes: number; seconds: number }
+        end?: { hours: number; minutes: number; seconds: number }
+      }
+    ) => {
       const [start, end] = nextRange
+      const sT = overrideTimes?.start ?? startTimeStateRef.current
+      const eT = overrideTimes?.end ?? endTimeStateRef.current
+
       let finalRange: DateRangeValue = [start, end]
 
       if (mode === 'timeRange') {
-        const sStr = start ? formatTimePart(start.getHours(), start.getMinutes(), start.getSeconds(), hour12, showSeconds) : null
-        const eStr = end ? formatTimePart(end.getHours(), end.getMinutes(), end.getSeconds(), hour12, showSeconds) : null
+        const sStr = start
+          ? formatTimePart(start.getHours(), start.getMinutes(), start.getSeconds(), hour12, showSeconds)
+          : null
+        const eStr = end
+          ? formatTimePart(end.getHours(), end.getMinutes(), end.getSeconds(), hour12, showSeconds)
+          : null
         finalRange = [sStr, eStr]
       } else if (mode === 'dateTimeRange') {
-        const sDate = start ? new Date(start) : null
-        const eDate = end ? new Date(end) : null
-        if (sDate) sDate.setHours(startTimeState.hours, startTimeState.minutes, startTimeState.seconds)
-        if (eDate) eDate.setHours(endTimeState.hours, endTimeState.minutes, endTimeState.seconds)
+        const sDate = start
+          ? new Date(start.getFullYear(), start.getMonth(), start.getDate(), sT.hours, sT.minutes, sT.seconds)
+          : null
+        const eDate = end
+          ? new Date(end.getFullYear(), end.getMonth(), end.getDate(), eT.hours, eT.minutes, eT.seconds)
+          : null
         finalRange = [sDate, eDate]
       }
 
@@ -310,7 +353,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
       }
       rangeProps?.onChange?.(finalRange, [start, end])
     },
-    [mode, hour12, showSeconds, startTimeState, endTimeState, controlledRange, rangeProps]
+    [mode, hour12, showSeconds, controlledRange, rangeProps]
   )
 
   // Clear handler
@@ -323,53 +366,68 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
     onClear?.()
   }, [isRangeMode, commitRange, commitSingle, onClear])
 
+  const closeOnSelect = useCallback(
+    (shouldClose: boolean) => {
+      if (!shouldClose) return
+      setOpen(false)
+      onClose?.()
+    },
+    [onClose]
+  )
+
   // Select day handler
   const handleDaySelect = useCallback(
     (selected: Date) => {
-      if (isRangeMode) {
-        const [start, end] = rangeDates
-        if (!start || (start && end)) {
-          // New range start
-          commitRange([selected, null])
-        } else {
-          // Range end selected
-          if (selected < start) {
-            commitRange([selected, start])
-          } else {
-            commitRange([start, selected])
-          }
-          if (mode === 'dateRange') {
-            setOpen(false)
-            onClose?.()
-          }
-        }
-      } else {
-        // Single mode
+      if (!isRangeMode) {
         commitSingle(selected)
-        if (mode === 'date') {
-          setOpen(false)
-          onClose?.()
-        }
+        closeOnSelect(mode === 'date')
+        return
       }
+
+      const [start, end] = rangeDates
+      const isStartingNewRange = !start || Boolean(start && end)
+
+      if (isStartingNewRange) {
+        commitRange([selected, null])
+        return
+      }
+
+      const nextRange: [Date, Date] = selected < start ? [selected, start] : [start, selected]
+      commitRange(nextRange)
+      closeOnSelect(mode === 'dateRange')
     },
-    [isRangeMode, currentRange, commitRange, commitSingle, mode, onClose]
+    [isRangeMode, rangeDates, commitRange, commitSingle, mode, closeOnSelect]
   )
 
   // Presets handler
   const handlePresetSelect = useCallback(
     (presetVal: DatePreset['value'] | DatePreset['date']) => {
-      const resolved = typeof presetVal === 'function' ? (presetVal as () => any)() : presetVal
-      if (isRangeMode && Array.isArray(resolved)) {
+      const resolved =
+        typeof presetVal === 'function' ? (presetVal as () => DateFieldValue | DateRangeValue)() : presetVal
+
+      const isRangePreset = isRangeMode && Array.isArray(resolved)
+      const isSinglePreset = !isRangeMode && !Array.isArray(resolved)
+
+      if (isRangePreset) {
         const [s, e] = resolved
         const sD = parseDate(s)
         const eD = parseDate(e)
         commitRange([sD, eD])
-        if (sD) setViewDate(sD)
-      } else if (!isRangeMode && !Array.isArray(resolved)) {
+        setViewDate(sD ?? new Date())
+        setOpen(false)
+        onClose?.()
+        return
+      }
+
+      if (isSinglePreset) {
         const d = parseDate(resolved)
         commitSingle(d)
-        if (d) setViewDate(d)
+        setViewDate(d ?? new Date())
+        setOpen(false)
+        onClose?.()
+        return
       }
+
       setOpen(false)
       onClose?.()
     },
@@ -385,53 +443,120 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
       commitSingle(now)
     }
     setViewDate(now)
-    if (mode === 'date') {
-      setOpen(false)
-      onClose?.()
-    }
-  }, [isRangeMode, commitRange, commitSingle, mode, onClose])
+    closeOnSelect(mode === 'date')
+  }, [isRangeMode, commitRange, commitSingle, mode, closeOnSelect])
 
   // Navigation Handlers
   const handlePrev = useCallback(() => {
     const next = new Date(viewDate)
-    if (view === 'days') {
-      next.setMonth(next.getMonth() - 1)
-    } else if (view === 'months') {
-      next.setFullYear(next.getFullYear() - 1)
-    } else if (view === 'years') {
-      next.setFullYear(next.getFullYear() - 10)
-    }
+    if (view === 'days') next.setMonth(next.getMonth() - 1)
+    if (view === 'months') next.setFullYear(next.getFullYear() - 1)
+    if (view === 'years') next.setFullYear(next.getFullYear() - 10)
     setViewDate(next)
   }, [viewDate, view])
 
   const handleNext = useCallback(() => {
     const next = new Date(viewDate)
-    if (view === 'days') {
-      next.setMonth(next.getMonth() + 1)
-    } else if (view === 'months') {
-      next.setFullYear(next.getFullYear() + 1)
-    } else if (view === 'years') {
-      next.setFullYear(next.getFullYear() + 10)
-    }
+    if (view === 'days') next.setMonth(next.getMonth() + 1)
+    if (view === 'months') next.setFullYear(next.getFullYear() + 1)
+    if (view === 'years') next.setFullYear(next.getFullYear() + 10)
     setViewDate(next)
   }, [viewDate, view])
 
-  // Outside click & Escape closing
+  // Calculate popover fixed position on desktop
+  const updatePosition = useCallback(() => {
+    const triggerEl = iconButtonRef.current ?? rootRef.current
+    if (!triggerEl) return
+
+    const triggerRect = triggerEl.getBoundingClientRect()
+    const popoverEl = popoverRef.current
+
+    const popoverWidth = popoverEl ? popoverEl.offsetWidth : 320
+    const popoverHeight = popoverEl ? popoverEl.offsetHeight : 380
+
+    const winWidth = window.innerWidth
+    const winHeight = window.innerHeight
+
+    const GAP = 8
+    const PADDING = 10
+
+    const spaceBelow = winHeight - triggerRect.bottom - GAP
+    const spaceAbove = triggerRect.top - GAP
+    const shouldPlaceTop = spaceBelow < popoverHeight && spaceAbove > spaceBelow
+
+    const placementV: 'top' | 'bottom' = shouldPlaceTop ? 'top' : 'bottom'
+    const rawTop = shouldPlaceTop
+      ? triggerRect.top - popoverHeight - GAP
+      : triggerRect.bottom + GAP
+
+    const top = Math.max(PADDING, Math.min(rawTop, Math.max(PADDING, winHeight - popoverHeight - PADDING)))
+
+    const isRtl = document.documentElement.dir === 'rtl' || document.body.dir === 'rtl'
+    const rawLeft = isRtl
+      ? triggerRect.right - popoverWidth
+      : triggerRect.left
+
+    const maxLeft = Math.max(PADDING, winWidth - popoverWidth - PADDING)
+    const left = Math.max(PADDING, Math.min(rawLeft, maxLeft))
+
+    setCoords((prev) =>
+      prev.top === top && prev.left === left && prev.placementV === placementV
+        ? prev
+        : { top, left, placementV }
+    )
+  }, [])
+
+  // Position updates on scroll / resize / view change
+  useEffect(() => {
+    if (!open || isMobile) return
+
+    updatePosition()
+
+    const handleScrollOrResize = () => updatePosition()
+    window.addEventListener('resize', handleScrollOrResize)
+    window.addEventListener('scroll', handleScrollOrResize, true)
+
+    const frameId = requestAnimationFrame(updatePosition)
+
+    return () => {
+      cancelAnimationFrame(frameId)
+      window.removeEventListener('resize', handleScrollOrResize)
+      window.removeEventListener('scroll', handleScrollOrResize, true)
+    }
+  }, [open, isMobile, updatePosition, view])
+
+  // Lock mobile body scroll when dialog is open
+  useEffect(() => {
+    if (!open || !isMobile) return
+
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [open, isMobile])
+
+  // Outside click & Escape closing (including portal ref)
   useEffect(() => {
     if (!open) return
 
     const handleOutside = (e: MouseEvent | TouchEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
-        setOpen(false)
-        onClose?.()
-      }
+      const target = e.target as Node
+      const isInsideRoot = rootRef.current?.contains(target)
+      const isInsidePopover = popoverRef.current?.contains(target)
+      const isInsideIcon = iconButtonRef.current?.contains(target)
+
+      if (isInsideRoot || isInsidePopover || isInsideIcon) return
+
+      setOpen(false)
+      onClose?.()
     }
 
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setOpen(false)
-        onClose?.()
-      }
+      if (e.key !== 'Escape') return
+      setOpen(false)
+      onClose?.()
     }
 
     document.addEventListener('mousedown', handleOutside)
@@ -444,29 +569,17 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
     }
   }, [open, onClose])
 
-  // Calculate popover flip position
-  const calculatePosition = useCallback(() => {
-    if (!rootRef.current) return
-    const rect = rootRef.current.getBoundingClientRect()
-    const spaceBelow = window.innerHeight - rect.bottom
-    const neededSpace = 380
-    if (spaceBelow < neededSpace && rect.top > neededSpace) {
-      setPopoverPosition('top')
-    } else {
-      setPopoverPosition('bottom')
-    }
-  }, [])
-
   const handleToggleOpen = () => {
     if (isDisabled) return
-    if (!open) {
-      calculatePosition()
-      setOpen(true)
-      onOpen?.()
-    } else {
+
+    if (open) {
       setOpen(false)
       onClose?.()
+      return
     }
+
+    setOpen(true)
+    onOpen?.()
   }
 
   // Label configuration
@@ -489,9 +602,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
   ])
 
   // Default Icons
-  const defaultIcon = isTimeMode
-    ? form?.dateField?.clockIcon ?? '🕒'
-    : form?.dateField?.calendarIcon ?? '📅'
+  const defaultIcon = isTimeMode ? (form?.dateField?.clockIcon ?? '🕒') : (form?.dateField?.calendarIcon ?? '📅')
 
   // Default Placeholder
   const defaultPlaceholder = useMemo(() => {
@@ -510,7 +621,315 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
   if (condition === false) return null
 
   // Native serialized value for hidden input
-  const hiddenValue = isRangeMode ? JSON.stringify(currentRange) : (currentSingle instanceof Date ? currentSingle.toISOString() : (currentSingle ?? ''))
+  const hiddenValue = isRangeMode
+    ? JSON.stringify(currentRange)
+    : currentSingle instanceof Date
+      ? currentSingle.toISOString()
+      : (currentSingle ?? '')
+
+  // Time change helpers
+  const handleSingleTimeChange = (next: { hours: number; minutes: number; seconds: number }) => {
+    setTimeState(next)
+    const base = parseDate(currentSingle) ?? new Date()
+    const d = new Date(base)
+    d.setHours(next.hours, next.minutes, next.seconds)
+    commitSingle(d, next)
+  }
+
+  const handleStartTimeChange = (next: { hours: number; minutes: number; seconds: number }) => {
+    setStartTimeState(next)
+    const [start, end] = rangeDates
+    const base = start ?? new Date()
+    const newStart = new Date(base)
+    newStart.setHours(next.hours, next.minutes, next.seconds)
+    commitRange([newStart, end], { start: next })
+  }
+
+  const handleEndTimeChange = (next: { hours: number; minutes: number; seconds: number }) => {
+    setEndTimeState(next)
+    const [start, end] = rangeDates
+    const base = end ?? new Date()
+    const newEnd = new Date(base)
+    newEnd.setHours(next.hours, next.minutes, next.seconds)
+    commitRange([start, newEnd], { end: next })
+  }
+
+  const handleInputChange = (val: string) => {
+    setInputText(val)
+
+    if (!isRangeMode) {
+      const parsed = parseDate(val)
+      if (parsed) commitSingle(parsed)
+      return
+    }
+
+    const range = parseDateRange(val)
+    if (range?.[0] && range?.[1]) commitRange(range)
+  }
+
+  const modalTitle = isTimeMode
+    ? (translations?.dateField?.selectTime ?? 'Select Time')
+    : isRangeMode
+      ? (translations?.dateField?.selectRange ?? 'Select Date Range')
+      : (translations?.dateField?.selectDate ?? 'Select Date')
+
+  // Picker Main Content Fragment
+  const pickerMainContent = (
+    <div className="flex flex-col flex-1">
+      {/* If it's pure time mode */}
+      {isTimeMode && (
+        <div className="flex flex-wrap p-3 items-center justify-center">
+          {mode === 'time' && (
+            <TimeSpinner
+              hours={timeState.hours}
+              minutes={timeState.minutes}
+              seconds={timeState.seconds}
+              onChange={handleSingleTimeChange}
+              hour12={hour12}
+              showSeconds={showSeconds}
+              minuteStep={minuteStep}
+              secondStep={secondStep}
+            />
+          )}
+          {mode === 'timeRange' && (
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <TimeSpinner
+                label={translations?.dateField?.startTime ?? 'Start Time'}
+                hours={startTimeState.hours}
+                minutes={startTimeState.minutes}
+                seconds={startTimeState.seconds}
+                onChange={handleStartTimeChange}
+                hour12={hour12}
+                showSeconds={showSeconds}
+                minuteStep={minuteStep}
+                secondStep={secondStep}
+              />
+              <span className="hidden sm:inline-block text-body-3 font-bold text-lg select-none">→</span>
+              <TimeSpinner
+                label={translations?.dateField?.endTime ?? 'End Time'}
+                hours={endTimeState.hours}
+                minutes={endTimeState.minutes}
+                seconds={endTimeState.seconds}
+                onChange={handleEndTimeChange}
+                hour12={hour12}
+                showSeconds={showSeconds}
+                minuteStep={minuteStep}
+                secondStep={secondStep}
+              />
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* If it's Date or DateTime or DateRange or DateTimeRange */}
+      {!isTimeMode && (
+        <div className="flex flex-col">
+          {/* Calendar Header */}
+          <Header
+            viewDate={viewDate}
+            secondMonthDate={secondMonthDate}
+            isDualMonth={!isMobile && isRangeMode && view === 'days'}
+            view={view}
+            onViewChange={setView}
+            onPrev={handlePrev}
+            onNext={handleNext}
+            yearRange={yearRange}
+          />
+
+          {/* Main Calendar Area */}
+          <div
+            className={cx([
+              'flex flex-wrap items-start justify-center',
+              { value: 'gap-1', condition: !isMobile },
+            ])}
+          >
+            {/* Primary Calendar (Month 1) */}
+            <Calendar
+              viewDate={viewDate}
+              selectedDate={parseDate(currentSingle)}
+              range={rangeDates}
+              hoverDate={hoverDate}
+              onSelectDate={handleDaySelect}
+              onHoverDate={setHoverDate}
+              onViewDateChange={setViewDate}
+              view={view}
+              onViewChange={setView}
+              isRange={isRangeMode}
+              firstDayOfWeek={firstDayOfWeek}
+              minDate={minDate}
+              maxDate={maxDate}
+              disabledDates={disabledDates}
+              disabledDaysOfWeek={disabledDaysOfWeek}
+              yearRange={yearRange}
+            />
+
+            {/* Secondary Calendar (Month 2 for dual-month on desktop) */}
+            {!isMobile && isRangeMode && view === 'days' && (
+              <div className="border-s border-body-3/20">
+                <Calendar
+                  viewDate={secondMonthDate}
+                  selectedDate={null}
+                  range={rangeDates}
+                  hoverDate={hoverDate}
+                  onSelectDate={handleDaySelect}
+                  onHoverDate={setHoverDate}
+                  onViewDateChange={(d) => {
+                    const prev = new Date(d)
+                    prev.setMonth(prev.getMonth() - 1)
+                    setViewDate(prev)
+                  }}
+                  view="days"
+                  onViewChange={setView}
+                  isRange={true}
+                  firstDayOfWeek={firstDayOfWeek}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  disabledDates={disabledDates}
+                  disabledDaysOfWeek={disabledDaysOfWeek}
+                  yearRange={yearRange}
+                />
+              </div>
+            )}
+
+            {/* Time selection for datetime */}
+            {mode === 'datetime' && (
+              <div className="p-2 border-s border-body-3/20">
+                <TimeSpinner
+                  hours={timeState.hours}
+                  minutes={timeState.minutes}
+                  seconds={timeState.seconds}
+                  onChange={handleSingleTimeChange}
+                  hour12={hour12}
+                  showSeconds={showSeconds}
+                  minuteStep={minuteStep}
+                  secondStep={secondStep}
+                />
+              </div>
+            )}
+
+            {mode === 'dateTimeRange' && (
+              <div className="flex flex-col sm:flex-row gap-2 p-2 border-s border-body-3/20">
+                <TimeSpinner
+                  label={translations?.dateField?.startTime ?? 'Start Time'}
+                  hours={startTimeState.hours}
+                  minutes={startTimeState.minutes}
+                  seconds={startTimeState.seconds}
+                  onChange={handleStartTimeChange}
+                  hour12={hour12}
+                  showSeconds={showSeconds}
+                  minuteStep={minuteStep}
+                  secondStep={secondStep}
+                />
+                <TimeSpinner
+                  label={translations?.dateField?.endTime ?? 'End Time'}
+                  hours={endTimeState.hours}
+                  minutes={endTimeState.minutes}
+                  seconds={endTimeState.seconds}
+                  onChange={handleEndTimeChange}
+                  hour12={hour12}
+                  showSeconds={showSeconds}
+                  minuteStep={minuteStep}
+                  secondStep={secondStep}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Action Footer */}
+      {showFooter && (
+        <Footer
+          mode={mode}
+          onClear={allowClear ? handleClear : undefined}
+          onToday={handleTodayOrNow}
+          onCancel={() => {
+            setOpen(false)
+            onClose?.()
+          }}
+          onApply={() => {
+            setOpen(false)
+            onClose?.()
+          }}
+        />
+      )}
+    </div>
+  )
+
+  // Floating Popover Portal Content
+  const portalContent = mounted && open && !isDisabled && typeof document !== 'undefined'
+    ? createPortal(
+        isMobile ? (
+          // Mobile View: Full Screen Dialog
+          <div
+            ref={popoverRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Date and time picker"
+            className="fixed inset-0 z-[9999] w-full h-[100dvh] bg-main flex flex-col justify-between overflow-hidden animate-in fade-in select-none"
+          >
+            {/* Mobile Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-body-3/20 shrink-0 bg-second/10">
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-title-1">
+                  {typeof label === 'string' && label ? label : modalTitle}
+                </span>
+                <span className="text-xs text-body-3">{defaultPlaceholder}</span>
+              </div>
+              <button
+                type="button"
+                aria-label="Close picker"
+                onClick={() => {
+                  setOpen(false)
+                  onClose?.()
+                }}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-second text-title-2 hover:text-title-1 hover:bg-second/80 transition-colors cursor-pointer text-sm font-semibold"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Mobile Presets Bar */}
+            {showPresets && presetsList.length > 0 && (
+              <Presets presets={presetsList} onSelect={handlePresetSelect} isMobile />
+            )}
+
+            {/* Mobile Scrollable Body */}
+            <div className="flex-1 overflow-y-auto flex flex-col items-center justify-start py-3 px-2">
+              {pickerMainContent}
+            </div>
+          </div>
+        ) : (
+          // Desktop View: Fixed Position calculated from picker icon, popover size, and window size
+          <div
+            ref={popoverRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Date and time picker"
+            style={{
+              position: 'fixed',
+              top: `${coords.top}px`,
+              left: `${coords.left}px`,
+              minWidth: mode === 'dateTimeRange' ? '780px' : isRangeMode ? '560px' : '300px',
+            }}
+            className={cx([
+              'fixed z-[9999] max-w-[calc(100vw-1.5rem)] rounded-2xl border border-body-3/30',
+              'bg-main shadow-2xl backdrop-blur flex flex-col overflow-hidden animate-in fade-in select-none',
+            ])}
+          >
+            <div className="flex">
+              {/* Desktop Presets Sidebar */}
+              {showPresets && presetsList.length > 0 && (
+                <Presets presets={presetsList} onSelect={handlePresetSelect} isMobile={false} />
+              )}
+
+              {pickerMainContent}
+            </div>
+          </div>
+        ),
+        document.body
+      )
+    : null
 
   return (
     <fieldset
@@ -522,7 +941,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
       {fieldsetPrefix}
 
       <div
-        onClick={openOnInputClick ? handleToggleOpen : undefined}
+        onClick={openOnInputClick && !isDisabled ? handleToggleOpen : undefined}
         className={cx([
           'flex flex-nowrap items-center relative border bg-inherit rounded gap-2 transition-colors',
           { value: 'ps-3', condition: Boolean(prefix) },
@@ -549,6 +968,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
         {/* Calendar / Clock Trigger Icon (before input) */}
         <button
+          ref={iconButtonRef}
           type="button"
           tabIndex={-1}
           disabled={isDisabled}
@@ -579,27 +999,13 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
           disabled={isDisabled}
           required={required}
           onClick={() => {
-            if (openOnInputClick) {
-              handleToggleOpen()
-            }
+            if (openOnInputClick) handleToggleOpen()
           }}
-          onChange={(e) => {
-            setInputText(e.target.value)
-            if (isRangeMode) {
-              const range = parseDateRange(e.target.value)
-              if (range && range[0] && range[1]) {
-                commitRange(range)
-              }
-            } else {
-              const parsed = parseDate(e.target.value)
-              if (parsed) commitSingle(parsed)
-            }
-          }}
+          onChange={(e) => handleInputChange(e.target.value)}
           onKeyDown={(e: ReactKeyboardEvent<HTMLInputElement>) => {
-            if (e.key === 'Enter') {
-              e.preventDefault()
-              handleToggleOpen()
-            }
+            if (e.key !== 'Enter') return
+            e.preventDefault()
+            handleToggleOpen()
           }}
           className={cx([
             'flex-1 bg-transparent outline-none py-3 font-normal text-sm',
@@ -646,258 +1052,8 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
 
       <InputErrorMessage {...{ errors }} />
 
-      {/* Floating Popover Picker */}
-      {open && !isDisabled && (
-        <div
-          ref={popoverRef}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Date and time picker"
-          className={cx([
-            'absolute z-300 max-w-[calc(100vw-2rem)] rounded-xl border border-body-3/40',
-            'bg-main shadow-2xl backdrop-blur flex flex-col overflow-hidden animate-in fade-in',
-            {
-              value: 'bottom-full mb-1',
-              fallback: 'top-full mt-1',
-              condition: popoverPosition === 'top',
-            },
-            {
-              value: 'w-auto max-w-full',
-              condition: isMobile,
-            },
-          ])}
-          style={{
-            minWidth: isMobile
-              ? '280px'
-              : mode === 'dateTimeRange'
-              ? '780px'
-              : isRangeMode
-              ? '560px'
-              : '300px',
-          }}
-        >
-          {/* Mobile Presets Bar */}
-          {isMobile && showPresets && presetsList.length > 0 && (
-            <Presets presets={presetsList} onSelect={handlePresetSelect} isMobile />
-          )}
-
-          <div className={cx(['flex', { value: 'flex-col', condition: isMobile }])}>
-            {/* Desktop Presets Sidebar */}
-            {!isMobile && showPresets && presetsList.length > 0 && (
-              <Presets presets={presetsList} onSelect={handlePresetSelect} isMobile={false} />
-            )}
-
-            <div className="flex flex-col flex-1">
-              {/* If it's pure time mode */}
-              {isTimeMode && (
-                <div className="flex flex-wrap p-3 items-center justify-center">
-                  {mode === 'time' && (
-                    <TimeSpinner
-                      hours={timeState.hours}
-                      minutes={timeState.minutes}
-                      seconds={timeState.seconds}
-                      onChange={(next) => {
-                        setTimeState(next)
-                        const d = parseDate(currentSingle) ?? new Date()
-                        d.setHours(next.hours, next.minutes, next.seconds)
-                        commitSingle(d)
-                      }}
-                      hour12={hour12}
-                      showSeconds={showSeconds}
-                      minuteStep={minuteStep}
-                      secondStep={secondStep}
-                    />
-                  )}
-                  {mode === 'timeRange' && (
-                    <div className="flex flex-wrap items-center justify-center gap-3">
-                      <TimeSpinner
-                        label={translations?.dateField?.startTime ?? 'Start Time'}
-                        hours={startTimeState.hours}
-                        minutes={startTimeState.minutes}
-                        seconds={startTimeState.seconds}
-                        onChange={(next) => {
-                          setStartTimeState(next)
-                          const startD = parseDate(currentRange[0]) ?? new Date()
-                          startD.setHours(next.hours, next.minutes, next.seconds)
-                          const endD = parseDate(currentRange[1])
-                          commitRange([startD, endD])
-                        }}
-                        hour12={hour12}
-                        showSeconds={showSeconds}
-                        minuteStep={minuteStep}
-                        secondStep={secondStep}
-                      />
-                      <span className="hidden sm:inline-block text-body-3 font-bold text-lg select-none">→</span>
-                      <TimeSpinner
-                        label={translations?.dateField?.endTime ?? 'End Time'}
-                        hours={endTimeState.hours}
-                        minutes={endTimeState.minutes}
-                        seconds={endTimeState.seconds}
-                        onChange={(next) => {
-                          setEndTimeState(next)
-                          const startD = parseDate(currentRange[0])
-                          const endD = parseDate(currentRange[1]) ?? new Date()
-                          endD.setHours(next.hours, next.minutes, next.seconds)
-                          commitRange([startD, endD])
-                        }}
-                        hour12={hour12}
-                        showSeconds={showSeconds}
-                        minuteStep={minuteStep}
-                        secondStep={secondStep}
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* If it's Date or DateTime or DateRange or DateTimeRange */}
-              {!isTimeMode && (
-                <div className="flex flex-col">
-                  {/* Calendar Header */}
-                  <Header
-                    viewDate={viewDate}
-                    secondMonthDate={secondMonthDate}
-                    isDualMonth={!isMobile && isRangeMode && view === 'days'}
-                    view={view}
-                    onViewChange={setView}
-                    onPrev={handlePrev}
-                    onNext={handleNext}
-                    yearRange={yearRange}
-                  />
-
-                  {/* Main Calendar Area */}
-                  <div className={cx(['flex flex-wrap items-start justify-center', { value: 'gap-1', condition: !isMobile }])}>
-                    {/* Primary Calendar (Month 1) */}
-                    <Calendar
-                      viewDate={viewDate}
-                      selectedDate={parseDate(currentSingle)}
-                      range={rangeDates}
-                      hoverDate={hoverDate}
-                      onSelectDate={handleDaySelect}
-                      onHoverDate={setHoverDate}
-                      onViewDateChange={setViewDate}
-                      view={view}
-                      onViewChange={setView}
-                      isRange={isRangeMode}
-                      firstDayOfWeek={firstDayOfWeek}
-                      minDate={minDate}
-                      maxDate={maxDate}
-                      disabledDates={disabledDates}
-                      disabledDaysOfWeek={disabledDaysOfWeek}
-                      yearRange={yearRange}
-                    />
-
-                    {/* Secondary Calendar (Month 2 for dual-month on desktop) */}
-                    {!isMobile && isRangeMode && view === 'days' && (
-                      <div className="border-s border-body-3/20">
-                        <Calendar
-                          viewDate={secondMonthDate}
-                          selectedDate={null}
-                          range={rangeDates}
-                          hoverDate={hoverDate}
-                          onSelectDate={handleDaySelect}
-                          onHoverDate={setHoverDate}
-                          onViewDateChange={(d) => {
-                            const prev = new Date(d)
-                            prev.setMonth(prev.getMonth() - 1)
-                            setViewDate(prev)
-                          }}
-                          view="days"
-                          onViewChange={setView}
-                          isRange={true}
-                          firstDayOfWeek={firstDayOfWeek}
-                          minDate={minDate}
-                          maxDate={maxDate}
-                          disabledDates={disabledDates}
-                          disabledDaysOfWeek={disabledDaysOfWeek}
-                          yearRange={yearRange}
-                        />
-                      </div>
-                    )}
-
-                    {/* Time selection for datetime */}
-                    {mode === 'datetime' && (
-                      <div className="p-2 border-s border-body-3/20">
-                        <TimeSpinner
-                          hours={timeState.hours}
-                          minutes={timeState.minutes}
-                          seconds={timeState.seconds}
-                          onChange={(next) => {
-                            setTimeState(next)
-                            const d = parseDate(currentSingle)
-                            if (d) {
-                              d.setHours(next.hours, next.minutes, next.seconds)
-                              commitSingle(d)
-                            }
-                          }}
-                          hour12={hour12}
-                          showSeconds={showSeconds}
-                          minuteStep={minuteStep}
-                          secondStep={secondStep}
-                        />
-                      </div>
-                    )}
-
-                    {mode === 'dateTimeRange' && (
-                      <div className="flex flex-col sm:flex-row gap-2 p-2 border-s border-body-3/20">
-                        <TimeSpinner
-                          label={translations?.dateField?.startTime ?? 'Start Time'}
-                          hours={startTimeState.hours}
-                          minutes={startTimeState.minutes}
-                          seconds={startTimeState.seconds}
-                          onChange={(next) => {
-                            setStartTimeState(next)
-                            const [sD, eD] = rangeDates
-                            if (sD) sD.setHours(next.hours, next.minutes, next.seconds)
-                            commitRange([sD, eD])
-                          }}
-                          hour12={hour12}
-                          showSeconds={showSeconds}
-                          minuteStep={minuteStep}
-                          secondStep={secondStep}
-                        />
-                        <TimeSpinner
-                          label={translations?.dateField?.endTime ?? 'End Time'}
-                          hours={endTimeState.hours}
-                          minutes={endTimeState.minutes}
-                          seconds={endTimeState.seconds}
-                          onChange={(next) => {
-                            setEndTimeState(next)
-                            const [sD, eD] = rangeDates
-                            if (eD) eD.setHours(next.hours, next.minutes, next.seconds)
-                            commitRange([sD, eD])
-                          }}
-                          hour12={hour12}
-                          showSeconds={showSeconds}
-                          minuteStep={minuteStep}
-                          secondStep={secondStep}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* Action Footer */}
-              {showFooter && (
-                <Footer
-                  mode={mode}
-                  onClear={allowClear ? handleClear : undefined}
-                  onToday={handleTodayOrNow}
-                  onCancel={() => {
-                    setOpen(false)
-                    onClose?.()
-                  }}
-                  onApply={() => {
-                    setOpen(false)
-                    onClose?.()
-                  }}
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Floating Popover / Full screen mobile dialog in Portal */}
+      {portalContent}
     </fieldset>
   )
 })

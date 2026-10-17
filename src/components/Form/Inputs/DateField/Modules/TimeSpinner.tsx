@@ -79,10 +79,9 @@ export function TimeSpinner(props: Readonly<TimeSpinnerProps>) {
     const scrollToSelected = (container: HTMLDivElement | null) => {
       if (!container) return
       const selectedBtn = container.querySelector('[data-selected="true"]') as HTMLElement | null
-      if (selectedBtn) {
-        const top = selectedBtn.offsetTop - container.offsetTop - container.clientHeight / 2 + selectedBtn.clientHeight / 2
-        container.scrollTo({ top, behavior: 'smooth' })
-      }
+      if (!selectedBtn) return
+      const top = selectedBtn.offsetTop - container.offsetTop - container.clientHeight / 2 + selectedBtn.clientHeight / 2
+      container.scrollTo({ top, behavior: 'smooth' })
     }
     scrollToSelected(hoursRef.current)
     scrollToSelected(minutesRef.current)
@@ -91,17 +90,17 @@ export function TimeSpinner(props: Readonly<TimeSpinnerProps>) {
 
   const handleHourSelect = (h: number) => {
     let finalHours = h
-    if (is12Hour) {
-      if (isPm && h < 12) finalHours = h + 12
-      if (!isPm && h === 12) finalHours = 0
-    }
+    if (is12Hour && isPm && h < 12) finalHours = h + 12
+    if (is12Hour && !isPm && h === 12) finalHours = 0
     onChange({ hours: finalHours, minutes, seconds })
   }
 
   const handleAmPmToggle = (pm: boolean) => {
     if (pm && !isPm) {
       onChange({ hours: hours + 12, minutes, seconds })
-    } else if (!pm && isPm) {
+      return
+    }
+    if (!pm && isPm) {
       onChange({ hours: hours - 12, minutes, seconds })
     }
   }

@@ -9,7 +9,6 @@ import {
   isDateDisabled,
   isDateInRange,
   isSameDay,
-  isSameMonth,
 } from '../helper'
 
 export type CalendarProps = {
@@ -185,7 +184,6 @@ export function Calendar(props: Readonly<CalendarProps>) {
 
   // Days View
   const [rangeStart, rangeEnd] = range
-  const effectiveEnd = rangeEnd ?? hoverDate
 
   return (
     <div className="p-2 w-64 select-none">

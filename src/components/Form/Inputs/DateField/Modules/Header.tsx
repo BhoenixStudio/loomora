@@ -41,10 +41,9 @@ export function Header(props: Readonly<HeaderProps>) {
 
   // Second month info for dual-month display
   const secondMonthKey = secondMonthDate ? monthKeys[secondMonthDate.getMonth()] : null
-  const secondMonthName = secondMonthDate
-    ? (secondMonthKey ? translations?.dates?.months?.[secondMonthKey]?.name : null) ??
-      secondMonthDate.toLocaleString('default', { month: 'long' })
-    : ''
+  const secondMonthTrans = secondMonthKey ? translations?.dates?.months?.[secondMonthKey]?.name : null
+  const secondMonthLocale = secondMonthDate ? secondMonthDate.toLocaleString('default', { month: 'long' }) : ''
+  const secondMonthName = secondMonthTrans ?? secondMonthLocale
   const secondYear = secondMonthDate ? secondMonthDate.getFullYear() : year
 
   let title = `${monthName} ${year}`
@@ -56,27 +55,27 @@ export function Header(props: Readonly<HeaderProps>) {
 
   return (
     <div className="flex items-center justify-between px-3 py-2 border-b border-body-3/20 select-none bg-inherit">
-      {/* Left controls: Prev button or Back button */}
-      <div className="flex items-center gap-1.5">
-        {view !== 'days' ? (
+      {/* Left controls: Prev button and optional Back button */}
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          onClick={onPrev}
+          className="flex items-center justify-center w-7 h-7 rounded-lg text-body-1 hover:bg-second hover:text-primary transition-colors cursor-pointer text-base"
+          aria-label="Previous"
+        >
+          {prevIcon}
+        </button>
+
+        {view !== 'days' && (
           <button
             type="button"
             onClick={() => onViewChange(view === 'years' ? 'months' : 'days')}
-            className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold text-primary hover:bg-primary/10 transition-colors cursor-pointer"
+            className="flex items-center gap-1 px-1.5 py-1 rounded-md text-xs font-semibold text-primary hover:bg-primary/10 transition-colors cursor-pointer"
             aria-label="Back to calendar"
             title="Back to previous view"
           >
             <span>‹</span>
             <span>{view === 'years' ? 'Months' : 'Calendar'}</span>
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={onPrev}
-            className="flex items-center justify-center w-7 h-7 rounded-lg text-body-1 hover:bg-second hover:text-primary transition-colors cursor-pointer text-base"
-            aria-label="Previous"
-          >
-            {prevIcon}
           </button>
         )}
       </div>

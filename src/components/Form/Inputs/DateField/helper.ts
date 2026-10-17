@@ -3,6 +3,7 @@
 import { ReactNode } from 'react'
 import { InputBase, InputFieldset, InputHelperAndError, InputLabel } from '../../..'
 import { GlobalElement } from '../../../../types'
+import { TranslateFn } from '../../../../config/types/helper'
 
 export type DateFieldMode = 'date' | 'datetime' | 'time' | 'dateRange' | 'timeRange' | 'dateTimeRange'
 
@@ -82,28 +83,26 @@ export function padZero(num: number, digits = 2): string {
 export function parseDate(val: DateFieldValue | undefined): Date | null {
   if (!val) return null
   if (val instanceof Date) return Number.isNaN(val.getTime()) ? null : new Date(val.getTime())
-  if (typeof val === 'string') {
-    const trimmed = val.trim()
-    if (!trimmed) return null
+  if (typeof val !== 'string') return null
 
-    // If it's pure time format HH:mm or HH:mm:ss
-    const timeMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*(AM|PM))?$/i.exec(trimmed)
-    if (timeMatch) {
-      let hours = parseInt(timeMatch[1], 10)
-      const minutes = parseInt(timeMatch[2], 10)
-      const seconds = timeMatch[3] ? parseInt(timeMatch[3], 10) : 0
-      const ampm = timeMatch[4]?.toUpperCase()
-      if (ampm === 'PM' && hours < 12) hours += 12
-      if (ampm === 'AM' && hours === 12) hours = 0
-      const d = new Date()
-      d.setHours(hours, minutes, seconds, 0)
-      return d
-    }
+  const trimmed = val.trim()
+  if (!trimmed) return null
 
-    const d = new Date(trimmed)
-    return Number.isNaN(d.getTime()) ? null : d
+  // If it's pure time format HH:mm or HH:mm:ss
+  const timeMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*(AM|PM))?$/i.exec(trimmed)
+  if (timeMatch) {
+    const rawH = parseInt(timeMatch[1], 10)
+    const minutes = parseInt(timeMatch[2], 10)
+    const seconds = timeMatch[3] ? parseInt(timeMatch[3], 10) : 0
+    const ampm = timeMatch[4]?.toUpperCase()
+    const hours = ampm === 'PM' && rawH < 12 ? rawH + 12 : ampm === 'AM' && rawH === 12 ? 0 : rawH
+    const d = new Date()
+    d.setHours(hours, minutes, seconds, 0)
+    return d
   }
-  return null
+
+  const d = new Date(trimmed)
+  return Number.isNaN(d.getTime()) ? null : d
 }
 
 export function parseTime(val: DateFieldValue | undefined): { hours: number; minutes: number; seconds: number } | null {
@@ -119,12 +118,11 @@ export function parseDateRange(val: string | undefined): [Date | null, Date | nu
 
   const separators = ['→', ' - ', ' to ', '~']
   for (const sep of separators) {
-    if (trimmed.includes(sep)) {
-      const [startStr, endStr] = trimmed.split(sep)
-      const start = parseDate(startStr)
-      const end = parseDate(endStr)
-      return [start, end]
-    }
+    if (!trimmed.includes(sep)) continue
+    const [startStr, endStr] = trimmed.split(sep)
+    const start = parseDate(startStr)
+    const end = parseDate(endStr)
+    return [start, end]
   }
   return null
 }
@@ -164,26 +162,24 @@ export function isDateDisabled(
 
   const dayTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime()
 
-  if (minDate) {
-    const minD = parseDate(minDate)
-    if (minD) {
-      const minTime = new Date(minD.getFullYear(), minD.getMonth(), minD.getDate()).getTime()
-      if (dayTime < minTime) return true
-    }
-  }
+  const minD = minDate ? parseDate(minDate) : null
+  const minTime = minD ? new Date(minD.getFullYear(), minD.getMonth(), minD.getDate()).getTime() : null
+  if (minTime !== null && dayTime < minTime) return true
 
-  if (maxDate) {
-    const maxD = parseDate(maxDate)
-    if (maxD) {
-      const maxTime = new Date(maxD.getFullYear(), maxD.getMonth(), maxD.getDate()).getTime()
-      if (dayTime > maxTime) return true
-    }
-  }
+  const maxD = maxDate ? parseDate(maxDate) : null
+  const maxTime = maxD ? new Date(maxD.getFullYear(), maxD.getMonth(), maxD.getDate()).getTime() : null
+  if (maxTime !== null && dayTime > maxTime) return true
 
   return false
 }
 
-export function formatTimePart(hours: number, minutes: number, seconds: number, hour12 = false, showSeconds = false): string {
+export function formatTimePart(
+  hours: number,
+  minutes: number,
+  seconds: number,
+  hour12 = false,
+  showSeconds = false
+): string {
   let h = hours
   let suffix = ''
   if (hour12) {
@@ -228,8 +224,10 @@ export function formatDisplay(
 ): string {
   if (value === undefined || value === null) return ''
 
-  if (mode === 'dateRange' || mode === 'timeRange' || mode === 'dateTimeRange') {
-    if (!Array.isArray(value)) return ''
+  const isRange = mode === 'dateRange' || mode === 'timeRange' || mode === 'dateTimeRange'
+  if (isRange && !Array.isArray(value)) return ''
+
+  if (isRange && Array.isArray(value)) {
     const [startVal, endVal] = value
     const start = parseDate(startVal)
     const end = parseDate(endVal)
@@ -245,7 +243,11 @@ export function formatDisplay(
   return formatDateValue(date, mode, options)
 }
 
-export function getMonthGrid(year: number, month: number, firstDayOfWeek = 0): { date: Date; isCurrentMonth: boolean }[] {
+export function getMonthGrid(
+  year: number,
+  month: number,
+  firstDayOfWeek = 0
+): { date: Date; isCurrentMonth: boolean }[] {
   const firstDayOfMonth = new Date(year, month, 1)
   const lastDayOfMonth = new Date(year, month + 1, 0)
   const daysInMonth = lastDayOfMonth.getDate()
@@ -285,8 +287,7 @@ export function getMonthGrid(year: number, month: number, firstDayOfWeek = 0): {
   return days
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getDefaultPresets(mode: DateFieldMode, t: (k: any) => string): DatePreset[] {
+export function getDefaultPresets(mode: DateFieldMode, t: TranslateFn): DatePreset[] {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
