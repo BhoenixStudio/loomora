@@ -62,7 +62,7 @@ export function Input(props: Readonly<InputProps>) {
     autocomplete: <AutocompleteField {...(rest as AutocompleteFieldProps)} />,
     file: <UploaderField {...(rest as UploaderFieldProps)} />,
     check: <CheckField {...(rest as CheckFieldProps)} />,
-    otp: <PinField {...(rest as PinFieldProps)} />,
+    pin: <PinField {...(rest as PinFieldProps)} />,
     range: <RangeField {...(rest as RangeFieldProps)} />,
     rating: <RatingField {...(rest as RatingFieldProps)} />,
     number: <NumberField {...(rest as NumberFieldProps)} />,

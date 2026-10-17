@@ -15,7 +15,7 @@ import {
   LoomoraFormT,
   LoomoraLabel,
   LoomoraNumberField,
-  LoomoraOtpField,
+  LoomoraPinField,
   LoomoraPasswordField,
   LoomoraPasswordT,
   LoomoraPhoneField,
@@ -69,7 +69,7 @@ export interface LoomoraConfig extends LoomoraBase {
     selectField: LoomoraSelectField
     checkField: LoomoraCheckField
     passwordField: LoomoraPasswordField
-    pinField: LoomoraOtpField
+    pinField: LoomoraPinField
     rangeField: LoomoraRangeField
     colorField: LoomoraColorField
     phoneField: LoomoraPhoneField

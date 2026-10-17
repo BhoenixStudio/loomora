@@ -308,20 +308,41 @@ function ChronoDemo() {
                 <div className="rounded-xl border border-third bg-second p-4">
                   <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-body-3">diff() Calculations</p>
                   <ul className="space-y-1 font-mono text-xs text-body-1">
-                    <li>Match (first &lt; second): <span className="font-bold text-title-1">{String(diffResult.match)}</span></li>
-                    <li>Hours: <span className="font-bold text-title-1">{diffResult.differenceInHours}</span></li>
-                    <li>Days: <span className="font-bold text-title-1">{diffResult.differenceInDays}</span></li>
-                    <li>Weeks: <span className="font-bold text-title-1">{diffResult.differenceInWeeks}</span></li>
-                    <li>Months: <span className="font-bold text-title-1">{diffResult.differenceInMonths}</span></li>
-                    <li>Years: <span className="font-bold text-title-1">{diffResult.differenceInYears}</span></li>
+                    <li>
+                      Match (first &lt; second):{' '}
+                      <span className="font-bold text-title-1">{String(diffResult.match)}</span>
+                    </li>
+                    <li>
+                      Hours: <span className="font-bold text-title-1">{diffResult.differenceInHours}</span>
+                    </li>
+                    <li>
+                      Days: <span className="font-bold text-title-1">{diffResult.differenceInDays}</span>
+                    </li>
+                    <li>
+                      Weeks: <span className="font-bold text-title-1">{diffResult.differenceInWeeks}</span>
+                    </li>
+                    <li>
+                      Months: <span className="font-bold text-title-1">{diffResult.differenceInMonths}</span>
+                    </li>
+                    <li>
+                      Years: <span className="font-bold text-title-1">{diffResult.differenceInYears}</span>
+                    </li>
                   </ul>
                 </div>
                 <div className="rounded-xl border border-third bg-second p-4">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-body-3">timeSpan() Dynamic Window</p>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-body-3">
+                    timeSpan() Dynamic Window
+                  </p>
                   <ul className="space-y-1 font-mono text-xs text-body-1">
-                    <li>Match: <span className="font-bold text-title-1">{String(spanResult.match)}</span></li>
-                    <li>Range: <span className="font-bold text-title-1">{spanResult.range || 'none'}</span></li>
-                    <li>Fallback: <span className="font-bold text-title-1">{spanResult.fallback || 'none'}</span></li>
+                    <li>
+                      Match: <span className="font-bold text-title-1">{String(spanResult.match)}</span>
+                    </li>
+                    <li>
+                      Range: <span className="font-bold text-title-1">{spanResult.range || 'none'}</span>
+                    </li>
+                    <li>
+                      Fallback: <span className="font-bold text-title-1">{spanResult.fallback || 'none'}</span>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -373,7 +394,7 @@ function ChronoDemo() {
   )
 }
 
-export function ComponentDemo({ demo }: { demo: string }) {
+export function ComponentDemo({ demo }: Readonly<{ demo: string }>) {
   return (
     <LoomoraProvider>
       <DemoContent demo={demo} />
@@ -381,7 +402,7 @@ export function ComponentDemo({ demo }: { demo: string }) {
   )
 }
 
-function DemoContent({ demo }: { demo: string }) {
+function DemoContent({ demo }: Readonly<{ demo: string }>) {
   const [text, setText] = useState('Loomora')
   const [search, setSearch] = useState('')
   const [textarea, setTextarea] = useState('Edit this example text.')
@@ -393,7 +414,7 @@ function DemoContent({ demo }: { demo: string }) {
   const [amount, setAmount] = useState<number | undefined>(1234.5)
   const [color, setColor] = useState('#6366f1')
   const [colorAlpha, setColorAlpha] = useState('#ec489980')
-  const [otp, setOtp] = useState<string[]>([])
+  const [pin, setPin] = useState<string[]>([])
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
@@ -626,10 +647,10 @@ function DemoContent({ demo }: { demo: string }) {
         </p>
       </div>
     ),
-    'otp-field': (
+    'pin-field': (
       <div>
-        <PinField label="Verification code" length={6} properties={{ value: otp, onChange: setOtp }} />
-        <p className="mt-3 text-xs text-body-2">Code: {otp.join('') || 'Enter six digits; paste also works.'}</p>
+        <PinField label="Verification code" length={6} properties={{ value: pin, onChange: setPin }} />
+        <p className="mt-3 text-xs text-body-2">Code: {pin.join('') || 'Enter six digits; paste also works.'}</p>
       </div>
     ),
     'password-field': (

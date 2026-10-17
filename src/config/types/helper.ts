@@ -162,7 +162,7 @@ export type LoomoraPasswordField = {
   LoomoraPasswordBoolean &
   LoomoraPasswordIcon
 
-export type LoomoraOtpField = { length: number; className: string }
+export type LoomoraPinField = { length: number; className: string }
 export type LoomoraRangeField = {
   step: number
   showValue: boolean

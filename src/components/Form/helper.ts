@@ -42,7 +42,7 @@ export type InputProps = InputBase &
     | ({ type: 'autocomplete' } & AutocompleteFieldProps)
     | ({ type: 'file' } & UploaderFieldProps)
     | ({ type: 'check' } & CheckFieldProps)
-    | ({ type: 'otp' } & PinFieldProps)
+    | ({ type: 'pin' } & PinFieldProps)
     | ({ type: 'range' } & RangeFieldProps)
     | ({ type: 'rating' } & RatingFieldProps)
     | ({ type: 'color' } & ColorFieldProps)

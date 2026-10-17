@@ -684,14 +684,14 @@ export const componentCatalog: ComponentDoc[] = [
     ],
   },
   {
-    slug: 'otp-field',
-    name: 'OtpField',
+    slug: 'pin-field',
+    name: 'PinField',
     group: 'Form fields',
     summary: 'Controlled one-time-code entry split across digit cells.',
     description: 'Renders a fixed-length sequence of digit inputs with paste distribution and keyboard focus movement.',
-    importName: 'OtpField',
-    demo: 'otp-field',
-    code: `<OtpField label="Verification code" length={6} properties={{ value, onChange: setValue }} />`,
+    importName: 'PinField',
+    demo: 'pin-field',
+    code: `<PinField label="Verification code" length={6} properties={{ value, onChange: setValue }} />`,
     props: [
       { name: 'length', type: 'number', defaultValue: 'config default', description: 'Number of digit cells.' },
       { name: 'properties.value', type: 'string[]', defaultValue: '[]', description: 'Controlled digit array.' },
@@ -953,7 +953,12 @@ export const componentCatalog: ComponentDoc[] = [
         defaultValue: '—',
         description: 'Called with the normalized hex value.',
       },
-      { name: 'properties.name', type: 'string', defaultValue: '—', description: 'Submits the value via a hidden input.' },
+      {
+        name: 'properties.name',
+        type: 'string',
+        defaultValue: '—',
+        description: 'Submits the value via a hidden input.',
+      },
       { name: 'presets', type: 'string[]', defaultValue: 'curated palette', description: 'Preset swatches.' },
       { name: 'alpha', type: 'boolean', defaultValue: 'false', description: 'Enables the opacity slider.' },
       { name: 'allowEmpty', type: 'boolean', defaultValue: 'false', description: 'Shows a clear button.' },
@@ -967,7 +972,8 @@ export const componentCatalog: ComponentDoc[] = [
     slug: 'date-field',
     name: 'DateField',
     group: 'Form fields',
-    summary: 'Comprehensive date and time picker supporting single dates, times, ranges, presets, and responsive dual calendars.',
+    summary:
+      'Comprehensive date and time picker supporting single dates, times, ranges, presets, and responsive dual calendars.',
     description:
       'A feature-packed date/time picker that supports 6 distinct modes: date, datetime, time, dateRange, timeRange, and dateTimeRange. Includes responsive dual-month calendars on desktop and single-month on mobile, quick presets, decade jumps, time spinners, and full Loomora i18n localization.',
     importName: 'DateField',
@@ -1231,7 +1237,7 @@ export const componentCatalog: ComponentDoc[] = [
     group: 'Form composition',
     summary: 'Dispatches a single input definition to its matching field component.',
     description:
-      'A discriminated input dispatcher for text, search, textarea, select, checks, OTP, phone, password, upload, and more.',
+      'A discriminated input dispatcher for text, search, textarea, select, checks, Pin, phone, password, upload, and more.',
     importName: 'Input',
     demo: 'input',
     code: `<Input type="text" label="Name" properties={{\n  value, onChange: (event) => setValue(event.target.value),\n}} />`,
