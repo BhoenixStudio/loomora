@@ -40,6 +40,16 @@ import {
   useContextMenu,
 } from 'loomora'
 import { useState, type MouseEvent } from 'react'
+import {
+  AccordionInteractiveDemo,
+  ButtonInteractiveDemo,
+  CheckFieldInteractiveDemo,
+  ColorFieldInteractiveDemo,
+  DateFieldInteractiveDemo,
+  ProgressBarInteractiveDemo,
+  RatingFieldInteractiveDemo,
+  TextFieldInteractiveDemo,
+} from './demos/interactive-demos'
 
 const options = [
   { value: 'button', label: 'Button' },
@@ -437,32 +447,8 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
   ])
 
   const demos: Record<string, React.ReactNode> = {
-    accordion: (
-      <div className="max-w-xl rounded-xl border border-third p-4">
-        <Accordion title="Account details" initialCollapsed>
-          <div className="pb-3 text-sm leading-6 text-body-1">
-            Add useful secondary information here. The disclosure keeps the page focused while making details available
-            on demand.
-          </div>
-        </Accordion>
-      </div>
-    ),
-    button: (
-      <div className="flex flex-wrap items-center gap-3">
-        <Button color="info" onClick={() => setSubmitted(true)}>
-          Save changes
-        </Button>
-        <Button variant="outline" color="info">
-          Outline action
-        </Button>
-        <Button variant="text" color="info">
-          Text action
-        </Button>
-        <p aria-live="polite" className="w-full text-sm text-body-2">
-          {submitted ? 'Action triggered.' : 'Click an action to test its event.'}
-        </p>
-      </div>
-    ),
+    accordion: <AccordionInteractiveDemo />,
+    button: <ButtonInteractiveDemo />,
     dialog: (
       <div>
         <Button
@@ -546,11 +532,7 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
         <Loader height={40} width={40} variant="circle" />
       </div>
     ),
-    'progress-bar': (
-      <div className="max-w-lg">
-        <ProgressBar value={7} outOf={10} showValueAsText label="Build progress" barColor="bg-success" />
-      </div>
-    ),
+    'progress-bar': <ProgressBarInteractiveDemo />,
     label: (
       <div className="max-w-sm">
         <Label required>Email address</Label>
@@ -580,18 +562,7 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
         </InputHelper>
       </div>
     ),
-    'text-field': (
-      <div className="max-w-md">
-        <TextField
-          label="Display name"
-          inputHelper="This value is controlled by the page."
-          properties={{ value: text, onChange: (event) => setText(event.target.value), autoComplete: 'name' }}
-        />
-        <p className="mt-3 text-xs text-body-2">
-          Current value: <code>{text || '(empty)'}</code>
-        </p>
-      </div>
-    ),
+    'text-field': <TextFieldInteractiveDemo />,
     'search-field': (
       <div className="max-w-lg">
         <SearchField
@@ -631,22 +602,7 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
         <p className="mt-3 text-xs text-body-2">Selected: {selected}</p>
       </div>
     ),
-    'check-field': (
-      <div className="space-y-4">
-        <CheckField
-          label="Enable product updates"
-          inputHelper="You can change this preference later."
-          properties={{ type: 'checkbox', checked, onChange: (event) => setChecked(event.target.checked) }}
-        />
-        <CheckField
-          label="I agree to the example terms"
-          properties={{ type: 'checkbox', checked: submitted, onChange: (event) => setSubmitted(event.target.checked) }}
-        />
-        <p className="text-xs text-body-2">
-          Updates: {checked ? 'enabled' : 'disabled'} · Terms: {submitted ? 'accepted' : 'not accepted'}
-        </p>
-      </div>
-    ),
+    'check-field': <CheckFieldInteractiveDemo />,
     'pin-field': (
       <div>
         <PinField label="Verification code" length={6} properties={{ value: pin, onChange: setPin }} />
@@ -701,23 +657,7 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
         <p className="mt-3 text-xs text-body-2">Parent value: {range}</p>
       </div>
     ),
-    'rating-field': (
-      <div className="grid max-w-xl gap-5">
-        <RatingField
-          label="Quality (half steps)"
-          properties={{
-            value: rating,
-            setValue: setRating,
-            max: 5,
-            step: 0.5,
-            name: 'quality',
-            labels: ['Poor', 'Fair', 'Good', 'Great', 'Excellent'],
-          }}
-        />
-        <RatingField label="Read only" properties={{ value: 4, readOnly: true }} />
-        <p className="text-xs text-body-2">Parent value: {rating}</p>
-      </div>
-    ),
+    'rating-field': <RatingFieldInteractiveDemo />,
     'number-field': (
       <div className="max-w-md">
         <NumberField
@@ -728,137 +668,8 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
         <p className="mt-3 text-xs text-body-2">Parent value: {amount ?? '(empty)'}</p>
       </div>
     ),
-    'color-field': (
-      <div className="grid max-w-md gap-5">
-        <ColorField label="Brand color" properties={{ value: color, setValue: setColor, name: 'brand' }} />
-        <ColorField
-          label="Overlay (with opacity, clearable)"
-          alpha
-          allowEmpty
-          properties={{ value: colorAlpha, setValue: setColorAlpha }}
-        />
-        <p className="text-xs text-body-2">
-          Values: {color || '(empty)'} / {colorAlpha || '(empty)'}
-        </p>
-      </div>
-    ),
-    'date-field': (
-      <div className="grid max-w-3xl gap-6">
-        <div>
-          <h4 className="text-sm font-semibold text-title-1 mb-2">1. Date Only (`mode="date"`)</h4>
-          <DateField
-            label="Single Date (with presets & decade jump)"
-            inputHelper="Click icon to open picker, or edit text directly. Month/Year views support returning back to calendar."
-            properties={{
-              mode: 'date',
-              value: dateVal,
-              onChange: (val) => setDateVal(val),
-              allowClear: true,
-            }}
-          />
-          <p className="mt-1 text-xs text-body-2">
-            Value: <code>{dateVal ? String(dateVal) : '(empty)'}</code>
-          </p>
-        </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-title-1 mb-2">2. Date with Time (`mode="datetime"`)</h4>
-          <DateField
-            label="Date & Time (12h AM/PM)"
-            properties={{
-              mode: 'datetime',
-              value: dateTimeVal,
-              onChange: (val) => setDateTimeVal(val),
-              hour12: true,
-              allowClear: true,
-            }}
-          />
-          <p className="mt-1 text-xs text-body-2">
-            Value: <code>{dateTimeVal ? String(dateTimeVal) : '(empty)'}</code>
-          </p>
-        </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-title-1 mb-2">3. Time Only (`mode="time"`)</h4>
-          <DateField
-            label="Time Picker"
-            properties={{
-              mode: 'time',
-              value: timeVal,
-              onChange: (val) => setTimeVal(val),
-              hour12: true,
-              allowClear: true,
-            }}
-          />
-          <p className="mt-1 text-xs text-body-2">
-            Value: <code>{timeVal ? String(timeVal) : '(empty)'}</code>
-          </p>
-        </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-title-1 mb-2">4. Date Range (`mode="dateRange"`)</h4>
-          <DateField
-            label="Date Range (Responsive: Dual Month on Desktop, Single on Mobile)"
-            inputHelper="Desktop displays two side-by-side calendars; mobile adapts to single calendar."
-            properties={{
-              mode: 'dateRange',
-              value: dateRangeVal,
-              onChange: (val) => setDateRangeVal(val),
-              allowClear: true,
-            }}
-          />
-          <p className="mt-1 text-xs text-body-2">
-            Range: <code>{JSON.stringify(dateRangeVal)}</code>
-          </p>
-        </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-title-1 mb-2">5. Time Range (`mode="timeRange"`)</h4>
-          <DateField
-            label="Working Hours Range"
-            properties={{
-              mode: 'timeRange',
-              value: timeRangeVal,
-              onChange: (val) => setTimeRangeVal(val),
-              hour12: true,
-              allowClear: true,
-            }}
-          />
-          <p className="mt-1 text-xs text-body-2">
-            Time Range: <code>{JSON.stringify(timeRangeVal)}</code>
-          </p>
-        </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-title-1 mb-2">6. Date with Time Range (`mode="dateTimeRange"`)</h4>
-          <DateField
-            label="Full Event Schedule Range"
-            properties={{
-              mode: 'dateTimeRange',
-              value: dateTimeRangeVal,
-              onChange: (val) => setDateTimeRangeVal(val),
-              hour12: true,
-              allowClear: true,
-            }}
-          />
-          <p className="mt-1 text-xs text-body-2">
-            Date & Time Range: <code>{JSON.stringify(dateTimeRangeVal)}</code>
-          </p>
-        </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-title-1 mb-2">7. Via Unified `Input` component (`type="date"`)</h4>
-          <Input
-            type="date"
-            label="Unified Form Input (type='date')"
-            properties={{
-              mode: 'date',
-              allowClear: true,
-            }}
-          />
-        </div>
-      </div>
-    ),
+    'color-field': <ColorFieldInteractiveDemo />,
+    'date-field': <DateFieldInteractiveDemo />,
     autocomplete: (
       <div className="grid max-w-lg gap-4">
         <AutocompleteField
