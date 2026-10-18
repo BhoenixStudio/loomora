@@ -118,47 +118,7 @@ export const componentCatalog: ComponentDoc[] = [
       'Loading changes content but does not disable the control.',
     ],
   },
-  {
-    slug: 'context-menu',
-    name: 'useContextMenu',
-    group: 'UI',
-    summary: 'Right-click menu hook that opens at the cursor and stays inside the viewport.',
-    description:
-      'A hook that returns trigger props for the target element and a portaled menu element. Open state is internal by default and can be controlled from outside.',
-    importName: 'useContextMenu',
-    demo: 'context-menu',
-    code: `const { triggerProps, menu } = useContextMenu({\n  children: (close) => <button onClick={close}>Copy</button>,\n})\n\n<div {...triggerProps}>Right-click here</div>\n{menu}`,
-    props: [
-      {
-        name: 'children',
-        type: 'ReactNode | (close: () => void) => ReactNode',
-        defaultValue: 'required',
-        description: 'Menu content. A function receives a close callback.',
-      },
-      {
-        name: 'open',
-        type: 'boolean',
-        defaultValue: 'internal state',
-        description: 'Controls the open state from outside the hook.',
-      },
-      {
-        name: 'setOpen',
-        type: '(open: boolean) => void',
-        defaultValue: '–',
-        description: 'Notified whenever the menu opens or closes, including outside click and Escape.',
-      },
-      {
-        name: 'menuClassName',
-        type: 'string',
-        defaultValue: 'min-w-44 rounded-2xl border …',
-        description: 'Classes applied to the menu surface.',
-      },
-    ],
-    notes: [
-      'Outside mousedown, Escape, window resize, and scroll close the menu. Item clicks do not close it unless you call close.',
-      'Spread triggerProps onto the element that should open the menu, and render menu once in your JSX.',
-    ],
-  },
+
   {
     slug: 'dialog',
     name: 'Dialog',
@@ -1376,83 +1336,7 @@ export const componentCatalog: ComponentDoc[] = [
       'Prefer an explicit empty state when no data is a meaningful condition.',
     ],
   },
-  {
-    slug: 'chrono',
-    name: 'useChrono',
-    group: 'Helpers',
-    summary: 'Native date calculation, formatting, comparison, relative time, and month catalog hook.',
-    description:
-      'A comprehensive zero-dependency date utility hook powered by native JavaScript Date and Web Intl APIs. Provides date validation, formatting presets, custom token stamping, forward/rewind stepping, multi-unit differences, temporal span matching, and localized relative time calculations.',
-    importName: 'useChrono',
-    demo: 'chrono',
-    code: `const { stamp, diff, relative, forward, rewind, timeSpan, isDate, listMonths } = useChrono()\n\n// Format with presets or custom tokens\nconst formatted = stamp(new Date(), { type: 'custom', format: 'EEEE, d MMMM yyyy' })\n\n// Human relative distance\nconst timeAgo = relative(earlierDate)\n\n// Step days forward or backward\nconst nextWeek = forward(new Date(), 7)\n\n// Calculate granular difference\nconst difference = diff(dateA, dateB, { type: 'before' })`,
-    props: [
-      {
-        name: 'stamp(date, options)',
-        type: '(date: DateType, props?: FormatDate) => string | number | null',
-        defaultValue: '—',
-        description:
-          'Formats dates using 15 presets (fullYear, dayName, time24, relative, etc.) or custom token patterns with locale awareness.',
-      },
-      {
-        name: 'relative(date, options)',
-        type: '(date: DateType, props?: RelativeDateProps) => string',
-        defaultValue: '—',
-        description:
-          'Calculates humanized relative time strings using Loomora configuration translations or native Intl.RelativeTimeFormat.',
-      },
-      {
-        name: 'diff(first, second, options)',
-        type: '(first: DateType, second: DateType, props?: CompareDate) => DiffResult',
-        defaultValue: '—',
-        description:
-          'Computes directional differences across hours, days, weeks, months, and years with optional day adjustments.',
-      },
-      {
-        name: 'timeSpan(dates, type)',
-        type: '(dates: DateRange, type?: DateRangeType) => DateRangeResult',
-        defaultValue: "'dynamic'",
-        description:
-          'Evaluates if two dates fall within the same hour, day, week, month, or year and generates formatted range strings.',
-      },
-      {
-        name: 'forward(date, days)',
-        type: '(date: DateType, days: number) => Date | null',
-        defaultValue: '—',
-        description: 'Advances a date by a specified number of days natively handling month rollovers and leap years.',
-      },
-      {
-        name: 'rewind(date, days)',
-        type: '(date: DateType, days: number) => Date | null',
-        defaultValue: '—',
-        description: 'Rewinds a date backward by a specified number of days.',
-      },
-      {
-        name: 'isDate(date)',
-        type: '(date: DateType) => boolean',
-        defaultValue: '—',
-        description:
-          'Validates whether an input represents a valid date, filtering sentinel zero-dates and invalid strings.',
-      },
-      {
-        name: 'listMonths(options)',
-        type: '<T>(props?: GetMonths<T>) => (MonthItem & T)[]',
-        defaultValue: '—',
-        description: 'Returns an ordered 1-12 list of months enriched with Loomora localization translations.',
-      },
-      {
-        name: 'pickMonth(key, options)',
-        type: '<T>(key: MonthKey, props?: GetMonths<T>) => MonthItem & T',
-        defaultValue: '—',
-        description: 'Retrieves metadata and translations for a specific month key (JAN through DEC).',
-      },
-    ],
-    notes: [
-      'Zero external dependencies: Fully operates on native Date, Intl.DateTimeFormat, and Intl.RelativeTimeFormat.',
-      'Relative sentences are fully customizable via LoomoraProvider translations (translations.dates.relative).',
-      'Supports BCP-47 locale tags directly in stamp and relative methods.',
-    ],
-  },
+
 ]
 
 export function getComponentDoc(slug: string) {

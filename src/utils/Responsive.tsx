@@ -127,9 +127,46 @@ export function ResponsiveProvider({ children }: Readonly<{ children: ReactNode 
   return <Context.Provider value={value}>{children}</Context.Provider>
 }
 
+const defaultResponsiveContext: ResponsiveContext = {
+  isXs: false,
+  isSm: false,
+  isMd: false,
+  isLg: true,
+  isXl: false,
+  is2xl: false,
+  is3xl: false,
+  isLtXs: false,
+  isLtSm: false,
+  isLtMd: false,
+  isLtLg: false,
+  isLtXl: false,
+  isLt2xl: false,
+  isLt3xl: false,
+  isGtXs: true,
+  isGtSm: true,
+  isGtMd: true,
+  isGtLg: false,
+  isGtXl: false,
+  isGt2xl: false,
+  isGt3xl: false,
+  isMobile: false,
+  isTablet: false,
+  isDesktop: true,
+  isUltra: false,
+  windowSize: {
+    width: typeof window !== 'undefined' ? window.innerWidth : 1024,
+    height: typeof window !== 'undefined' ? window.innerHeight : 768,
+  },
+  UseMQ: (size: ScreenSize) => (size === 'md' ? '48rem' : size === 'lg' ? '64rem' : '40rem'),
+  UseResponsive: <T = unknown>(props: Partial<Record<ScreenSize, T>>, defaultValue?: T) =>
+    (props.lg ?? props.md ?? props.sm ?? props.xs ?? defaultValue) as T,
+}
+
 export const useResponsive = () => {
   const context = useContext(Context)
-  if (!context) throw new Error('useResponsive must be used within a ResponsiveProvider')
+  if (!context) {
+    return defaultResponsiveContext
+  }
 
   return context
 }

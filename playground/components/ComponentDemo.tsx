@@ -46,9 +46,18 @@ import {
   CheckFieldInteractiveDemo,
   ColorFieldInteractiveDemo,
   DateFieldInteractiveDemo,
+  DialogInteractiveDemo,
+  DropdownInteractiveDemo,
+  NumberFieldInteractiveDemo,
+  PasswordFieldInteractiveDemo,
+  PinFieldInteractiveDemo,
   ProgressBarInteractiveDemo,
+  RangeFieldInteractiveDemo,
   RatingFieldInteractiveDemo,
+  SearchFieldInteractiveDemo,
+  SelectFieldInteractiveDemo,
   TextFieldInteractiveDemo,
+  TextareaFieldInteractiveDemo,
 } from './demos/interactive-demos'
 
 const options = [
@@ -449,57 +458,14 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
   const demos: Record<string, React.ReactNode> = {
     accordion: <AccordionInteractiveDemo />,
     button: <ButtonInteractiveDemo />,
-    dialog: (
-      <div>
-        <Button
-          color="info"
-          onClick={() => fade('in', { open: dialogOpen, setOpen: setDialogOpen, setShow: setDialogShow })}
-        >
-          Open dialog
-        </Button>
-        <Dialog open={dialogOpen} setOpen={setDialogOpen} show={dialogShow} setShow={setDialogShow} usePortal={false}>
-          <div className="max-w-md rounded-2xl border border-third bg-second p-6 shadow-xl">
-            <h3 className="text-lg font-semibold">Dialog preview</h3>
-            <p className="mt-2 text-sm leading-6 text-body-2">
-              Test the dialog close button, Escape key, and overlay behavior.
-            </p>
-            <Button
-              className="mt-5"
-              variant="outline"
-              color="info"
-              onClick={() => fade('out', { open: dialogOpen, setOpen: setDialogOpen, setShow: setDialogShow })}
-            >
-              Close
-            </Button>
-          </div>
-        </Dialog>
-      </div>
-    ),
+    dialog: <DialogInteractiveDemo />,
     digit: (
       <div className="flex flex-wrap items-baseline gap-4">
         <Digit value={12845.75} decimalsMin={2} decimalsMax={2} endUnit="USD" />
         <span className="text-sm text-body-2">Formatted amount · 2 decimal places</span>
       </div>
     ),
-    dropdown: (
-      <Dropdown
-        trigger="More actions"
-        staticPosition
-        position="BOTTOM_START"
-        triggerProps={{ variant: 'outline', color: 'info' }}
-      >
-        {(close) => (
-          <div className="grid min-w-44 gap-1 rounded-xl border border-third bg-second p-2 shadow-lg">
-            <button className="rounded-lg px-3 py-2 text-start text-sm hover:bg-main" onClick={close}>
-              Inspect component
-            </button>
-            <button className="rounded-lg px-3 py-2 text-start text-sm hover:bg-main" onClick={close}>
-              Copy example
-            </button>
-          </div>
-        )}
-      </Dropdown>
-    ),
+    dropdown: <DropdownInteractiveDemo />,
     flag: (
       <div className="flex items-center gap-4">
         <Flag country="OM" size={48} />
@@ -563,73 +529,12 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
       </div>
     ),
     'text-field': <TextFieldInteractiveDemo />,
-    'search-field': (
-      <div className="max-w-lg">
-        <SearchField
-          label="Search components"
-          properties={{
-            value: search,
-            onChange: (event) => setSearch(event.target.value),
-            onSearch: setSubmittedQuery,
-          }}
-        />
-        <p aria-live="polite" className="mt-3 text-xs text-body-2">
-          {submitted ? `Submitted: ${search}` : 'Type a query, then activate the search action.'}
-        </p>
-      </div>
-    ),
-    'textarea-field': (
-      <div className="max-w-lg">
-        <TextareaField
-          label="Description"
-          properties={{
-            value: textarea,
-            onChange: (event) => setTextarea(event.target.value),
-            rows: 4,
-            maxLength: 240,
-          }}
-        />
-        <p className="mt-2 text-end text-xs text-body-2">{textarea.length} / 240</p>
-      </div>
-    ),
-    select: (
-      <div className="max-w-sm">
-        <SelectField
-          label="Component"
-          options={options}
-          properties={{ value: selected, onChange: (event) => setSelected(event.target.value) }}
-        />
-        <p className="mt-3 text-xs text-body-2">Selected: {selected}</p>
-      </div>
-    ),
+    'search-field': <SearchFieldInteractiveDemo />,
+    'textarea-field': <TextareaFieldInteractiveDemo />,
+    select: <SelectFieldInteractiveDemo />,
     'check-field': <CheckFieldInteractiveDemo />,
-    'pin-field': (
-      <div>
-        <PinField label="Verification code" length={6} properties={{ value: pin, onChange: setPin }} />
-        <p className="mt-3 text-xs text-body-2">Code: {pin.join('') || 'Enter six digits; paste also works.'}</p>
-      </div>
-    ),
-    'password-field': (
-      <div className="max-w-md">
-        <PasswordField
-          label="Account password"
-          hasShow
-          hasGenerate
-          hasValidation
-          showValidationProgress
-          showValidationsList
-          onGenerate={setPassword}
-          properties={{
-            value: password,
-            onChange: (event) => setPassword(event.target.value),
-            autoComplete: 'new-password',
-          }}
-        />
-        <p className="mt-2 text-xs text-body-2">
-          Password state is controlled; generated values are returned to this page.
-        </p>
-      </div>
-    ),
+    'pin-field': <PinFieldInteractiveDemo />,
+    'password-field': <PasswordFieldInteractiveDemo />,
     'phone-input': (
       <div className="max-w-lg">
         <PhoneInput
@@ -639,35 +544,9 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
         <p className="mt-3 text-xs text-body-2">Local number: {phone || '(empty)'}</p>
       </div>
     ),
-    'range-field': (
-      <div className="max-w-xl">
-        <RangeField
-          label="Volume"
-          properties={{
-            value: range,
-            setValue: setRange,
-            min: 0,
-            max: 100,
-            step: 5,
-            showValue: true,
-            showMinMax: true,
-            valueSuffix: '%',
-          }}
-        />
-        <p className="mt-3 text-xs text-body-2">Parent value: {range}</p>
-      </div>
-    ),
+    'range-field': <RangeFieldInteractiveDemo />,
     'rating-field': <RatingFieldInteractiveDemo />,
-    'number-field': (
-      <div className="max-w-md">
-        <NumberField
-          label="Amount"
-          decimalsMax={2}
-          properties={{ value: amount, onChange: (event) => setAmount(event.target.value) }}
-        />
-        <p className="mt-3 text-xs text-body-2">Parent value: {amount ?? '(empty)'}</p>
-      </div>
-    ),
+    'number-field': <NumberFieldInteractiveDemo />,
     'color-field': <ColorFieldInteractiveDemo />,
     'date-field': <DateFieldInteractiveDemo />,
     autocomplete: (

@@ -313,6 +313,106 @@ export function Example() {
     ],
   },
   {
+    slug: 'use-context-menu',
+    name: 'useContextMenu',
+    category: 'DOM & Layout',
+    summary: 'Right-click context menu hook that opens at the cursor position and stays inside viewport bounds.',
+    description:
+      'A hook that returns trigger props for the target element and a portaled menu element. Open state is managed internally by default and can also be controlled from outside.',
+    importName: 'useContextMenu',
+    code: `import { useContextMenu } from 'loomora'
+
+export function ContextMenuExample() {
+  const { triggerProps, menu } = useContextMenu({
+    children: (close) => (
+      <div className="grid min-w-44 gap-1 p-2">
+        <button onClick={close}>Copy</button>
+        <button onClick={close}>Delete</button>
+      </div>
+    ),
+  })
+
+  return (
+    <>
+      <div {...triggerProps}>Right-click inside this area</div>
+      {menu}
+    </>
+  )
+}`,
+    params: [
+      {
+        name: 'options.children',
+        type: 'ReactNode | ((close: () => void) => ReactNode)',
+        description: 'Menu content. A function receives a close callback.',
+      },
+      {
+        name: 'options.open',
+        type: 'boolean',
+        optional: true,
+        description: 'Controls the open state from outside the hook.',
+      },
+      {
+        name: 'options.setOpen',
+        type: '(open: boolean) => void',
+        optional: true,
+        description: 'Notified whenever the menu opens or closes (including outside clicks and Escape).',
+      },
+      {
+        name: 'options.menuClassName',
+        type: 'string',
+        optional: true,
+        description: 'Custom classes applied to the portaled menu surface.',
+      },
+    ],
+    returns: [
+      {
+        name: 'triggerProps',
+        type: '{ onContextMenu: (e: MouseEvent) => void }',
+        description: 'Event handler props to spread onto the right-click trigger element.',
+      },
+      {
+        name: 'menu',
+        type: 'ReactNode',
+        description: 'The portaled context menu element positioned at the cursor coordinates.',
+      },
+      {
+        name: 'open',
+        type: 'boolean',
+        description: 'Current boolean open state of the context menu.',
+      },
+      {
+        name: 'openAt',
+        type: '(x: number, y: number) => void',
+        description: 'Programmatically opens the menu at specific viewport x/y coordinates.',
+      },
+      {
+        name: 'close',
+        type: '() => void',
+        description: 'Closes the context menu.',
+      },
+    ],
+    relatedConfigs: [],
+    features: [
+      {
+        title: 'Viewport-Constrained Positioning',
+        description: 'Automatically clamps menu coordinates to stay fully visible inside viewport boundaries.',
+      },
+      {
+        title: 'Uncontrolled & Controlled Modes',
+        description: 'Works zero-config with internal state or connects to external state via open and setOpen.',
+      },
+      {
+        title: 'Accessible Dismissal',
+        description: 'Automatically closes on outside click, Escape key press, window resize, or scroll.',
+      },
+    ],
+    notes: [
+      'Spread triggerProps onto the element that should trigger the menu on right-click.',
+      'Render the returned menu node once inside your component JSX.',
+      'Item clicks do not automatically close the menu unless you invoke the close() callback.',
+    ],
+  },
+  {
     slug: 'use-click-away',
     name: 'useClickAway',
     category: 'DOM & Layout',
@@ -761,5 +861,5 @@ export function ConfigInspector() {
 ]
 
 export function getHookDoc(slug: string) {
-  return hookCatalog.find((entry) => entry.slug === slug)
+  return hookCatalog.find((entry) => entry.slug === slug || (slug === 'context-menu' && entry.slug === 'use-context-menu'))
 }

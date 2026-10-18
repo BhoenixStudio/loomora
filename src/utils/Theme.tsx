@@ -144,9 +144,27 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
   return <Context.Provider value={value}>{children}</Context.Provider>
 }
 
+const defaultThemeContext: ThemeContext = {
+  theme: 'LIGHT',
+  dynamicTime: { start: '06:00', end: '18:00' },
+  dynamicTimeInputs: [],
+  themeOptions: [
+    { value: 'LIGHT', title: 'Light', icon: undefined },
+    { value: 'DARK', title: 'Dark', icon: undefined },
+    { value: 'SYSTEM', title: 'System', icon: undefined },
+    { value: 'DYNAMIC', title: 'Dynamic', icon: undefined },
+  ],
+  toggleTheme: () => {},
+  detectSystemTheme: () => 'LIGHT',
+  setDynamicTime: () => {},
+  themeResponsive: (light) => light,
+}
+
 export const useTheme = () => {
   const context = useContext(Context)
-  if (!context) throw new Error('useTheme must be used within a ThemeProvider')
+  if (!context) {
+    return defaultThemeContext
+  }
 
   return context
 }

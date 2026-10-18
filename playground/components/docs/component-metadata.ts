@@ -82,7 +82,6 @@ export const COMPONENT_CONFIGS: Record<string, string[]> = {
   'input-helper': ['form.inputHelper'],
   inputs: ['form'],
   copyrights: ['copyrights'],
-  chrono: ['translations.dates'],
 }
 
 export const COMPONENT_NON_NATIVE_PROPS: Record<string, NonNativeProp[]> = {

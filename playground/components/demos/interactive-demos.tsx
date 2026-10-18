@@ -6,11 +6,28 @@ import {
   CheckField,
   ColorField,
   DateField,
+  Dialog,
+  Dropdown,
+  NumberField,
+  PasswordField,
+  PinField,
   ProgressBar,
+  RangeField,
   RatingField,
+  SearchField,
+  SelectField,
   TextField,
+  TextareaField,
+  fade,
 } from 'loomora'
 import { useState } from 'react'
+import {
+  ControlInput,
+  ControlRange,
+  ControlSelect,
+  ControlToggle,
+  InteractiveLayout,
+} from './interactive-controls'
 
 export function ButtonInteractiveDemo() {
   const [title, setTitle] = useState('Save changes')
@@ -36,142 +53,78 @@ export function ButtonInteractiveDemo() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Live Stage */}
-      <div className="flex min-h-36 flex-col items-center justify-center rounded-2xl border border-third bg-main p-8 text-center">
-        <Button
-          condition={condition}
-          variant={variant}
-          color={color}
-          size={size}
-          loading={loading}
-          disabled={disabled}
-          onClick={() => setClickedCount((c) => c + 1)}
-          startIcon={withIcon ? <span aria-hidden="true">★</span> : undefined}
-        >
-          {title}
-        </Button>
-        {!condition && (
-          <p className="mt-3 text-xs italic text-body-3">
-            (Button rendered null because <code className="font-mono">condition=&#123;false&#125;</code>)
-          </p>
-        )}
-        <p className="mt-4 text-xs text-body-2">
-          Clicked: <strong className="font-semibold text-title-1">{clickedCount}</strong> time{clickedCount === 1 ? '' : 's'}
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlInput label="Title text" value={title} onChange={setTitle} />
+          <ControlSelect
+            label="Variant"
+            value={variant}
+            onChange={setVariant}
+            options={[
+              { value: 'fill', label: 'fill (default)' },
+              { value: 'outline', label: 'outline' },
+              { value: 'text', label: 'text' },
+              { value: 'none', label: 'none' },
+            ]}
+          />
+          <ControlSelect
+            label="Color"
+            value={color}
+            onChange={setColor}
+            options={[
+              { value: 'primary', label: 'primary (default)' },
+              { value: 'info', label: 'info' },
+              { value: 'success', label: 'success' },
+              { value: 'warning', label: 'warning' },
+              { value: 'error', label: 'error' },
+              { value: 'second', label: 'second' },
+            ]}
+          />
+          <ControlSelect
+            label="Size"
+            value={size}
+            onChange={setSize}
+            options={[
+              { value: 'tiny', label: 'tiny' },
+              { value: 'small', label: 'small' },
+              { value: 'default', label: 'default' },
+              { value: 'large', label: 'large' },
+              { value: 'extreme', label: 'extreme' },
+            ]}
+          />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="loading" checked={loading} onChange={setLoading} />
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+            <ControlToggle label="startIcon" checked={withIcon} onChange={setWithIcon} />
+            <ControlToggle label="condition" checked={condition} onChange={setCondition} />
+          </div>
+        </>
+      }
+    >
+      <Button
+        condition={condition}
+        variant={variant}
+        color={color}
+        size={size}
+        loading={loading}
+        disabled={disabled}
+        onClick={() => setClickedCount((c) => c + 1)}
+        startIcon={withIcon ? <span aria-hidden="true">★</span> : undefined}
+      >
+        {title}
+      </Button>
+      {!condition && (
+        <p className="mt-3 text-xs italic text-body-3">
+          (Button rendered null because <code className="font-mono">condition=&#123;false&#125;</code>)
         </p>
-      </div>
-
-      {/* Control Panel */}
-      <div className="rounded-2xl border border-third bg-second p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-third pb-3">
-          <h3 className="text-sm font-semibold text-title-1">Interactive Prop Controls</h3>
-          <button
-            type="button"
-            onClick={reset}
-            className="text-xs font-semibold text-primary transition hover:underline"
-          >
-            Reset to defaults
-          </button>
-        </div>
-
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-body-2">Title text</span>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-xl border border-third bg-main px-3 py-1.5 text-xs text-title-1 outline-none transition focus:border-primary"
-            />
-          </label>
-
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-body-2">Variant</span>
-            <select
-              value={variant}
-              onChange={(e) => setVariant(e.target.value as any)}
-              className="w-full rounded-xl border border-third bg-main px-3 py-1.5 text-xs text-title-1 outline-none transition focus:border-primary"
-            >
-              <option value="fill">fill (default)</option>
-              <option value="outline">outline</option>
-              <option value="text">text</option>
-              <option value="none">none</option>
-            </select>
-          </label>
-
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-body-2">Color</span>
-            <select
-              value={color}
-              onChange={(e) => setColor(e.target.value as any)}
-              className="w-full rounded-xl border border-third bg-main px-3 py-1.5 text-xs text-title-1 outline-none transition focus:border-primary"
-            >
-              <option value="primary">primary (default)</option>
-              <option value="info">info</option>
-              <option value="success">success</option>
-              <option value="warning">warning</option>
-              <option value="error">error</option>
-              <option value="second">second</option>
-            </select>
-          </label>
-
-          <label className="block">
-            <span className="mb-1 block text-xs font-medium text-body-2">Size</span>
-            <select
-              value={size}
-              onChange={(e) => setSize(e.target.value as any)}
-              className="w-full rounded-xl border border-third bg-main px-3 py-1.5 text-xs text-title-1 outline-none transition focus:border-primary"
-            >
-              <option value="tiny">tiny</option>
-              <option value="small">small</option>
-              <option value="default">default</option>
-              <option value="large">large</option>
-              <option value="extreme">extreme</option>
-            </select>
-          </label>
-        </div>
-
-        {/* Toggles */}
-        <div className="mt-4 flex flex-wrap gap-4 border-t border-third/60 pt-3 text-xs">
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={loading}
-              onChange={(e) => setLoading(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>loading</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={disabled}
-              onChange={(e) => setDisabled(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>disabled</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={withIcon}
-              onChange={(e) => setWithIcon(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>startIcon</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={condition}
-              onChange={(e) => setCondition(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>condition</span>
-          </label>
-        </div>
-      </div>
-    </div>
+      )}
+      <p className="mt-4 text-xs text-body-2">
+        Clicked: <strong className="font-semibold text-title-1">{clickedCount}</strong> time
+        {clickedCount === 1 ? '' : 's'}
+      </p>
+    </InteractiveLayout>
   )
 }
 
@@ -190,7 +143,6 @@ export function DateFieldInteractiveDemo() {
     new Date(Date.now() + 3 * 86400000),
   ])
 
-  // Prop toggles
   const [allowClear, setAllowClear] = useState(true)
   const [hour12, setHour12] = useState(true)
   const [disabled, setDisabled] = useState(false)
@@ -207,46 +159,41 @@ export function DateFieldInteractiveDemo() {
     setHasError(false)
   }
 
-  const shapes = [
-    { id: 'date', label: 'Date (Default)' },
-    { id: 'datetime', label: 'Date & Time' },
-    { id: 'time', label: 'Time' },
-    { id: 'dateRange', label: 'Date Range' },
-    { id: 'timeRange', label: 'Time Range' },
-    { id: 'dateTimeRange', label: 'Date-Time Range' },
-  ] as const
-
   return (
-    <div className="space-y-6">
-      {/* Shape / Mode Switcher Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-third pb-3">
-        <div className="flex flex-wrap gap-1.5">
-          {shapes.map((s) => (
-            <button
-              key={s.id}
-              type="button"
-              onClick={() => setShape(s.id)}
-              className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
-                shape === s.id
-                  ? 'bg-primary text-white shadow-xs'
-                  : 'bg-main text-body-1 hover:bg-second hover:text-title-1'
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-        <button
-          type="button"
-          onClick={reset}
-          className="text-xs font-semibold text-primary transition hover:underline"
-        >
-          Reset to default shape
-        </button>
-      </div>
-
-      {/* Live Stage */}
-      <div className="max-w-xl rounded-2xl border border-third bg-main p-6">
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlSelect
+            label="Picker Mode / Shape"
+            value={shape}
+            onChange={setShape}
+            options={[
+              { value: 'date', label: 'Date (default)' },
+              { value: 'datetime', label: 'Date & Time' },
+              { value: 'time', label: 'Time' },
+              { value: 'dateRange', label: 'Date Range' },
+              { value: 'timeRange', label: 'Time Range' },
+              { value: 'dateTimeRange', label: 'Date-Time Range' },
+            ]}
+          />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="allowClear" checked={allowClear} onChange={setAllowClear} />
+            {(shape === 'datetime' || shape === 'time' || shape === 'timeRange' || shape === 'dateTimeRange') && (
+              <ControlToggle
+                label="hour12 (12h vs 24h)"
+                checked={hour12}
+                onChange={setHour12}
+              />
+            )}
+            <ControlToggle label="inputHelper" checked={hasHelper} onChange={setHasHelper} />
+            <ControlToggle label="errors (invalid state)" checked={hasError} onChange={setHasError} />
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-sm text-start">
         {shape === 'date' && (
           <DateField
             label="Date picker"
@@ -338,7 +285,7 @@ export function DateFieldInteractiveDemo() {
 
         <div className="mt-4 rounded-xl border border-third/60 bg-second p-3 text-xs">
           <span className="font-semibold text-title-2">Active value: </span>
-          <code className="font-mono text-primary">
+          <code className="font-mono text-primary break-all">
             {shape === 'date' && (dateVal ? String(dateVal) : 'null')}
             {shape === 'datetime' && (dateTimeVal ? String(dateTimeVal) : 'null')}
             {shape === 'time' && (timeVal ? String(timeVal) : 'null')}
@@ -348,61 +295,7 @@ export function DateFieldInteractiveDemo() {
           </code>
         </div>
       </div>
-
-      {/* Interactive Controls */}
-      <div className="rounded-2xl border border-third bg-second p-4 sm:p-5">
-        <p className="text-xs font-semibold uppercase tracking-wider text-body-3">Toggles & Modifiers</p>
-        <div className="mt-3 flex flex-wrap gap-4 text-xs">
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={allowClear}
-              onChange={(e) => setAllowClear(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>allowClear</span>
-          </label>
-          {(shape === 'datetime' || shape === 'time' || shape === 'timeRange' || shape === 'dateTimeRange') && (
-            <label className="flex cursor-pointer items-center gap-2">
-              <input
-                type="checkbox"
-                checked={hour12}
-                onChange={(e) => setHour12(e.target.checked)}
-                className="rounded border-third text-primary focus:ring-primary"
-              />
-              <span>hour12 (12h vs 24h)</span>
-            </label>
-          )}
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={hasHelper}
-              onChange={(e) => setHasHelper(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>inputHelper</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={hasError}
-              onChange={(e) => setHasError(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>errors (validation state)</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={disabled}
-              onChange={(e) => setDisabled(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>disabled</span>
-          </label>
-        </div>
-      </div>
-    </div>
+    </InteractiveLayout>
   )
 }
 
@@ -411,19 +304,35 @@ export function TextFieldInteractiveDemo() {
   const [hasHelper, setHasHelper] = useState(true)
   const [hasError, setHasError] = useState(false)
   const [disabled, setDisabled] = useState(false)
+  const [labelFloating, setLabelFloating] = useState(false)
 
   const reset = () => {
     setVal('Loomora Input')
     setHasHelper(true)
     setHasError(false)
     setDisabled(false)
+    setLabelFloating(false)
   }
 
   return (
-    <div className="max-w-xl space-y-6">
-      <div className="rounded-2xl border border-third bg-main p-6">
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlInput label="Field value" value={val} onChange={setVal} />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="inputHelper" checked={hasHelper} onChange={setHasHelper} />
+            <ControlToggle label="errors (invalid state)" checked={hasError} onChange={setHasError} />
+            <ControlToggle label="labelFloating" checked={labelFloating} onChange={setLabelFloating} />
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-sm text-start">
         <TextField
           label="Display name"
+          labelFloating={labelFloating}
           inputHelper={hasHelper ? 'Controlled input value with helper text.' : undefined}
           errors={hasError ? [{ condition: true, helper: 'This field contains an error.' }] : undefined}
           properties={{
@@ -436,45 +345,7 @@ export function TextFieldInteractiveDemo() {
           Current value: <code className="font-mono text-primary">{val || '(empty)'}</code>
         </p>
       </div>
-
-      <div className="rounded-2xl border border-third bg-second p-4 sm:p-5">
-        <div className="flex items-center justify-between border-b border-third pb-2.5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-body-3">Toggles & Controls</p>
-          <button type="button" onClick={reset} className="text-xs font-semibold text-primary transition hover:underline">
-            Reset to defaults
-          </button>
-        </div>
-        <div className="mt-3 flex flex-wrap gap-4 text-xs">
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={hasHelper}
-              onChange={(e) => setHasHelper(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>inputHelper</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={hasError}
-              onChange={(e) => setHasError(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>errors (validation state)</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={disabled}
-              onChange={(e) => setDisabled(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>disabled</span>
-          </label>
-        </div>
-      </div>
-    </div>
+    </InteractiveLayout>
   )
 }
 
@@ -492,8 +363,28 @@ export function AccordionInteractiveDemo() {
   }
 
   return (
-    <div className="max-w-xl space-y-6">
-      <div className="rounded-2xl border border-third bg-main p-6">
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <div className="space-y-2">
+          <ControlToggle
+            label="initialCollapsed"
+            checked={initialCollapsed}
+            onChange={(checked) => {
+              setInitialCollapsed(checked)
+              setKey((k) => k + 1)
+            }}
+          />
+          <ControlToggle
+            label="allTitleClickable"
+            checked={allTitleClickable}
+            onChange={setAllTitleClickable}
+          />
+          <ControlToggle label="condition" checked={condition} onChange={setCondition} />
+        </div>
+      }
+    >
+      <div className="w-full max-w-md text-start">
         <Accordion
           key={key}
           title="Account security settings"
@@ -507,70 +398,50 @@ export function AccordionInteractiveDemo() {
           </div>
         </Accordion>
         {!condition && (
-          <p className="text-xs italic text-body-3">(Accordion rendered null because condition is false)</p>
+          <p className="mt-3 text-xs italic text-body-3">(Accordion rendered null because condition is false)</p>
         )}
       </div>
-
-      <div className="rounded-2xl border border-third bg-second p-4 sm:p-5">
-        <div className="flex items-center justify-between border-b border-third pb-2.5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-body-3">Toggles & Controls</p>
-          <button type="button" onClick={reset} className="text-xs font-semibold text-primary transition hover:underline">
-            Reset to defaults
-          </button>
-        </div>
-        <div className="mt-3 flex flex-wrap gap-4 text-xs">
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={initialCollapsed}
-              onChange={(e) => {
-                setInitialCollapsed(e.target.checked)
-                setKey((k) => k + 1)
-              }}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>initialCollapsed</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={allTitleClickable}
-              onChange={(e) => setAllTitleClickable(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>allTitleClickable</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={condition}
-              onChange={(e) => setCondition(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>condition</span>
-          </label>
-        </div>
-      </div>
-    </div>
+    </InteractiveLayout>
   )
 }
 
 export function CheckFieldInteractiveDemo() {
-  const [type, setType] = useState<'checkbox' | 'radio' | 'switch'>('switch')
+  const [type, setType] = useState<'checkbox' | 'radio' | 'switch'>('checkbox')
   const [checked, setChecked] = useState(true)
   const [disabled, setDisabled] = useState(false)
   const [hasHelper, setHasHelper] = useState(true)
 
   const reset = () => {
-    setType('switch')
+    setType('checkbox')
     setChecked(true)
     setDisabled(false)
     setHasHelper(true)
   }
 
   return (
-    <div className="max-w-xl space-y-6">
-      <div className="rounded-2xl border border-third bg-main p-6">
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlSelect
+            label="Type shape"
+            value={type}
+            onChange={setType}
+            options={[
+              { value: 'checkbox', label: 'checkbox (default)' },
+              { value: 'switch', label: 'switch (toggle)' },
+              { value: 'radio', label: 'radio' },
+            ]}
+          />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="checked" checked={checked} onChange={setChecked} />
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+            <ControlToggle label="inputHelper" checked={hasHelper} onChange={setHasHelper} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-sm text-start">
         <CheckField
           label="Push notifications"
           inputHelper={hasHelper ? 'Receive immediate alerts for important account events.' : undefined}
@@ -581,52 +452,11 @@ export function CheckFieldInteractiveDemo() {
             disabled,
           }}
         />
-        <p className="mt-3 text-xs text-body-2">
-          State: <strong className="text-title-1">{checked ? 'ON / Checked' : 'OFF / Unchecked'}</strong>
+        <p className="mt-4 text-xs text-body-2">
+          Current state: <strong className="font-semibold text-title-1">{checked ? 'ON / Checked' : 'OFF / Unchecked'}</strong>
         </p>
       </div>
-
-      <div className="rounded-2xl border border-third bg-second p-4 sm:p-5">
-        <div className="flex items-center justify-between border-b border-third pb-2.5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-body-3">Toggles & Controls</p>
-          <button type="button" onClick={reset} className="text-xs font-semibold text-primary transition hover:underline">
-            Reset to defaults
-          </button>
-        </div>
-        <div className="mt-3 flex flex-wrap items-center gap-4 text-xs">
-          <label className="flex items-center gap-2">
-            <span className="font-medium text-body-2">Type shape:</span>
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value as any)}
-              className="rounded-lg border border-third bg-main px-2.5 py-1 text-xs text-title-1 outline-none transition focus:border-primary"
-            >
-              <option value="switch">switch (default toggle)</option>
-              <option value="checkbox">checkbox</option>
-              <option value="radio">radio</option>
-            </select>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={disabled}
-              onChange={(e) => setDisabled(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>disabled</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={hasHelper}
-              onChange={(e) => setHasHelper(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>inputHelper</span>
-          </label>
-        </div>
-      </div>
-    </div>
+    </InteractiveLayout>
   )
 }
 
@@ -640,8 +470,18 @@ export function ProgressBarInteractiveDemo() {
   }
 
   return (
-    <div className="max-w-xl space-y-6">
-      <div className="rounded-2xl border border-third bg-main p-6">
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlRange label="Progress value" value={value} suffix="%" onChange={setValue} />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="showValueAsText" checked={showText} onChange={setShowText} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-md text-start">
         <ProgressBar
           value={value}
           outOf={100}
@@ -650,38 +490,7 @@ export function ProgressBarInteractiveDemo() {
           barColor="bg-primary"
         />
       </div>
-
-      <div className="rounded-2xl border border-third bg-second p-4 sm:p-5">
-        <div className="flex items-center justify-between border-b border-third pb-2.5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-body-3">Toggles & Controls</p>
-          <button type="button" onClick={reset} className="text-xs font-semibold text-primary transition hover:underline">
-            Reset to defaults
-          </button>
-        </div>
-        <div className="mt-3 flex flex-wrap items-center gap-4 text-xs">
-          <label className="flex items-center gap-2">
-            <span>Value ({value}%):</span>
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={value}
-              onChange={(e) => setValue(Number(e.target.value))}
-              className="h-1.5 cursor-pointer accent-primary"
-            />
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={showText}
-              onChange={(e) => setShowText(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>showValueAsText</span>
-          </label>
-        </div>
-      </div>
-    </div>
+    </InteractiveLayout>
   )
 }
 
@@ -695,8 +504,26 @@ export function RatingFieldInteractiveDemo() {
   }
 
   return (
-    <div className="max-w-xl space-y-6">
-      <div className="rounded-2xl border border-third bg-main p-6">
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlRange
+            label="Score"
+            value={rating}
+            min={0}
+            max={5}
+            step={0.5}
+            suffix=" / 5"
+            onChange={setRating}
+          />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="readOnly" checked={readOnly} onChange={setReadOnly} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-sm text-start">
         <RatingField
           label="Experience rating"
           properties={{
@@ -713,27 +540,7 @@ export function RatingFieldInteractiveDemo() {
           Current Score: <strong className="font-semibold text-title-1">{rating} / 5</strong>
         </p>
       </div>
-
-      <div className="rounded-2xl border border-third bg-second p-4 sm:p-5">
-        <div className="flex items-center justify-between border-b border-third pb-2.5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-body-3">Toggles & Controls</p>
-          <button type="button" onClick={reset} className="text-xs font-semibold text-primary transition hover:underline">
-            Reset to defaults
-          </button>
-        </div>
-        <div className="mt-3 flex flex-wrap items-center gap-4 text-xs">
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={readOnly}
-              onChange={(e) => setReadOnly(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>readOnly</span>
-          </label>
-        </div>
-      </div>
-    </div>
+    </InteractiveLayout>
   )
 }
 
@@ -741,55 +548,549 @@ export function ColorFieldInteractiveDemo() {
   const [color, setColor] = useState('#6366f1')
   const [alpha, setAlpha] = useState(true)
   const [allowEmpty, setAllowEmpty] = useState(true)
+  const [disabled, setDisabled] = useState(false)
 
   const reset = () => {
     setColor('#6366f1')
     setAlpha(true)
     setAllowEmpty(true)
+    setDisabled(false)
   }
 
   return (
-    <div className="max-w-xl space-y-6">
-      <div className="rounded-2xl border border-third bg-main p-6">
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlInput label="Hex / RGBA value" value={color} onChange={setColor} />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="alpha (transparency)" checked={alpha} onChange={setAlpha} />
+            <ControlToggle label="allowEmpty (clearable)" checked={allowEmpty} onChange={setAllowEmpty} />
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-sm text-start">
         <ColorField
           label="Accent color"
           alpha={alpha}
           allowEmpty={allowEmpty}
+          disabled={disabled}
           properties={{ value: color, setValue: setColor }}
         />
         <p className="mt-3 text-xs text-body-2">
           Hex/RGBA value: <code className="font-mono text-primary">{color || '(empty)'}</code>
         </p>
       </div>
+    </InteractiveLayout>
+  )
+}
 
-      <div className="rounded-2xl border border-third bg-second p-4 sm:p-5">
-        <div className="flex items-center justify-between border-b border-third pb-2.5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-body-3">Toggles & Controls</p>
-          <button type="button" onClick={reset} className="text-xs font-semibold text-primary transition hover:underline">
-            Reset to defaults
-          </button>
-        </div>
-        <div className="mt-3 flex flex-wrap items-center gap-4 text-xs">
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={alpha}
-              onChange={(e) => setAlpha(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>alpha (transparency)</span>
-          </label>
-          <label className="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              checked={allowEmpty}
-              onChange={(e) => setAllowEmpty(e.target.checked)}
-              className="rounded border-third text-primary focus:ring-primary"
-            />
-            <span>allowEmpty (clearable)</span>
-          </label>
-        </div>
+export function RangeFieldInteractiveDemo() {
+  const [value, setValue] = useState(65)
+  const [showValue, setShowValue] = useState(true)
+  const [showMinMax, setShowMinMax] = useState(true)
+  const [disabled, setDisabled] = useState(false)
+
+  const reset = () => {
+    setValue(65)
+    setShowValue(true)
+    setShowMinMax(true)
+    setDisabled(false)
+  }
+
+  return (
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlRange label="Slider value" value={value} suffix="%" onChange={setValue} />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="showValue" checked={showValue} onChange={setShowValue} />
+            <ControlToggle label="showMinMax" checked={showMinMax} onChange={setShowMinMax} />
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-md text-start">
+        <RangeField
+          label="Volume level"
+          disabled={disabled}
+          properties={{
+            value,
+            setValue,
+            min: 0,
+            max: 100,
+            step: 5,
+            showValue,
+            showMinMax,
+            valueSuffix: '%',
+          }}
+        />
+        <p className="mt-3 text-xs text-body-2">
+          Parent value: <strong className="font-semibold text-title-1">{value}%</strong>
+        </p>
       </div>
-    </div>
+    </InteractiveLayout>
+  )
+}
+
+export function PasswordFieldInteractiveDemo() {
+  const [password, setPassword] = useState('')
+  const [hasShow, setHasShow] = useState(true)
+  const [hasGenerate, setHasGenerate] = useState(true)
+  const [hasValidation, setHasValidation] = useState(true)
+  const [showValidationProgress, setShowValidationProgress] = useState(true)
+  const [showValidationsList, setShowValidationsList] = useState(true)
+  const [disabled, setDisabled] = useState(false)
+
+  const reset = () => {
+    setPassword('')
+    setHasShow(true)
+    setHasGenerate(true)
+    setHasValidation(true)
+    setShowValidationProgress(true)
+    setShowValidationsList(true)
+    setDisabled(false)
+  }
+
+  return (
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlInput
+            label="Password value"
+            value={password}
+            type="password"
+            placeholder="Type or generate..."
+            onChange={setPassword}
+          />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="hasShow" checked={hasShow} onChange={setHasShow} />
+            <ControlToggle label="hasGenerate" checked={hasGenerate} onChange={setHasGenerate} />
+            <ControlToggle label="hasValidation" checked={hasValidation} onChange={setHasValidation} />
+            <ControlToggle
+              label="showValidationProgress"
+              checked={showValidationProgress}
+              onChange={setShowValidationProgress}
+            />
+            <ControlToggle
+              label="showValidationsList"
+              checked={showValidationsList}
+              onChange={setShowValidationsList}
+            />
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-md text-start">
+        <PasswordField
+          label="Account password"
+          hasShow={hasShow}
+          hasGenerate={hasGenerate}
+          hasValidation={hasValidation}
+          showValidationProgress={showValidationProgress}
+          showValidationsList={showValidationsList}
+          onGenerate={setPassword}
+          properties={{
+            value: password,
+            onChange: (event) => setPassword(event.target.value),
+            autoComplete: 'new-password',
+            disabled,
+          }}
+        />
+        <p className="mt-3 text-xs text-body-2">
+          Current length: <strong className="font-semibold text-title-1">{password.length}</strong> chars
+        </p>
+      </div>
+    </InteractiveLayout>
+  )
+}
+
+export function SelectFieldInteractiveDemo() {
+  const options = [
+    { value: 'button', label: 'Button component' },
+    { value: 'input', label: 'Input field' },
+    { value: 'accordion', label: 'Accordion disclosure' },
+    { value: 'dialog', label: 'Dialog modal' },
+  ]
+  const [selected, setSelected] = useState('button')
+  const [disabled, setDisabled] = useState(false)
+  const [hasHelper, setHasHelper] = useState(true)
+  const [hasError, setHasError] = useState(false)
+
+  const reset = () => {
+    setSelected('button')
+    setDisabled(false)
+    setHasHelper(true)
+    setHasError(false)
+  }
+
+  return (
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlSelect
+            label="Selected value"
+            value={selected}
+            onChange={setSelected}
+            options={options}
+          />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+            <ControlToggle label="inputHelper" checked={hasHelper} onChange={setHasHelper} />
+            <ControlToggle label="errors (invalid state)" checked={hasError} onChange={setHasError} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-sm text-start">
+        <SelectField
+          label="Component selection"
+          options={options}
+          inputHelper={hasHelper ? 'Choose a component from the list.' : undefined}
+          errors={hasError ? [{ condition: true, helper: 'Selection is required.' }] : undefined}
+          properties={{
+            value: selected,
+            onChange: (e) => setSelected(e.target.value),
+            disabled,
+          }}
+        />
+        <p className="mt-3 text-xs text-body-2">
+          Active selection: <code className="font-mono text-primary font-semibold">{selected}</code>
+        </p>
+      </div>
+    </InteractiveLayout>
+  )
+}
+
+export function TextareaFieldInteractiveDemo() {
+  const [val, setVal] = useState('Edit this example text.')
+  const [rows, setRows] = useState(4)
+  const [disabled, setDisabled] = useState(false)
+  const [hasHelper, setHasHelper] = useState(true)
+  const [hasError, setHasError] = useState(false)
+
+  const reset = () => {
+    setVal('Edit this example text.')
+    setRows(4)
+    setDisabled(false)
+    setHasHelper(true)
+    setHasError(false)
+  }
+
+  return (
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlInput label="Content text" value={val} onChange={setVal} />
+          <ControlRange label="Rows" value={rows} min={2} max={10} onChange={setRows} />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+            <ControlToggle label="inputHelper" checked={hasHelper} onChange={setHasHelper} />
+            <ControlToggle label="errors (invalid state)" checked={hasError} onChange={setHasError} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-md text-start">
+        <TextareaField
+          label="Description"
+          inputHelper={hasHelper ? 'Enter a detailed description.' : undefined}
+          errors={hasError ? [{ condition: true, helper: 'Description cannot be empty.' }] : undefined}
+          properties={{
+            value: val,
+            onChange: (e) => setVal(e.target.value),
+            rows,
+            maxLength: 240,
+            disabled,
+          }}
+        />
+        <p className="mt-2 text-end text-xs text-body-2">{val.length} / 240</p>
+      </div>
+    </InteractiveLayout>
+  )
+}
+
+export function SearchFieldInteractiveDemo() {
+  const [query, setQuery] = useState('')
+  const [disabled, setDisabled] = useState(false)
+  const [hasHelper, setHasHelper] = useState(true)
+  const [lastSubmitted, setLastSubmitted] = useState('')
+
+  const reset = () => {
+    setQuery('')
+    setDisabled(false)
+    setHasHelper(true)
+    setLastSubmitted('')
+  }
+
+  return (
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlInput label="Query text" value={query} onChange={setQuery} />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+            <ControlToggle label="inputHelper" checked={hasHelper} onChange={setHasHelper} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-md text-start">
+        <SearchField
+          label="Search components"
+          inputHelper={hasHelper ? 'Type query and press Enter.' : undefined}
+          properties={{
+            value: query,
+            onChange: (e) => setQuery(e.target.value),
+            onSearch: (q) => setLastSubmitted(q),
+            disabled,
+          }}
+        />
+        <p className="mt-3 text-xs text-body-2">
+          Submitted query: <code className="font-mono text-primary font-semibold">{lastSubmitted || '(none)'}</code>
+        </p>
+      </div>
+    </InteractiveLayout>
+  )
+}
+
+export function NumberFieldInteractiveDemo() {
+  const [val, setVal] = useState('1234.5')
+  const [decimalsMax, setDecimalsMax] = useState(2)
+  const [disabled, setDisabled] = useState(false)
+  const [hasHelper, setHasHelper] = useState(true)
+
+  const reset = () => {
+    setVal('1234.5')
+    setDecimalsMax(2)
+    setDisabled(false)
+    setHasHelper(true)
+  }
+
+  return (
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlInput label="Number value" value={val} onChange={setVal} />
+          <ControlRange label="decimalsMax" value={decimalsMax} min={0} max={6} onChange={setDecimalsMax} />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+            <ControlToggle label="inputHelper" checked={hasHelper} onChange={setHasHelper} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-sm text-start">
+        <NumberField
+          label="Amount"
+          decimalsMax={decimalsMax}
+          inputHelper={hasHelper ? `Allows up to ${decimalsMax} decimal places.` : undefined}
+          properties={{
+            value: val,
+            onChange: (e) => setVal(e.target.value),
+            disabled,
+          }}
+        />
+        <p className="mt-3 text-xs text-body-2">
+          Numeric value: <code className="font-mono text-primary font-semibold">{val || '(empty)'}</code>
+        </p>
+      </div>
+    </InteractiveLayout>
+  )
+}
+
+export function PinFieldInteractiveDemo() {
+  const [pin, setPin] = useState<string[]>([])
+  const [length, setLength] = useState(6)
+  const [disabled, setDisabled] = useState(false)
+
+  const reset = () => {
+    setPin([])
+    setLength(6)
+    setDisabled(false)
+  }
+
+  return (
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlRange label="Pin Length" value={length} min={4} max={8} onChange={(l) => { setLength(l); setPin([]); }} />
+          <div className="pt-2 border-t border-third/60 space-y-2">
+            <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
+          </div>
+        </>
+      }
+    >
+      <div className="w-full max-w-md text-start">
+        <PinField
+          key={length}
+          label="Verification code"
+          length={length}
+          disabled={disabled}
+          properties={{ value: pin, onChange: setPin }}
+        />
+        <p className="mt-4 text-xs text-body-2">
+          Code: <strong className="font-mono text-primary font-semibold">{pin.join('') || '(empty)'}</strong>
+        </p>
+      </div>
+    </InteractiveLayout>
+  )
+}
+
+export function DropdownInteractiveDemo() {
+  const [position, setPosition] = useState<'BOTTOM_START' | 'BOTTOM_END' | 'TOP_START' | 'TOP_END'>('BOTTOM_START')
+  const [variant, setVariant] = useState<'fill' | 'outline'>('outline')
+  const [color, setColor] = useState<'primary' | 'info' | 'second'>('info')
+  const [lastAction, setLastAction] = useState('none')
+
+  const reset = () => {
+    setPosition('BOTTOM_START')
+    setVariant('outline')
+    setColor('info')
+    setLastAction('none')
+  }
+
+  return (
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <>
+          <ControlSelect
+            label="Position"
+            value={position}
+            onChange={setPosition}
+            options={[
+              { value: 'BOTTOM_START', label: 'BOTTOM_START' },
+              { value: 'BOTTOM_END', label: 'BOTTOM_END' },
+              { value: 'TOP_START', label: 'TOP_START' },
+              { value: 'TOP_END', label: 'TOP_END' },
+            ]}
+          />
+          <ControlSelect
+            label="Trigger variant"
+            value={variant}
+            onChange={setVariant}
+            options={[
+              { value: 'outline', label: 'outline' },
+              { value: 'fill', label: 'fill' },
+            ]}
+          />
+          <ControlSelect
+            label="Trigger color"
+            value={color}
+            onChange={setColor}
+            options={[
+              { value: 'info', label: 'info' },
+              { value: 'primary', label: 'primary' },
+              { value: 'second', label: 'second' },
+            ]}
+          />
+        </>
+      }
+    >
+      <div className="w-full max-w-sm flex flex-col items-center">
+        <Dropdown
+          trigger="More actions"
+          staticPosition
+          position={position}
+          triggerProps={{ variant, color }}
+        >
+          {(close) => (
+            <div className="grid min-w-44 gap-1 rounded-xl border border-third bg-second p-2 shadow-lg text-start">
+              <button
+                className="rounded-lg px-3 py-2 text-start text-xs hover:bg-main"
+                onClick={() => {
+                  setLastAction('Inspected component')
+                  close()
+                }}
+              >
+                Inspect component
+              </button>
+              <button
+                className="rounded-lg px-3 py-2 text-start text-xs hover:bg-main"
+                onClick={() => {
+                  setLastAction('Copied example')
+                  close()
+                }}
+              >
+                Copy example
+              </button>
+            </div>
+          )}
+        </Dropdown>
+        <p className="mt-4 text-xs text-body-2">
+          Last action: <strong className="font-semibold text-title-1">{lastAction}</strong>
+        </p>
+      </div>
+    </InteractiveLayout>
+  )
+}
+
+export function DialogInteractiveDemo() {
+  const [open, setOpen] = useState(false)
+  const [show, setShow] = useState(false)
+  const [usePortal, setUsePortal] = useState(false)
+
+  const reset = () => {
+    setOpen(false)
+    setShow(false)
+    setUsePortal(false)
+  }
+
+  return (
+    <InteractiveLayout
+      reset={reset}
+      controls={
+        <div className="space-y-2">
+          <ControlToggle label="usePortal" checked={usePortal} onChange={setUsePortal} />
+          <ControlToggle
+            label="open state"
+            checked={open}
+            onChange={(checked) => {
+              fade(checked ? 'in' : 'out', { open, setOpen, setShow })
+            }}
+          />
+        </div>
+      }
+    >
+      <div className="flex flex-col items-center gap-3">
+        <Button
+          color="info"
+          onClick={() => fade('in', { open, setOpen, setShow })}
+        >
+          Open dialog preview
+        </Button>
+        <Dialog open={open} setOpen={setOpen} show={show} setShow={setShow} usePortal={usePortal}>
+          <div className="max-w-md rounded-2xl border border-third bg-second p-6 shadow-xl text-start">
+            <h3 className="text-lg font-semibold">Dialog preview</h3>
+            <p className="mt-2 text-sm leading-6 text-body-2">
+              Test dialog behavior, escape keys, and close buttons.
+            </p>
+            <Button
+              className="mt-5"
+              variant="outline"
+              color="info"
+              onClick={() => fade('out', { open, setOpen, setShow })}
+            >
+              Close dialog
+            </Button>
+          </div>
+        </Dialog>
+        <p className="text-xs text-body-2">
+          Modal open: <strong className="font-mono text-primary font-semibold">{open ? 'true' : 'false'}</strong>
+        </p>
+      </div>
+    </InteractiveLayout>
   )
 }
