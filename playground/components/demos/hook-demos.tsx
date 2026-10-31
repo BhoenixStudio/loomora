@@ -175,7 +175,7 @@ export function UseThemeDemo() {
         <span className="text-xs font-semibold uppercase tracking-wider text-body-3">Theme Preview</span>
         <h3 className="mt-2 text-3xl font-bold text-title-1">{theme} Mode</h3>
         <p className="mt-2 text-xs text-body-2 max-w-xs">
-          Synchronized reactively with <code className="font-mono text-primary">&lt;html data-theme="{theme}"&gt;</code> and local storage.
+          Synchronized reactively with <code className="font-mono text-primary">&lt;html data-theme=&quot;{theme}&quot;&gt;</code> and local storage.
         </p>
         <div className="mt-6 flex flex-wrap justify-center items-center gap-2.5">
           <Button variant="fill" color="primary">Primary</Button>

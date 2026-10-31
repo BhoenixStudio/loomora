@@ -133,12 +133,12 @@ export function DateFieldInteractiveDemo() {
   const [dateVal, setDateVal] = useState<Date | string | null>(new Date())
   const [dateTimeVal, setDateTimeVal] = useState<Date | string | null>(new Date())
   const [timeVal, setTimeVal] = useState<Date | string | null>('14:30')
-  const [dateRangeVal, setDateRangeVal] = useState<[Date | string | null, Date | string | null]>([
+  const [dateRangeVal, setDateRangeVal] = useState<[Date | string | null, Date | string | null]>(() => [
     new Date(),
     new Date(Date.now() + 6 * 86400000),
   ])
   const [timeRangeVal, setTimeRangeVal] = useState<[Date | string | null, Date | string | null]>(['09:00', '17:30'])
-  const [dateTimeRangeVal, setDateTimeRangeVal] = useState<[Date | string | null, Date | string | null]>([
+  const [dateTimeRangeVal, setDateTimeRangeVal] = useState<[Date | string | null, Date | string | null]>(() => [
     new Date(),
     new Date(Date.now() + 3 * 86400000),
   ])
@@ -323,7 +323,7 @@ export function TextFieldInteractiveDemo() {
           <div className="pt-2 border-t border-third/60 space-y-2">
             <ControlToggle label="inputHelper" checked={hasHelper} onChange={setHasHelper} />
             <ControlToggle label="errors (invalid state)" checked={hasError} onChange={setHasError} />
-            <ControlToggle label="labelFloating" checked={labelFloating} onChange={setLabelFloating} />
+            <ControlToggle label="active (force floating)" checked={labelFloating} onChange={setLabelFloating} />
             <ControlToggle label="disabled" checked={disabled} onChange={setDisabled} />
           </div>
         </>
@@ -332,7 +332,7 @@ export function TextFieldInteractiveDemo() {
       <div className="w-full max-w-sm text-start">
         <TextField
           label="Display name"
-          labelFloating={labelFloating}
+          active={labelFloating}
           inputHelper={hasHelper ? 'Controlled input value with helper text.' : undefined}
           errors={hasError ? [{ condition: true, helper: 'This field contains an error.' }] : undefined}
           properties={{
@@ -576,8 +576,7 @@ export function ColorFieldInteractiveDemo() {
           label="Accent color"
           alpha={alpha}
           allowEmpty={allowEmpty}
-          disabled={disabled}
-          properties={{ value: color, setValue: setColor }}
+          properties={{ value: color, setValue: setColor, disabled }}
         />
         <p className="mt-3 text-xs text-body-2">
           Hex/RGBA value: <code className="font-mono text-primary">{color || '(empty)'}</code>
@@ -617,7 +616,6 @@ export function RangeFieldInteractiveDemo() {
       <div className="w-full max-w-md text-start">
         <RangeField
           label="Volume level"
-          disabled={disabled}
           properties={{
             value,
             setValue,
@@ -627,6 +625,7 @@ export function RangeFieldInteractiveDemo() {
             showValue,
             showMinMax,
             valueSuffix: '%',
+            disabled,
           }}
         />
         <p className="mt-3 text-xs text-body-2">
@@ -896,8 +895,8 @@ export function NumberFieldInteractiveDemo() {
           decimalsMax={decimalsMax}
           inputHelper={hasHelper ? `Allows up to ${decimalsMax} decimal places.` : undefined}
           properties={{
-            value: val,
-            onChange: (e) => setVal(e.target.value),
+            value: val === '' || Number.isNaN(Number(val)) ? null : Number(val),
+            onChange: (e) => setVal(e.target.value !== undefined ? String(e.target.value) : ''),
             disabled,
           }}
         />
@@ -937,8 +936,7 @@ export function PinFieldInteractiveDemo() {
           key={length}
           label="Verification code"
           length={length}
-          disabled={disabled}
-          properties={{ value: pin, onChange: setPin }}
+          properties={{ value: pin, onChange: setPin, disabled }}
         />
         <p className="mt-4 text-xs text-body-2">
           Code: <strong className="font-mono text-primary font-semibold">{pin.join('') || '(empty)'}</strong>

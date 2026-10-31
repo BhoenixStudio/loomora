@@ -301,7 +301,7 @@ function ChronoDemo() {
               {String(
                 (selectedPreset === 'custom'
                   ? stamp(dateObj, { type: 'custom', format: customFormat, locale: selectedLocale })
-                  : stamp(dateObj, { type: selectedPreset as any, locale: selectedLocale })) ?? 'null'
+                  : stamp(dateObj, { type: selectedPreset as Parameters<typeof stamp>[1] extends { type?: infer T } ? Exclude<T, 'custom' | undefined> : never, locale: selectedLocale })) ?? 'null'
               )}
             </p>
           </div>
@@ -445,12 +445,12 @@ function DemoContent({ demo }: Readonly<{ demo: string }>) {
   const [dateVal, setDateVal] = useState<Date | string | null>(new Date())
   const [dateTimeVal, setDateTimeVal] = useState<Date | string | null>(new Date())
   const [timeVal, setTimeVal] = useState<Date | string | null>('14:30')
-  const [dateRangeVal, setDateRangeVal] = useState<[Date | string | null, Date | string | null]>([
+  const [dateRangeVal, setDateRangeVal] = useState<[Date | string | null, Date | string | null]>(() => [
     new Date(),
     new Date(Date.now() + 6 * 86400000),
   ])
   const [timeRangeVal, setTimeRangeVal] = useState<[Date | string | null, Date | string | null]>(['09:00', '17:30'])
-  const [dateTimeRangeVal, setDateTimeRangeVal] = useState<[Date | string | null, Date | string | null]>([
+  const [dateTimeRangeVal, setDateTimeRangeVal] = useState<[Date | string | null, Date | string | null]>(() => [
     new Date(),
     new Date(Date.now() + 3 * 86400000),
   ])
