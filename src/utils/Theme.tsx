@@ -40,7 +40,10 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
   // Initial Data
   const initialState: Theme = {
     theme: localStore.get<Theme['theme']>(tKey, { fallback: dTheme }),
-    dynamicTime: localStore.get<Theme['dynamicTime']>(tRKey, { fallback: { start: dStartTime, end: dEndTime } }),
+    dynamicTime: localStore.get<Theme['dynamicTime']>(tRKey, {
+      fallback: { start: dStartTime, end: dEndTime },
+      json: true,
+    }),
   }
 
   // Context helpers
@@ -72,7 +75,7 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
   const getCurrentMinutes = () => new Date().getHours() * 60 + new Date().getMinutes()
   const updateTheme = (t: ThemeType) => {
     update({ theme: t })
-    localStorage.set(tKey, t)
+    localStore.set(tKey, t)
   }
 
   // Functions
@@ -92,10 +95,10 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
 
   function setDynamicTime(start: string, end: string) {
     update({ dynamicTime: { start, end } })
-    localStorage.set(tRKey, { start, end })
+    localStore.set(tRKey, { start, end }, { json: true })
   }
 
-  function toggleTheme(e?: MouseEvent<HTMLButtonElement>) {
+  async function toggleTheme(e?: MouseEvent<HTMLButtonElement>) {
     const newTheme = state.theme === 'LIGHT' ? 'DARK' : 'LIGHT'
 
     if (!switchingAnimation || !document.startViewTransition) {
@@ -108,7 +111,7 @@ export function ThemeProvider({ children }: Readonly<{ children: ReactNode }>) {
     const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
 
     const transition = document.startViewTransition(() => updateTheme(newTheme))
-    transition.ready.then(() => {
+    await transition.ready.then(() => {
       document.documentElement.animate(
         { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`] },
         { duration: 500, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
