@@ -1,5 +1,13 @@
 # Loomora
 
+<p align="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./playground/public/images/identity/logo-light.png" />
+    <source media="(prefers-color-scheme: light)" srcset="./playground/public/images/identity/logo.png" />
+    <img alt="Loomora" src="./playground/public/images/identity/logo.png" height="44" />
+  </picture>
+</p>
+
 Loomora is a TypeScript React library of composable UI components, form inputs, hooks, metadata databases, and shared configuration defaults for product teams. Everything is exported from the package root, `loomora`.
 
 ---

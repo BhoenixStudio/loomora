@@ -31,9 +31,6 @@
     "node": ">=20.19.0",
     "npm": ">=10.0.0"
   },
-  "workspaces": [
-    "playground"
-  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -61,9 +58,9 @@
     "build:css": "node scripts/build-css.mjs",
     "build:watch": "tsup --watch",
     "check": "npm run lint && npm run typecheck && npm run test:run && npm run build && npm run pack:dry",
-    "check:playground": "npm run typecheck --workspace playground && npm run lint --workspace playground && npm run build --workspace playground",
+    "check:playground": "pnpm --filter playground run typecheck && pnpm --filter playground run lint && pnpm --filter playground run build",
     "dev": "npm run dev:playground",
-    "dev:playground": "npm run dev --workspace playground",
+    "dev:playground": "pnpm --filter playground run dev",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { SiteHeader } from '../components/SiteHeader'
 
@@ -167,8 +168,24 @@ export default function HomePage() {
       </main>
 
       <footer className="border-t border-third bg-second">
-        <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3 px-5 py-6 text-xs text-body-2 sm:px-8">
-          <span>Loomora · v0.1.0</span>
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-xs text-body-2 sm:px-8">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/images/identity/logo.png"
+              alt="Loomora"
+              width={96}
+              height={22}
+              className="h-5 w-auto dark:hidden"
+            />
+            <Image
+              src="/images/identity/logo-light.png"
+              alt="Loomora"
+              width={96}
+              height={22}
+              className="hidden h-5 w-auto dark:block"
+            />
+            <span>· v0.1.0</span>
+          </div>
           <span>MIT licensed</span>
         </div>
       </footer>

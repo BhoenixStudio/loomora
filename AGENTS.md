@@ -18,7 +18,7 @@ The package is at version `0.1.0` and is prepared for npm publishing under the r
   - **Tailwind projects**: Consumers can scan Loomora with `@source '../node_modules/loomora'` (v4) or `content` (v3), or simply import `loomora/dist/index.css`.
 - Tests: Vitest with jsdom and Testing Library. Lint: ESLint with TypeScript and React Hooks rules. Formatting: Prettier.
 - The checked-in dependency lockfile is `pnpm-lock.yaml`. Repository installs should use pnpm to honor it. npm and Yarn commands are usable for scripts, but their installs do not use this lockfile; do not create or update another lockfile as a side effect.
-- `package.json` declares the `playground` npm workspace. The playground is a private Next.js app configured to consume the local library source while developing.
+- `pnpm-workspace.yaml` declares the `playground` pnpm workspace. The playground is a private Next.js app configured to consume the local library source while developing and is not declared in `package.json` `workspaces` so `npm publish` only targets the root library package.
 
 `LoomoraProvider` imports `src/styles/index.css` and automatically wraps children with `ResponsiveProvider` and `ThemeProvider`. Both providers read their settings and localized labels from `useLoomora()` (`config.responsive`, `config.theme`, and `config.translations.settings`).
 

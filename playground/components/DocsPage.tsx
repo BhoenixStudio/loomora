@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { componentCatalog, type ComponentDoc, type ComponentGroup } from './catalog'
@@ -11,9 +12,24 @@ export function DocsPage({ doc, children }: { doc: ComponentDoc; children: React
     <div className="min-h-screen bg-main text-title-1">
       <header className="sticky top-0 z-40 border-b border-third bg-second/95 backdrop-blur">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-3 sm:px-7">
-          <Link href="/" className="shrink-0 text-base font-bold tracking-tight">
-            loomora<span className="text-primary">.</span>
-            <span className="ms-2 hidden rounded-full bg-primary/10 px-2 py-1 align-middle text-[10px] font-semibold uppercase tracking-[0.14em] text-primary sm:inline">
+          <Link href="/" className="inline-flex shrink-0 items-center gap-2">
+            <Image
+              src="/images/identity/logo.png"
+              alt="Loomora"
+              width={120}
+              height={28}
+              priority
+              className="h-6 w-auto dark:hidden"
+            />
+            <Image
+              src="/images/identity/logo-light.png"
+              alt="Loomora"
+              width={120}
+              height={28}
+              priority
+              className="hidden h-6 w-auto dark:block"
+            />
+            <span className="hidden rounded-full bg-primary/10 px-2 py-1 align-middle text-[10px] font-semibold uppercase tracking-[0.14em] text-primary sm:inline">
               Component docs
             </span>
           </Link>
