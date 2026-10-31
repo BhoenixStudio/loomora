@@ -127,4 +127,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy playground/out --project-name=loomora-docs --commit-dirty=true
+          command: pages deploy playground/out --project-name=loomora-docs --branch=main --commit-dirty=true
