@@ -854,6 +854,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
     createPortal(
       isMobile ? (
         <dialog
+          open
           ref={popoverRef}
           aria-modal="true"
           aria-label="Date and time picker"
@@ -889,6 +890,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>((props, re
         </dialog>
       ) : (
         <dialog
+          open
           ref={popoverRef}
           aria-modal="true"
           aria-label="Date and time picker"
