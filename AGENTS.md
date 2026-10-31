@@ -4,7 +4,7 @@
 
 Loomora is a TypeScript React component and utility library intended for consumption from the `loomora` package root. Its current public surface includes UI and form components, hooks, country/social/timezone metadata, configuration, shared types, and helpers. The repository also contains a private Next.js playground that consumes the library during development; it is not part of the published package.
 
-The package is at version `0.1.0` and is prepared for npm publishing. Do not assume it has already been published. Package metadata contains placeholder GitHub username values that must be replaced before a real release.
+The package is at version `0.1.0` and is prepared for npm publishing under the repository `https://github.com/BhoenixStudio/loomora`. Do not assume it has already been published.
 
 ## Technology and package contract
 
@@ -12,7 +12,7 @@ The package is at version `0.1.0` and is prepared for npm publishing. Do not ass
 - Node.js `>=20.19.0` and npm `>=10.0.0` are recorded in `package.json`.
 - React and React DOM peer range: `>=18.2.0 <20`.
 - Other declared peer dependencies: `@tinymce/tinymce-react >=6.3.0`.
-- Build: `node scripts/build-css.mjs && tsup`, outputting ESM, CJS, declaration maps, and `dist/index.css`; React and React DOM are external.
+- Build: `node scripts/build-css.mjs && tsup`, outputting ESM, CJS, declaration maps, and `dist/index.css`; React, React DOM, and `@tinymce/tinymce-react` are external.
 - Styling contract: Loomora supports both non-Tailwind and Tailwind projects. It compiles a standalone stylesheet (`dist/index.css` / `src/styles/index.css`) containing theme tokens (`--loomora-*`), keyframe animations, component elements, and pre-compiled Tailwind utilities without a global preflight reset. It is exported via `"./dist/index.css"`, `"./index.css"`, and `"./styles/index.css"`.
   - **Non-Tailwind projects**: Consumers import `import 'loomora/dist/index.css'` or use `LoomoraProvider`.
   - **Tailwind projects**: Consumers can scan Loomora with `@source '../node_modules/loomora'` (v4) or `content` (v3), or simply import `loomora/dist/index.css`.
@@ -20,7 +20,7 @@ The package is at version `0.1.0` and is prepared for npm publishing. Do not ass
 - The checked-in dependency lockfile is `pnpm-lock.yaml`. Repository installs should use pnpm to honor it. npm and Yarn commands are usable for scripts, but their installs do not use this lockfile; do not create or update another lockfile as a side effect.
 - `package.json` declares the `playground` npm workspace. The playground is a private Next.js app configured to consume the local library source while developing.
 
-`LoomoraProvider` imports `src/styles/index.css` and includes the theme provider. `src/utils/Theme.tsx` imports `next-intl`, and `ThemeProvider` uses the `theme` translation namespace. `next-intl` is not listed in the package's peer dependencies. Keep this integration and its current dependency declaration discrepancy in mind when modifying provider integration or documentation; do not silently broaden the package contract.
+`LoomoraProvider` imports `src/styles/index.css` and automatically wraps children with `ResponsiveProvider` and `ThemeProvider`. Both providers read their settings and localized labels from `useLoomora()` (`config.responsive`, `config.theme`, and `config.translations.settings`).
 
 ## Repository structure
 
@@ -96,7 +96,8 @@ Use the corresponding `npm run <script>` or `yarn run <script>` form if needed. 
 - Keep React and React DOM external to the library build and within the declared peer range.
 - Treat exported component props, hooks, types, defaults, configuration keys, and component behavior as public API. Favor backward-compatible additions. For removals or behavior/type changes, check in-repository consumers, tests, and the README; document intentional compatibility changes in `CHANGELOG.md` when appropriate.
 - Configuration is recursively merged from defaults. Do not replace an entire default subtree when an override only intends to change one nested value; preserve nested-provider inheritance and avoid mutating either merge input.
-- **Playground Configuration Documentation Sync**: Whenever configuration keys, types, or defaults in `src/config/` (`src/config/types/` and `src/config/defaults.ts`) are modified, added, or removed, you MUST update the playground configuration documentation (`playground/app/usage/page.tsx` and `playground/components/docs/` including `config-descriptions.ts`, `config-ids.ts`, and `component-metadata.ts`) so the configuration reference table and component links remain 100% accurate and up-to-date with the code.
+- **README & Playground Documentation Sync**: Whenever any change is made to the project that affects components, props, hooks, utilities, databases, styling, or public behavior, you MUST update both `README.md` and the `playground/` documentation/catalogs (`playground/components/catalog.ts`, `playground/components/hooks-catalog.ts`, `playground/components/registry/`, `playground/app/`, etc.) so that both `README.md` and `playground/` remain 100% accurate and synchronized with the codebase.
+- **Playground Configuration Documentation Sync**: Whenever configuration keys, types, or defaults in `src/config/` (`src/config/types/` and `src/config/defaults.ts`) are modified, added, or removed, you MUST update both `README.md` and the playground configuration documentation (`playground/app/usage/page.tsx` and `playground/components/docs/` including `config-descriptions.ts`, `config-ids.ts`, and `component-metadata.ts`) so the configuration reference table and component links remain 100% accurate and up-to-date with the code.
 - React hooks and components that use browser APIs or client hooks must retain correct client-component boundaries. Avoid adding server-only assumptions to their public contract.
 - The provider imports the package stylesheet. Preserve this import and CSS behavior when changing provider entry points or build packaging, and validate that package contents still include all files needed at runtime.
 - The package `files` allowlist currently includes `dist`, `README.md`, `CHANGELOG.md`, and `LICENSE`. If adding required runtime files, update the allowlist and verify them with the pack dry run.
@@ -140,7 +141,7 @@ Confirmed project conventions:
 
 1. Read this file and any applicable scoped guidance or component documentation.
 2. Inspect the relevant implementation, public barrels, types, and package configuration before editing.
-3. Preserve established feature and export patterns; make the smallest complete change (do what was asked first).
+3. Preserve established feature and export patterns; make the smallest complete change (do what was asked first), and update `README.md` and `playground/` whenever affected by the change.
 4. After implementing the requested task, add tests for the new/modified functionality if appropriate.
 5. Validate types with `pnpm run typecheck` ONLY. Do NOT run `build`, `pack`, `format`, or full test/check suites.
 6. Review `git diff` for accidental generated output, lockfile churn, missing exports, broken examples, or unintended public API changes.

@@ -239,7 +239,7 @@ export function ThemeSwitcher() {
     ],
     notes: [
       'Included automatically within LoomoraProvider.',
-      'ThemeProvider integrates with next-intl for localized theme labels if configured.',
+      'ThemeProvider reads localized theme labels from LoomoraProvider translations.settings.',
     ],
   },
   {

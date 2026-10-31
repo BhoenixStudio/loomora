@@ -18,11 +18,11 @@
   ],
   "homepage": "https://www.npmjs.com/package/loomora",
   "bugs": {
-    "url": "https://github.com/REPLACE_WITH_YOUR_USERNAME/loomora/issues"
+    "url": "https://github.com/BhoenixStudio/loomora/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/REPLACE_WITH_YOUR_USERNAME/loomora.git"
+    "url": "git+https://github.com/BhoenixStudio/loomora.git"
   },
   "license": "MIT",
   "author": "Bhoenix Studio",

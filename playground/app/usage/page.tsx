@@ -81,8 +81,8 @@ export default function UsagePage() {
           <p className="font-semibold text-title-1">Good to know</p>
           <ul className="mt-2 list-disc space-y-1 ps-5">
             <li>
-              <code>LoomoraProvider</code> includes the theme provider, which uses <code>next-intl</code> (the{' '}
-              <code>theme</code> namespace). Render it beneath your <code>NextIntlClientProvider</code>.
+              <code>LoomoraProvider</code> includes both <code>ResponsiveProvider</code> and <code>ThemeProvider</code>,
+              and reads localized labels from <code>config.translations</code>.
             </li>
             <li>
               Configuration is merged recursively, so changing <code>form.textField.className</code> never removes other

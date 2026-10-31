@@ -50,46 +50,27 @@ needed.
 ### Prerequisites
 
 All files in this folder are client components or are consumed by a client
-component. `Button` calls `useTranslations('common')`, and `ButtonColors`
-calls `useTheme()`. The component therefore needs the project's active
-`NextIntlClientProvider` and `ThemeProvider` contexts.
-
-The standard `ClientLayout` already supplies these providers in this order:
-`NextIntlClientProvider`, `ResponsiveProvider`, `ThemeProvider`, then the
-application libraries and children. `useTheme()` throws when no
-`ThemeProvider` is present.
-
-The component also relies on the shared `Icon`, `Tooltip`, `Dialog`, `cn`, and
-the i18n-aware `Link` exports. The TypeScript aliases used by the source are
-configured in `tsconfig.json`.
+component. `Button` reads configuration and translations from `useLoomora()`,
+which works with built-in defaults or inside `LoomoraProvider` (which includes
+`ResponsiveProvider` and `ThemeProvider`).
 
 ### Import
 
 ```tsx
-import { Button } from '@components'
-```
-
-Import `Action` or the color helpers from the same barrel when needed:
-
-```tsx
-import { Action, ButtonColors, ButtonColorsClass } from '@components'
+import { Button } from 'loomora'
 ```
 
 ### Basic usage
 
-Illustrative example. The surrounding component must be a client component
-inside the providers described above.
+Illustrative example:
 
 ```tsx
 'use client'
 
-import { Button } from '@components'
-import { useTranslations } from 'next-intl'
+import { Button } from 'loomora'
 
 export function ExampleAction() {
-  const b = useTranslations('common.buttons')
-
-  return <Button title={b('form')} onClick={() => undefined} />
+  return <Button title="Save" onClick={() => undefined} />
 }
 ```
 

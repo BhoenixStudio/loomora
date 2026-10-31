@@ -1,17 +1,36 @@
 import fs from 'node:fs'
+import { createRequire } from 'node:module'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
 
-async function buildCss() {
-  const playgroundNodeModules = path.resolve(rootDir, 'playground/node_modules')
-  const postcssPath = path.resolve(rootDir, 'node_modules/.pnpm/postcss@8.5.28/node_modules/postcss/lib/postcss.mjs')
-  const tailwindPostcssPath = path.resolve(playgroundNodeModules, '@tailwindcss/postcss/dist/index.mjs')
+function resolvePackage(specifier, requires) {
+  for (const req of requires) {
+    try {
+      return req.resolve(specifier)
+    } catch {
+      // try next resolver
+    }
+  }
+  throw new Error(`Unable to resolve "${specifier}" from workspace dependencies.`)
+}
 
-  const { default: postcss } = await import(`file:///${postcssPath.replace(/\\/g, '/')}`)
-  const { default: tailwindPostcss } = await import(`file:///${tailwindPostcssPath.replace(/\\/g, '/')}`)
+async function buildCss() {
+  const rootRequire = createRequire(path.resolve(rootDir, 'package.json'))
+  const playgroundRequire = createRequire(path.resolve(rootDir, 'playground/package.json'))
+
+  const tailwindPostcssEntry = fs.realpathSync(
+    resolvePackage('@tailwindcss/postcss', [rootRequire, playgroundRequire])
+  )
+  const tailwindRequire = createRequire(tailwindPostcssEntry)
+  const postcssEntry = fs.realpathSync(
+    resolvePackage('postcss', [rootRequire, playgroundRequire, tailwindRequire])
+  )
+
+  const { default: postcss } = await import(pathToFileURL(postcssEntry).href)
+  const { default: tailwindPostcss } = await import(pathToFileURL(tailwindPostcssEntry).href)
 
   const tailwindInput = `
 @import 'tailwindcss/theme';
